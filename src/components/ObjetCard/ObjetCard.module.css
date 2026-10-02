@@ -1,8 +1,12 @@
 .card {
+  position: relative;
+  min-width: 0;
+}
+
+.link {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  min-width: 0;
   color: var(--ink);
 }
 
@@ -18,18 +22,10 @@
   pointer-events: none;
 }
 
-.heart {
+.card .heart {
   position: absolute;
   top: var(--space-sm);
   right: var(--space-sm);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: var(--canvas);
-  border-radius: var(--radius-full);
-  pointer-events: none;
 }
 
 .name {

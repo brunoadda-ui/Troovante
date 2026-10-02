@@ -1,0 +1,159 @@
+/* ---------- Fenêtre de demande (achat, question) ---------- */
+
+.dialog {
+  width: min(520px, calc(100vw - 2 * var(--gutter-page)));
+  max-height: calc(100dvh - 2 * var(--gutter-page));
+  padding: 0;
+  color: var(--ink);
+  background: var(--canvas);
+  border: none;
+  border-radius: var(--radius-none);
+  overflow-y: auto;
+}
+
+.dialog::backdrop {
+  background: rgb(17 17 17 / 0.5);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-xxl);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.title {
+  margin: 0;
+  font: var(--type-heading-lg);
+  text-wrap: pretty;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  /* Aligne la croix sur le bord droit de la fenêtre. */
+  margin: -8px -8px 0 0;
+  padding: 0;
+  color: var(--ink);
+  background: none;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.recap {
+  margin: 0;
+  padding-bottom: var(--space-md);
+  font: var(--type-caption-md);
+  color: var(--mute);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.recap strong {
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.intro {
+  margin: 0;
+  font: var(--type-caption-md);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font: var(--type-body-strong);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0 var(--space-md);
+  font: var(--type-body-md);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+}
+
+.field input {
+  height: 48px;
+}
+
+.field textarea {
+  padding-block: var(--space-md);
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.error {
+  margin: 0;
+  padding: var(--space-md);
+  font: var(--type-caption-md);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+
+.privacy {
+  margin: 0;
+  font: var(--type-caption-sm);
+  color: var(--mute);
+  text-align: center;
+}
+
+.done {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  color: var(--charcoal);
+}
+
+.done p {
+  margin: 0;
+}
+
+.doneTitle {
+  font: var(--type-body-strong);
+  color: var(--ink);
+}
+
+@media (max-width: 639px) {
+  .panel {
+    padding: var(--space-xl);
+  }
+}

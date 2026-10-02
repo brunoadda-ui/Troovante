@@ -205,6 +205,26 @@
   border-radius: var(--radius-none);
 }
 
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.callbackDone {
+  margin: 0;
+  font: var(--type-heading-lg);
+}
+
+.callbackError {
+  margin: 0;
+  padding: var(--space-md);
+  font: var(--type-caption-md);
+  border: 1px solid var(--canvas);
+}
+
 /* Sur fond noir, le contour de saisie doit être blanc pour rester visible. */
 .callback :focus-visible {
   outline-color: var(--canvas);

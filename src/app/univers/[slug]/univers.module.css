@@ -68,9 +68,31 @@
 }
 
 .filtersTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
   padding-bottom: var(--space-lg);
   font: var(--type-heading-md);
   border-bottom: 1px solid var(--hairline);
+}
+
+.filtersClear,
+.filtersClearMobile {
+  font: var(--type-caption-md);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.filtersClear:hover,
+.filtersClearMobile:hover {
+  color: var(--mute);
+}
+
+/* Sur ordinateur, « Tout effacer » est déjà dans l'en-tête de la colonne. */
+.filtersClearMobile {
+  display: none;
 }
 
 .filtersToggle {
@@ -152,10 +174,17 @@
 }
 
 .tileLabel {
+  align-self: flex-start;
   font: var(--type-body-strong);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ink);
+  border-bottom: 1px solid transparent;
+}
+
+/* Le sous-univers actuellement filtré est souligné. */
+.tile[aria-current="true"] .tileLabel {
+  border-bottom-color: var(--ink);
 }
 
 /* ---------- Résultats ---------- */
@@ -178,15 +207,17 @@
   color: var(--mute);
 }
 
-.sort {
-  height: 48px;
-  min-width: 200px;
-  padding: 0 var(--space-lg);
-  font: var(--type-caption-md);
-  color: var(--ink);
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-none);
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  max-width: 52ch;
+  color: var(--charcoal);
+}
+
+.empty p {
+  margin: 0;
 }
 
 .grid {
@@ -234,8 +265,14 @@
     order: 4;
   }
 
-  .grid {
+  .grid,
+  .empty {
     order: 5;
+  }
+
+  .filtersClearMobile {
+    display: inline-block;
+    align-self: flex-start;
   }
 
   .more {
@@ -291,9 +328,5 @@
 
   .tileLabel {
     font-size: 14px;
-  }
-
-  .sort {
-    flex: 1 1 100%;
   }
 }

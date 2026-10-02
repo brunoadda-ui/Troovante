@@ -5,8 +5,8 @@ import ObjetCard from "@/components/ObjetCard/ObjetCard";
 import Button from "@/components/ui/Button";
 import FilterChip from "@/components/ui/FilterChip";
 import Photo from "@/components/ui/Photo";
-import { getNouveautes, getUnivers, lienObjetVedette } from "@/data/catalogue";
-import { formatPrix } from "@/lib/format";
+import { getChiffres, getNouveautes, getUnivers, versCarte } from "@/lib/catalogue";
+import { compter } from "@/lib/format";
 import s from "./page.module.css";
 
 const ENGAGEMENTS = [
@@ -27,6 +27,7 @@ const ENGAGEMENTS = [
   },
 ];
 
+// Deux ambiances mises en avant : contenu éditorial, encore fictif.
 const STYLES = [
   {
     titre: "Art déco",
@@ -40,9 +41,15 @@ const STYLES = [
   },
 ];
 
-export default function Accueil() {
-  const univers = getUnivers();
-  const nouveautes = getNouveautes();
+export default async function Accueil() {
+  const [univers, nouveautes, chiffres] = await Promise.all([getUnivers(), getNouveautes(8), getChiffres()]);
+
+  // Les chiffres viennent du catalogue réel ; une ligne vide n'est pas affichée.
+  const bilan = [
+    chiffres.marchands > 0 && compter(chiffres.marchands, "marchand", "marchands"),
+    chiffres.regions > 1 && compter(chiffres.regions, "région", "régions"),
+    chiffres.objets > 0 && compter(chiffres.objets, "objet exclusif", "objets exclusifs"),
+  ].filter((ligne): ligne is string => Boolean(ligne));
 
   return (
     <>
@@ -94,28 +101,32 @@ export default function Accueil() {
         </div>
       </section>
 
-      <section className={`container ${s.section}`}>
-        <div className={s.sectionHead}>
-          <h2 className={s.h2}>Nouvelles trouvailles</h2>
-          <span className={s.sectionNote}>42 objets arrivés cette semaine</span>
-        </div>
-        <div className={s.productGrid}>
-          {nouveautes.map((p) => (
-            <ObjetCard
-              key={p.nom}
-              href={lienObjetVedette}
-              nom={p.nom}
-              meta={p.meta}
-              prix={formatPrix(p.prix)}
-              mention="Pièce unique"
-              ratio="4 / 5"
-              image={p.image}
-              legende={p.legende}
-              sizes="(min-width: 1024px) 25vw, 50vw"
-            />
-          ))}
-        </div>
-      </section>
+      {nouveautes.length > 0 && (
+        <section className={`container ${s.section}`}>
+          <div className={s.sectionHead}>
+            <h2 className={s.h2}>Nouvelles trouvailles</h2>
+            {chiffres.nouveautesSemaine > 0 && (
+              <span className={s.sectionNote}>
+                {chiffres.nouveautesSemaine > 1
+                  ? `${chiffres.nouveautesSemaine} objets arrivés cette semaine`
+                  : "1 objet arrivé cette semaine"}
+              </span>
+            )}
+          </div>
+          <div className={s.productGrid}>
+            {nouveautes.map((objet) => (
+              <ObjetCard
+                key={objet.slug}
+                objet={versCarte(objet, true)}
+                mention="Pièce unique"
+                ratio="4 / 5"
+                sizes="(min-width: 1024px) 25vw, 50vw"
+                favori
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className={`container ${s.section}`}>
         <h2 className={s.h2}>Deux façons d’habiter une pièce</h2>
@@ -141,13 +152,16 @@ export default function Accueil() {
               Antiquaires, galeristes et brocanteurs installés depuis des années. Nous visitons chaque marchand, nous
               validons chaque provenance, et nous n’acceptons que des objets qu’ils nous confient en exclusivité.
             </p>
-            <div className={s.stats}>
-              <span>48 marchands</span>
-              <span className={s.statSep}>/</span>
-              <span>11 régions</span>
-              <span className={s.statSep}>/</span>
-              <span>1 200 objets exclusifs</span>
-            </div>
+            {bilan.length > 0 && (
+              <div className={s.stats}>
+                {bilan.map((ligne, i) => (
+                  <span key={ligne} className={s.stat}>
+                    {i > 0 && <span className={s.statSep}>/</span>}
+                    {ligne}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           <Photo
             alt="Portrait d’un marchand dans son atelier"

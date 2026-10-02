@@ -9,8 +9,11 @@ type Props = {
   full?: boolean;
   /** Avec `href`, le bouton est rendu comme un lien. */
   href?: string;
+  /** Lien interne : `false` pour rester au même endroit de la page (« Voir plus »). */
+  scroll?: boolean;
   onClick?: () => void;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+  disabled?: boolean;
 };
 
 export default function Button({
@@ -19,8 +22,10 @@ export default function Button({
   size = "md",
   full = false,
   href,
+  scroll,
   onClick,
   type = "button",
+  disabled,
 }: Props) {
   const className = [s.button, s[variant], s[size], full ? s.full : ""].filter(Boolean).join(" ");
 
@@ -28,7 +33,7 @@ export default function Button({
     // Les liens tel:, mailto: et externes ne passent pas par le routeur.
     const interne = href.startsWith("/");
     return interne ? (
-      <Link href={href} className={className} onClick={onClick}>
+      <Link href={href} className={className} onClick={onClick} scroll={scroll}>
         {children}
       </Link>
     ) : (
@@ -39,7 +44,7 @@ export default function Button({
   }
 
   return (
-    <button type={type} className={className} onClick={onClick}>
+    <button type={type} className={className} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

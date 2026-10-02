@@ -115,6 +115,11 @@
 
 /* ---------- SearchPill ---------- */
 
+/* Le formulaire ne crée pas de boîte : c'est la pilule qui se place dans la barre. */
+.searchForm {
+  display: contents;
+}
+
 .search {
   display: inline-flex;
   align-items: center;

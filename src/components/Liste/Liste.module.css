@@ -1,0 +1,16 @@
+.sort {
+  height: 48px;
+  min-width: 200px;
+  padding: 0 var(--space-lg);
+  font: var(--type-caption-md);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+}
+
+@media (max-width: 639px) {
+  .sort {
+    flex: 1 1 100%;
+  }
+}

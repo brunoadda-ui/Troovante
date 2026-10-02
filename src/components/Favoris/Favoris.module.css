@@ -1,0 +1,96 @@
+/* ---------- Cœur posé sur une photo ---------- */
+
+.pastille {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--canvas);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: opacity var(--duration-press) var(--ease-press);
+}
+
+/* Zone tactile élargie à 44px sans agrandir le rond. */
+.pastille::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+.pastille:active,
+.texte:active {
+  opacity: var(--press-opacity);
+}
+
+/* ---------- Cœur avec libellé (fiche objet) ---------- */
+
+.texte {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  font: var(--type-caption-md);
+  color: var(--ink);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--duration-press) var(--ease-press);
+}
+
+.texte:hover {
+  color: var(--mute);
+}
+
+/* ---------- Page « Mes favoris » ---------- */
+
+.page {
+  padding-top: var(--space-xxl);
+  padding-bottom: var(--space-section);
+}
+
+.title {
+  margin: 0 0 var(--space-xs);
+  font: var(--type-heading-xl);
+}
+
+.note {
+  margin: 0 0 var(--space-xl);
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(230px, 100%), 1fr));
+  gap: var(--space-lg) var(--space-sm);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  max-width: 52ch;
+  color: var(--charcoal);
+}
+
+.empty p {
+  margin: 0;
+}
+
+@media (max-width: 639px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}

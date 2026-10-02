@@ -3,11 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ChevronDown, ChevronRight, Heart, Menu, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Heart, Menu, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
 import Photo from "@/components/ui/Photo";
 import SearchPill from "@/components/ui/SearchPill";
+import { useFavoris } from "@/lib/favoris";
 import s from "./Header.module.css";
 
 export type EntreeMenu = {
@@ -15,9 +16,12 @@ export type EntreeMenu = {
   nom: string;
   titre: string;
   accroche: string;
+  /** Libellé déjà accordé : « 12 objets », « 1 objet ». */
   nombreObjets: string;
-  image: string;
-  colonnes: { label: string; liens: string[] }[];
+  /** Libellé du bouton du menu : « Voir les 12 objets ». */
+  voirTout: string;
+  image?: string;
+  colonnes: { label: string; liens: { label: string; href: string }[] }[];
 };
 
 type Props = {
@@ -33,6 +37,7 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
   const [ouvert, setOuvert] = useState<string | null>(null);
   // Menu plein écran (mobile et tablette).
   const [tiroir, setTiroir] = useState(false);
+  const nombreFavoris = useFavoris().length;
 
   const fermer = () => setOuvert(null);
   const fermerTiroir = () => setTiroir(false);
@@ -109,12 +114,15 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
 
           <div className={s.tools}>
             <SearchPill placeholder={PLACEHOLDER_RECHERCHE} className={s.searchDesktop} />
-            <IconButton label="Favoris">
+            <Link
+              href="/favoris"
+              className={s.favoris}
+              aria-label={nombreFavoris > 0 ? `Mes favoris (${nombreFavoris})` : "Mes favoris"}
+              onClick={fermer}
+            >
               <Heart size={20} strokeWidth={1.5} aria-hidden="true" />
-            </IconButton>
-            <IconButton label="Panier">
-              <ShoppingBag size={20} strokeWidth={1.5} aria-hidden="true" />
-            </IconButton>
+              {nombreFavoris > 0 && <span className={s.count}>{nombreFavoris}</span>}
+            </Link>
             <IconButton label="Ouvrir le menu" className={s.burger} onClick={() => setTiroir(true)}>
               <Menu size={22} strokeWidth={1.5} aria-hidden="true" />
             </IconButton>
@@ -134,8 +142,8 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
                 >
                   <div className={s.colLabel}>{col.label}</div>
                   {col.liens.map((lien) => (
-                    <Link key={lien} href={`/univers/${entree.slug}`} className={s.colLink} onClick={fermer}>
-                      {lien}
+                    <Link key={lien.label} href={lien.href} className={s.colLink} onClick={fermer}>
+                      {lien.label}
                     </Link>
                   ))}
                 </div>
@@ -144,13 +152,14 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
                 <Photo
                   src={entree.image}
                   alt={`${entree.titre} — photo d’ambiance`}
+                  legende={entree.titre}
                   ratio="4 / 3"
                   sizes="(min-width: 1024px) 25vw, 100vw"
                 />
                 <div className={s.promo}>{entree.accroche}</div>
                 <div>
                   <Button href={`/univers/${entree.slug}`} onClick={fermer}>
-                    Voir les {entree.nombreObjets} objets
+                    {entree.voirTout}
                   </Button>
                 </div>
               </div>
@@ -176,7 +185,7 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
               <Link key={m.slug} href={`/univers/${m.slug}`} className={s.drawerLink} onClick={fermerTiroir}>
                 <span>
                   {m.nom}
-                  <span className={s.drawerCount}>{m.nombreObjets} objets</span>
+                  <span className={s.drawerCount}>{m.nombreObjets}</span>
                 </span>
                 <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
               </Link>

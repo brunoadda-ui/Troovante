@@ -3,6 +3,7 @@ import { Mail, MessageCircle, Phone } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Photo from "@/components/ui/Photo";
 import { lienTelephone, lienWhatsapp, site } from "@/data/site";
+import RappelForm from "./RappelForm";
 import s from "./vendre.module.css";
 
 export const metadata: Metadata = {
@@ -133,20 +134,7 @@ export default function PageVendre() {
               Aucun frais avant la vente. Nous prenons 20 % uniquement si l’objet est vendu.
             </div>
           </div>
-          {/* L'envoi de la demande sera branché à l'étape suivante. */}
-          <div className={s.callbackForm}>
-            <label className={s.field}>
-              Votre prénom
-              <input type="text" name="prenom" placeholder="Marie" autoComplete="given-name" />
-            </label>
-            <label className={s.field}>
-              Votre numéro de téléphone
-              <input type="tel" name="telephone" placeholder="06 00 00 00 00" autoComplete="tel" />
-            </label>
-            <Button variant="inverse" size="lg" full>
-              On vous rappelle
-            </Button>
-          </div>
+          <RappelForm />
         </div>
       </section>
     </>

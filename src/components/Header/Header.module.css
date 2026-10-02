@@ -110,6 +110,40 @@
   display: none;
 }
 
+/* Lien « Mes favoris » : un cœur, et le nombre de favoris dans une pastille. */
+.favoris {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  color: var(--ink);
+  border-radius: var(--radius-full);
+  transition: opacity var(--duration-press) var(--ease-press);
+}
+
+.favoris:active {
+  opacity: var(--press-opacity);
+}
+
+.count {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font: var(--type-utility-xs);
+  color: var(--canvas);
+  background: var(--ink);
+  border-radius: var(--radius-full);
+}
+
 /* Sur les écrans d'ordinateur portable, la barre n'a pas la place d'afficher
    le champ de recherche en entier : il se réduit à sa loupe et se déplie,
    par-dessus les liens, quand on clique dessus. */
@@ -134,8 +168,8 @@
   .tools .searchDesktop:focus-within {
     position: absolute;
     top: 0;
-    /* Juste à gauche des boutons Favoris et Panier. */
-    right: 96px;
+    /* Juste à gauche du bouton Favoris. */
+    right: 48px;
     z-index: 2;
     justify-content: flex-start;
     gap: var(--space-sm);

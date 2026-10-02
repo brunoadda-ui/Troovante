@@ -9,6 +9,9 @@ export const site = {
   whatsapp: "06 12 34 56 78",
   email: "bonjour@troovante.fr",
   horaires: "Du lundi au samedi, 9h – 19h. Une vraie personne répond.",
+  /** Affiché sur la fiche d'un objet qui n'a pas ses propres conditions de livraison. */
+  livraisonParDefaut:
+    "Enlèvement sous 5 jours, livraison en France sous 10 à 15 jours par transporteur spécialisé. Retour accepté 14 jours après réception, frais de retour à notre charge.",
 };
 
 /** « 01 84 80 12 34 » → « tel:+33184801234 » */
