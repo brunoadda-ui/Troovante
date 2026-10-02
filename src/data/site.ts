@@ -4,7 +4,7 @@
  */
 export const site = {
   nom: "TROOVANTE",
-  signature: "Le charme du passé, l’élégance du présent",
+  signature: "Chaque objet raconte, votre univers se redessine",
   telephone: "01 84 80 12 34",
   whatsapp: "06 12 34 56 78",
   email: "bonjour@troovante.fr",

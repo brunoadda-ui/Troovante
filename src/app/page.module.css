@@ -1,14 +1,17 @@
 /* ---------- Visuel d'ouverture ---------- */
 
 .hero {
+  position: relative;
   width: 100%;
+  /* Proportions de la photo : elle s'affiche en entier. */
+  aspect-ratio: 1672 / 941;
   background: var(--hero-backdrop);
+  overflow: hidden;
 }
 
 .heroImg {
-  display: block;
-  width: 100%;
-  height: auto;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* ---------- Promesse et boutons ---------- */
@@ -212,6 +215,12 @@
 /* ---------- Téléphone ---------- */
 
 @media (max-width: 639px) {
+  /* Cadrage vertical centré sur le logo et la signature, qui resteraient
+     illisibles si la photo était simplement réduite à la largeur de l'écran. */
+  .hero {
+    aspect-ratio: 4 / 5;
+  }
+
   .intro {
     padding-top: var(--space-xl);
   }

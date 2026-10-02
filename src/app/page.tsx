@@ -54,12 +54,12 @@ export default async function Accueil() {
   return (
     <>
       <div className={s.hero}>
+        {/* Sur téléphone, l'image est recadrée en hauteur : il lui faut plus de pixels que la largeur d'écran. */}
         <Image
-          src="/images/troovante-hero.png"
-          alt="Troovante — le charme du passé, l’élégance du présent"
-          width={1398}
-          height={1125}
-          sizes="100vw"
+          src="/images/troovante-hero.webp"
+          alt="Troovante — Chaque objet raconte, votre univers se redessine."
+          fill
+          sizes="(max-width: 639px) 225vw, 100vw"
           priority
           className={s.heroImg}
         />
