@@ -1,0 +1,247 @@
+/* ---------- Ouverture : texte à gauche, photo à droite ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  align-items: stretch;
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-xl);
+  min-height: 460px;
+  padding: 64px var(--space-xxl);
+  background: var(--soft-cloud);
+}
+
+.eyebrow {
+  font: var(--type-caption-md);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.heroTitle {
+  margin: 0;
+  font: var(--weight-medium) clamp(44px, 5vw, 96px) / 0.92 var(--font-campaign);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.heroLead {
+  max-width: 46ch;
+  margin: 0;
+  font: var(--weight-regular) 20px / 1.5 var(--font-body);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.heroPhone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.heroPhoneNumber {
+  font: var(--weight-medium) clamp(28px, 3vw, 40px) / 1.1 var(--font-heading);
+}
+
+.heroPhoneNote {
+  font: var(--type-body-md);
+  color: var(--mute);
+}
+
+.heroPhoto {
+  min-height: 460px;
+}
+
+/* ---------- Sections ---------- */
+
+.section {
+  padding-top: var(--space-section);
+}
+
+.sectionLast {
+  padding-bottom: var(--space-section);
+}
+
+.h2 {
+  margin: 0 0 var(--space-lg);
+  font: var(--type-heading-lg);
+}
+
+/* ---------- Trois façons de nous joindre ---------- */
+
+.contacts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-sm);
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-xxl);
+  border: 1px solid var(--hairline);
+}
+
+.contactTitle {
+  margin: 0;
+  font: var(--type-heading-lg);
+}
+
+.contactValue {
+  font: var(--weight-medium) 28px / 1.2 var(--font-heading);
+}
+
+.contactValueEmail {
+  font-size: 24px;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.contactText {
+  margin: 0;
+  font: var(--type-body-lg);
+  color: var(--charcoal);
+}
+
+.contactAction {
+  margin-top: auto;
+  padding-top: var(--space-md);
+}
+
+/* ---------- Trois étapes ---------- */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--space-xl);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--ink);
+}
+
+.stepNum {
+  font: var(--weight-medium) 48px / 1 var(--font-campaign);
+  color: var(--accent);
+}
+
+.stepTitle {
+  margin: 0;
+  font: var(--type-heading-md);
+}
+
+.stepText {
+  margin: 0;
+  font: var(--type-body-lg);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+/* ---------- Demande de rappel ---------- */
+
+.callback {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-section);
+  padding: var(--space-section) var(--space-xxl);
+  color: var(--canvas);
+  background: var(--ink);
+}
+
+.callbackText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.callbackTitle {
+  margin: 0;
+  font: var(--type-heading-xl);
+  text-wrap: pretty;
+}
+
+.callbackLead {
+  max-width: 46ch;
+  margin: 0;
+  font: var(--type-body-lg);
+}
+
+.callbackNote {
+  font: var(--type-caption-md);
+  color: var(--stone);
+}
+
+.callbackForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 420px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font: var(--type-body-strong);
+}
+
+.field input {
+  height: 56px;
+  padding: 0 var(--space-lg);
+  font: var(--type-body-lg);
+  color: var(--ink);
+  background: var(--canvas);
+  border: none;
+  border-radius: var(--radius-none);
+}
+
+/* Sur fond noir, le contour de saisie doit être blanc pour rester visible. */
+.callback :focus-visible {
+  outline-color: var(--canvas);
+}
+
+/* ---------- Téléphone ---------- */
+
+@media (max-width: 639px) {
+  .heroText {
+    min-height: 0;
+    padding: var(--space-section) var(--gutter-page) var(--space-xxl);
+  }
+
+  .heroLead {
+    font-size: 18px;
+  }
+
+  .heroPhoto {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .contact {
+    padding: var(--space-xl);
+  }
+
+  .contactValue {
+    font-size: 24px;
+  }
+
+  .callback {
+    padding: var(--space-xxl) var(--gutter-page);
+    /* Le bloc noir va d'un bord à l'autre de l'écran. */
+    margin-inline: calc(var(--gutter-page) * -1);
+  }
+
+  .callbackTitle {
+    font-size: 28px;
+  }
+}

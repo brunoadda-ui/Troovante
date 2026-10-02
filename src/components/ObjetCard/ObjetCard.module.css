@@ -1,0 +1,56 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+  color: var(--ink);
+}
+
+.media {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  display: inline-flex;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--canvas);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+}
+
+.name {
+  font: var(--type-body-strong);
+  text-wrap: pretty;
+}
+
+.meta {
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-sm);
+  font: var(--type-body-strong);
+}
+
+.mention {
+  font: var(--type-caption-sm);
+  color: var(--accent);
+}

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#f7f6f4">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#f7f6f4"/>
+    <circle cx="600" cy="330" r="110" fill="none" stroke="#5c3a24" stroke-width="26"/>
+    <path d="M600 265l72 52-27 84h-90l-27-84z" fill="#b5793f"/>
+    <line x1="678" y1="412" x2="760" y2="494" stroke="#5c3a24" stroke-width="26" stroke-linecap="round"/>
+    <text x="600" y="600" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="120" letter-spacing="10" fill="#5c3a24">TROOVANTE</text>
+  </svg>
+</template>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/radius.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/tokens/base.css">
+  <link rel="stylesheet" href="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/styles.css">
+  <script src="_ds/nike-retail-design-system-5e72858b-3669-40ca-923d-19eeebfb8d49/_ds_bundle.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: var(--ink); text-decoration: none; }
+    a:hover { color: var(--mute); }
+    @keyframes troovPanel {
+      from { opacity: 0; transform: translateY(-10px); clip-path: inset(0 0 100% 0); }
+      to { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+    }
+    @keyframes troovCol {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</helmet>
+
+<div style="background: var(--canvas); color: var(--ink); font: var(--type-body-md); min-height: 100vh;">
+
+  <div style="height: var(--height-utility-bar); background: var(--soft-cloud); display: flex; align-items: center; justify-content: flex-end; gap: var(--space-lg); padding: 0 var(--space-xl); font: var(--type-caption-sm); color: var(--mute);">
+    <span>Nos experts</span>
+    <span>Aide</span>
+    <span style="color: var(--ink);">Vendre un objet</span>
+    <span>Se connecter</span>
+  </div>
+
+  <div style="position: relative; z-index: 30;" onMouseLeave="{{ closeMenu }}">
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-xl); padding: var(--space-sm) var(--space-xl); min-height: var(--height-primary-nav); border-bottom: 1px solid var(--hairline-soft); background: var(--canvas);">
+    <button type="button" onClick="{{ goHome }}" style="display: flex; align-items: center; gap: var(--space-sm); background: none; border: none; padding: 0; cursor: pointer; flex: 0 0 auto;">
+      <img src="assets/troovante-logo.png" alt="TROOVANTE" style="width: 34px; height: 34px; display: block; object-fit: contain; mix-blend-mode: multiply;">
+      <span style="font: var(--weight-medium) 22px / 1 var(--font-campaign); letter-spacing: 0.12em; color: var(--ink);">TROOVANTE</span>
+    </button>
+    <div style="display: flex; align-items: center; gap: var(--space-xl); margin: 0 auto; flex-wrap: nowrap; flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; padding: var(--space-xs) 0;">
+      <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="5">
+        <button type="button" onClick="{{ nav.onClick }}" onMouseEnter="{{ nav.onEnter }}" onFocus="{{ nav.onEnter }}" style="display: flex; align-items: center; gap: 6px; font: var(--type-body-strong); color: var(--ink); background: none; border: none; border-bottom: 2px solid transparent; padding: 0 0 2px; cursor: pointer; white-space: nowrap; transition: border-color 150ms ease;" style-hover="border-bottom-color: var(--ink);">
+          {{ nav.label }}
+          <span style="display: inline-flex; transition: transform 200ms cubic-bezier(.2,.7,.2,1); transform: rotate({{ nav.caret }});">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="chevron-down" size="{{ iconSm }}" hint-size="18px,18px"></x-import>
+          </span>
+        </button>
+      </sc-for>
+      <button type="button" onClick="{{ goSell }}" onMouseEnter="{{ closeMenu }}" style="font: var(--type-body-strong); color: var(--ink); background: none; border: none; border-bottom: 2px solid transparent; padding: 0 0 2px; cursor: pointer; white-space: nowrap; transition: border-color 150ms ease;" style-hover="border-bottom-color: var(--ink);">Vendre un objet</button>
+    </div>
+    <div style="display: flex; align-items: center; gap: var(--space-sm); flex: 0 0 auto;">
+      <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.SearchPill" placeholder="Rechercher un objet, un style, une époque" width="{{ searchW }}" expanded-width="{{ searchWide }}" hint-size="260px,40px"></x-import>
+      <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.IconButton" icon="heart" label="Favoris" variant="ghost" hint-size="40px,40px"></x-import>
+      <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.IconButton" icon="shopping-bag" label="Panier" variant="ghost" hint-size="40px,40px"></x-import>
+    </div>
+  </div>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; left: 0; right: 0; top: 100%; background: var(--canvas); border-bottom: 1px solid var(--hairline); animation: troovPanel 260ms cubic-bezier(.2,.7,.2,1) both; will-change: transform, opacity;">
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-xxl) var(--space-xl); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: var(--space-xxl);">
+        <sc-for list="{{ menu.columns }}" as="col" hint-placeholder-count="3">
+          <div style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-md); animation: troovCol 300ms cubic-bezier(.2,.7,.2,1) both; animation-delay: {{ col.delay }};">
+            <div style="font: var(--type-caption-md); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);">{{ col.label }}</div>
+            <sc-for list="{{ col.links }}" as="link" hint-placeholder-count="6">
+              <button type="button" onClick="{{ link.onClick }}" style="font: var(--type-body-md); color: var(--ink); background: none; border: none; padding: 0; text-align: left; cursor: pointer; transition: transform 150ms ease, color 150ms ease;" style-hover="transform: translateX(4px); color: var(--mute);">{{ link.label }}</button>
+            </sc-for>
+          </div>
+        </sc-for>
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-md); animation: troovCol 300ms cubic-bezier(.2,.7,.2,1) both; animation-delay: 120ms;">
+          <div style="position: relative; aspect-ratio: 4 / 3; background: var(--soft-cloud); overflow: hidden;">
+            <image-slot id="{{ menu.slotId }}" shape="rect" placeholder="{{ menu.slotLabel }}"></image-slot>
+          </div>
+          <div style="font: var(--type-body-strong); text-wrap: pretty;">{{ menu.promo }}</div>
+          <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" on-click="{{ menu.onAll }}" hint-size="auto,48px">Voir les {{ menu.count }} objets</x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  </div>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="width: 100%; background: #f7f6f4;">
+        <img src="assets/troovante-hero-3.png" alt="Troovante — le charme du passé, l’élégance du présent" style="display: block; width: 100%; height: auto;">
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-xxl) var(--space-xl) 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-xl);">
+        <p style="font: var(--type-body-md); color: var(--charcoal); margin: 0; max-width: 60ch; text-wrap: pretty;">Chaque objet est choisi, daté et vérifié par nos experts, puis confié à un seul marchand professionnel. Il n’existe nulle part ailleurs.</p>
+        <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+          <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" on-click="{{ goObject }}" hint-size="auto,48px">Découvrir la sélection</x-import>
+          <button type="button" onClick="{{ goSell }}" style="background: none; border: none; padding: 16px 0; font: var(--type-button-md); color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">Vendre un objet</button>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-xl); padding: var(--space-xxl) var(--space-xl); border-bottom: 1px solid var(--hairline-soft); max-width: var(--container-max); margin: 0 auto;">
+        <div style="display: flex; gap: var(--space-md); align-items: flex-start;">
+          <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="search-check" hint-size="20px,20px"></x-import>
+          <div>
+            <div style="font: var(--type-body-strong);">Vérifié par nos experts</div>
+            <div style="font: var(--type-caption-md); color: var(--mute);">Époque, matériaux et état contrôlés avant mise en ligne.</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: var(--space-md); align-items: flex-start;">
+          <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="gem" hint-size="20px,20px"></x-import>
+          <div>
+            <div style="font: var(--type-body-strong);">Exclusif à TROOVANTE</div>
+            <div style="font: var(--type-caption-md); color: var(--mute);">Un seul exemplaire, vendu ici et nulle part ailleurs.</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: var(--space-md); align-items: flex-start;">
+          <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="truck" hint-size="20px,20px"></x-import>
+          <div>
+            <div style="font: var(--type-body-strong);">Livraison protégée</div>
+            <div style="font: var(--type-caption-md); color: var(--mute);">Transporteur spécialisé, emballage sur mesure, retour 14 jours.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl) 0;">
+        <h2 style="font: var(--type-heading-lg); margin: 0 0 var(--space-lg);">Parcourir par univers</h2>
+        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+          <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="5">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.FilterChip" on-click="{{ chip.onClick }}" hint-size="auto,40px">{{ chip.label }}</x-import>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl) 0;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); margin-bottom: var(--space-lg);">
+          <h2 style="font: var(--type-heading-lg); margin: 0;">Nouvelles trouvailles</h2>
+          <span style="font: var(--type-caption-md); color: var(--mute);">42 objets arrivés cette semaine</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--space-sm) var(--space-sm);">
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+            <div onClick="{{ goObject }}" style="cursor: pointer; display: flex; flex-direction: column; gap: var(--space-sm);">
+              <div style="position: relative; aspect-ratio: 4 / 5; background: var(--soft-cloud);">
+                <image-slot id="{{ p.slotId }}" shape="rect" placeholder="{{ p.slotLabel }}"></image-slot>
+              </div>
+              <div style="font: var(--type-body-strong); text-wrap: pretty;">{{ p.name }}</div>
+              <div style="font: var(--type-caption-md); color: var(--mute);">{{ p.meta }}</div>
+              <div style="display: flex; align-items: baseline; gap: var(--space-sm); font: var(--type-body-strong);">
+                <span>{{ p.price }}</span>
+                <span style="font: var(--type-caption-sm); color: {{ accent }};">Pièce unique</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl) 0;">
+        <h2 style="font: var(--type-heading-lg); margin: 0 0 var(--space-lg);">Deux façons d’habiter une pièce</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-sm);">
+          <div onClick="{{ goObject }}" style="cursor: pointer;">
+            <div style="position: relative; aspect-ratio: 16 / 10; background: var(--soft-cloud);">
+              <image-slot id="troov-univers-1" shape="rect" placeholder="Photo d’ambiance — salon Art déco, 16:10"></image-slot>
+            </div>
+            <div style="padding-top: var(--space-md); display: flex; flex-direction: column; gap: var(--space-xs);">
+              <div style="font: var(--weight-medium) 32px / 1 var(--font-campaign); letter-spacing: 0.04em; text-transform: uppercase;">Art déco</div>
+              <div style="font: var(--type-caption-md); color: var(--mute);">Laque, palissandre et lignes tendues — 68 objets</div>
+            </div>
+          </div>
+          <div onClick="{{ goObject }}" style="cursor: pointer;">
+            <div style="position: relative; aspect-ratio: 16 / 10; background: var(--soft-cloud);">
+              <image-slot id="troov-univers-2" shape="rect" placeholder="Photo d’ambiance — maison de campagne, 16:10"></image-slot>
+            </div>
+            <div style="padding-top: var(--space-md); display: flex; flex-direction: column; gap: var(--space-xs);">
+              <div style="font: var(--weight-medium) 32px / 1 var(--font-campaign); letter-spacing: 0.04em; text-transform: uppercase;">Campagne française</div>
+              <div style="font: var(--type-caption-md); color: var(--mute);">Noyer, chêne ciré et faïence — 91 objets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl);">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-section); align-items: center; background: var(--soft-cloud); padding: var(--space-section) var(--space-xxl);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+            <div style="font: var(--type-caption-md); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);">Nos marchands</div>
+            <h2 style="font: var(--type-heading-xl); margin: 0; text-wrap: pretty;">Des professionnels choisis un par un</h2>
+            <p style="font: var(--type-body-md); color: var(--charcoal); margin: 0; max-width: 52ch; text-wrap: pretty;">Antiquaires, galeristes et brocanteurs installés depuis des années. Nous visitons chaque marchand, nous validons chaque provenance, et nous n’acceptons que des objets qu’ils nous confient en exclusivité.</p>
+            <div style="display: flex; gap: var(--space-xl); flex-wrap: wrap; font: var(--type-body-strong);">
+              <span>48 marchands</span>
+              <span style="color: var(--hairline);">/</span>
+              <span>11 régions</span>
+              <span style="color: var(--hairline);">/</span>
+              <span>1 200 objets exclusifs</span>
+            </div>
+          </div>
+          <div>
+            <div style="position: relative; aspect-ratio: 4 / 3; background: var(--canvas);">
+              <image-slot id="troov-marchand" shape="rect" placeholder="Portrait d’un marchand dans son atelier, 4:3"></image-slot>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCategory }}" hint-placeholder-val="{{ false }}">
+    <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-lg) var(--space-xl) 0;">
+      <div style="font: var(--type-caption-md); color: var(--mute); padding-bottom: var(--space-lg);">
+        <span onClick="{{ goHome }}" style="cursor: pointer; color: var(--ink);">Accueil</span>
+        <span> / </span>
+        <span style="color: var(--ink);">{{ cat.title }}</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--space-xxl); align-items: start;">
+
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-xxl);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+            <h1 style="font: var(--weight-medium) 44px / 0.95 var(--font-campaign); text-transform: uppercase; margin: 0; text-wrap: pretty;">{{ cat.title }}</h1>
+            <div style="font: var(--type-body-strong); text-transform: uppercase; letter-spacing: 0.04em;">{{ cat.tagline }}</div>
+            <p style="font: var(--type-caption-md); color: var(--charcoal); margin: 0; text-wrap: pretty;">{{ cat.intro }}</p>
+          </div>
+
+          <div style="display: flex; flex-direction: column;">
+            <div style="font: var(--type-heading-md); padding-bottom: var(--space-lg); border-bottom: 1px solid var(--hairline);">Filtres</div>
+            <sc-for list="{{ cat.filterGroups }}" as="group" hint-placeholder-count="2">
+              <div style="padding: var(--space-lg) 0; border-bottom: 1px solid var(--hairline); display: flex; flex-direction: column; gap: var(--space-md);">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-sm);">
+                  <span style="font: var(--type-body-strong);">{{ group.label }}</span>
+                  <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="chevron-up" size="{{ iconSm }}" hint-size="18px,18px"></x-import>
+                </div>
+                <sc-for list="{{ group.options }}" as="opt" hint-placeholder-count="6">
+                  <label style="display: flex; align-items: center; gap: var(--space-md); font: var(--type-caption-md); color: var(--ink); cursor: pointer;">
+                    <input type="checkbox" style="width: 16px; height: 16px; accent-color: var(--ink); margin: 0;">
+                    {{ opt }}
+                  </label>
+                </sc-for>
+              </div>
+            </sc-for>
+            <div style="padding: var(--space-lg) 0; display: flex; flex-direction: column; gap: var(--space-md);">
+              <div style="font: var(--type-body-strong);">Prix</div>
+              <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="text" placeholder="0 €" style="min-width: 0; flex: 1 1 0; height: 40px; padding: 0 var(--space-md); font: var(--type-caption-md); color: var(--ink); background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--radius-none); outline: none;">
+                <span style="color: var(--mute);">—</span>
+                <input type="text" placeholder="5 000 €" style="min-width: 0; flex: 1 1 0; height: 40px; padding: 0 var(--space-md); font: var(--type-caption-md); color: var(--ink); background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--radius-none); outline: none;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-xxl);">
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-sm);">
+            <sc-for list="{{ cat.tiles }}" as="tile" hint-placeholder-count="4">
+              <div onClick="{{ goObject }}" style="min-width: 0; cursor: pointer; display: flex; flex-direction: column; gap: var(--space-sm);">
+                <div style="position: relative; aspect-ratio: 1 / 1; background: var(--soft-cloud); overflow: hidden;">
+                  <image-slot id="{{ tile.slotId }}" shape="rect" placeholder="{{ tile.label }}"></image-slot>
+                </div>
+                <span style="font: var(--type-body-strong); text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink);">{{ tile.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-lg);">
+            <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
+              <div style="font: var(--type-heading-md);">Liste de résultats</div>
+              <div style="font: var(--type-caption-md); color: var(--mute);">{{ cat.count }} pièces uniques, vérifiées par nos experts</div>
+            </div>
+            <select style="height: 48px; min-width: 200px; padding: 0 var(--space-lg); font: var(--type-caption-md); color: var(--ink); background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--radius-none); outline: none;">
+              <option>Pertinence</option>
+              <option>Nouveautés</option>
+              <option>Prix croissant</option>
+              <option>Prix décroissant</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr)); gap: var(--space-lg) var(--space-sm);">
+            <sc-for list="{{ cat.items }}" as="it" hint-placeholder-count="8">
+              <div onClick="{{ goObject }}" style="min-width: 0; cursor: pointer; display: flex; flex-direction: column; gap: var(--space-sm);">
+                <div style="position: relative; aspect-ratio: 1 / 1; background: var(--soft-cloud); overflow: hidden;">
+                  <image-slot id="{{ it.slotId }}" shape="rect" placeholder="{{ it.slotLabel }}"></image-slot>
+                  <span style="position: absolute; top: var(--space-sm); left: var(--space-sm); pointer-events: none;">
+                    <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.PromoBadge" hint-size="auto,24px">{{ it.tag }}</x-import>
+                  </span>
+                  <span style="position: absolute; top: var(--space-sm); right: var(--space-sm); width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--canvas); pointer-events: none;">
+                    <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="heart" size="{{ iconSm }}" hint-size="18px,18px"></x-import>
+                  </span>
+                </div>
+                <div style="font: var(--type-body-strong); text-wrap: pretty;">{{ it.name }}</div>
+                <div style="font: var(--type-caption-md); color: var(--mute);">{{ it.meta }}</div>
+                <div style="font: var(--type-body-strong);">{{ it.price }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; justify-content: center; padding-bottom: var(--space-section);">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" variant="secondary" size="lg" hint-size="auto,56px">Voir plus d’objets</x-import>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isObject }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-lg) var(--space-xl); font: var(--type-caption-md); color: var(--mute);">
+        <span onClick="{{ goHome }}" style="cursor: pointer; color: var(--ink);">Accueil</span>
+        <span> / Mobilier / Commodes / </span>
+        <span style="color: var(--ink);">Commode Louis XV</span>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: 0 var(--space-xl); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: var(--space-section); align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: var(--space-sm); min-width: 0;">
+          <div style="position: relative; aspect-ratio: 4 / 5; background: var(--soft-cloud);">
+            <image-slot id="troov-pdp-main" shape="rect" placeholder="Objet sur fond gris clair, 4:5"></image-slot>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-sm);">
+            <div style="position: relative; aspect-ratio: 1 / 1; background: var(--soft-cloud); min-width: 0; overflow: hidden;">
+              <image-slot id="troov-pdp-2" shape="rect" placeholder="Détail — bronzes"></image-slot>
+            </div>
+            <div style="position: relative; aspect-ratio: 1 / 1; background: var(--soft-cloud); min-width: 0; overflow: hidden;">
+              <image-slot id="troov-pdp-3" shape="rect" placeholder="Détail — marqueterie"></image-slot>
+            </div>
+            <div style="position: relative; aspect-ratio: 1 / 1; background: var(--soft-cloud); min-width: 0; overflow: hidden;">
+              <image-slot id="troov-pdp-4" shape="rect" placeholder="Vue en situation"></image-slot>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-xl); max-width: 560px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+            <div style="display: inline-flex; align-items: center; gap: var(--space-sm); font: var(--type-caption-md); letter-spacing: 0.12em; text-transform: uppercase; color: {{ accent }};">
+              <span style="width: 8px; height: 8px; border-radius: var(--radius-full); background: {{ accent }}; display: inline-block;"></span>
+              Exclusivité TROOVANTE
+            </div>
+            <h1 style="font: var(--type-heading-xl); margin: 0; text-wrap: pretty;">Commode Louis XV en placage de bois de rose</h1>
+            <div style="font: var(--type-body-md); color: var(--mute);">France, vers 1760 · Estampillée P. Roussel · Galerie Bertheau, Paris</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
+            <div style="font: var(--weight-medium) 32px / 1.2 var(--font-heading);">4 800 €</div>
+            <div style="font: var(--type-caption-md); color: var(--mute);">Emballage et livraison en France inclus · Paiement en 3 fois possible</div>
+          </div>
+
+          <div style="border: 1px solid var(--hairline); padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-xs);">
+            <div style="font: var(--type-body-strong);">Un seul exemplaire disponible</div>
+            <div style="font: var(--type-caption-md); color: var(--charcoal); text-wrap: pretty;">Cette commode n’est proposée que sur TROOVANTE. Une fois vendue, elle disparaît du catalogue : nous ne rééditons rien.</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" full="{{ yes }}" size="lg" hint-size="100%,56px">Acheter — 4 800 €</x-import>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" variant="secondary" full="{{ yes }}" size="lg" on-click="{{ goSell }}" hint-size="100%,56px">Poser une question au marchand</x-import>
+            <div style="font: var(--type-caption-md); color: var(--mute); text-align: center;">Ou appelez-nous au {{ phone }} — nous connaissons l’objet.</div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-md); padding-top: var(--space-sm);">
+            <div style="display: flex; gap: var(--space-md); align-items: center;">
+              <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="badge-check" hint-size="20px,20px"></x-import>
+              <span style="font: var(--type-caption-md); color: var(--charcoal);">Authenticité et datation vérifiées par notre expert mobilier</span>
+            </div>
+            <div style="display: flex; gap: var(--space-md); align-items: center;">
+              <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="shield-check" hint-size="20px,20px"></x-import>
+              <span style="font: var(--type-caption-md); color: var(--charcoal);">Paiement sécurisé, remboursé sous 14 jours après réception</span>
+            </div>
+            <div style="display: flex; gap: var(--space-md); align-items: center;">
+              <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="truck" hint-size="20px,20px"></x-import>
+              <span style="font: var(--type-caption-md); color: var(--charcoal);">Livraison par transporteur spécialisé, mise en place à l’étage</span>
+            </div>
+          </div>
+
+          <div>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.DisclosureRow" label="Histoire de l’objet" default-open="{{ yes }}" hint-size="100%,72px">
+              <p style="margin: 0 0 12px;">Réalisée à Paris au milieu du XVIIIe siècle, cette commode à façade galbée illustre le goût Louis XV pour les bois exotiques : un placage de bois de rose en frisage, souligné de filets de bois de violette.</p>
+              <p style="margin: 0;">Elle provient d’un hôtel particulier bordelais et est restée dans la même famille pendant quatre générations. Le marbre brèche d’Alep est celui d’origine.</p>
+            </x-import>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.DisclosureRow" label="Dimensions et poids" hint-size="100%,72px">
+              <p style="margin: 0;">Hauteur 85 cm · Largeur 128 cm · Profondeur 60 cm · 62 kg. Deux tiroirs sans traverse, serrure fonctionnelle livrée avec sa clé.</p>
+            </x-import>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.DisclosureRow" label="État" hint-size="100%,72px">
+              <p style="margin: 0;">Très bon état d’usage pour son âge. Restaurations anciennes du placage sur le côté droit, visibles à la lumière rasante. Un éclat comblé à l’arrière gauche du marbre. Bronzes d’origine, patine non retouchée.</p>
+            </x-import>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.DisclosureRow" label="Livraison et retours" hint-size="100%,72px">
+              <p style="margin: 0;">Enlèvement sous 5 jours, livraison en France sous 10 à 15 jours par transporteur spécialisé mobilier. Retour accepté 14 jours après réception, frais de retour à notre charge.</p>
+            </x-import>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.DisclosureRow" label="Le marchand" hint-size="100%,72px">
+              <p style="margin: 0;">Galerie Bertheau — antiquaire à Paris depuis 1987, spécialiste du mobilier français du XVIIIe siècle. 34 objets confiés en exclusivité à TROOVANTE.</p>
+            </x-import>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl);">
+        <h2 style="font: var(--type-heading-lg); margin: 0 0 var(--space-lg);">Du même marchand</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: var(--space-sm);">
+          <sc-for list="{{ related }}" as="r" hint-placeholder-count="4">
+            <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
+              <div style="position: relative; aspect-ratio: 4 / 5; background: var(--soft-cloud);">
+                <image-slot id="{{ r.slotId }}" shape="rect" placeholder="{{ r.slotLabel }}"></image-slot>
+              </div>
+              <div style="font: var(--type-body-strong); text-wrap: pretty;">{{ r.name }}</div>
+              <div style="font: var(--type-caption-md); color: var(--mute);">{{ r.meta }}</div>
+              <div style="font: var(--type-body-strong);">{{ r.price }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSell }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); align-items: stretch;">
+        <div style="background: var(--soft-cloud); padding: 64px var(--space-xxl); display: flex; flex-direction: column; justify-content: center; gap: var(--space-xl); min-height: 460px;">
+          <div style="font: var(--type-caption-md); letter-spacing: 0.16em; text-transform: uppercase; color: var(--mute);">Vendre un objet</div>
+          <h1 style="font: var(--weight-medium) clamp(44px, 5vw, 96px) / 0.92 var(--font-campaign); letter-spacing: -0.005em; text-transform: uppercase; margin: 0;">Nous nous<br>occupons<br>de tout</h1>
+          <p style="font: var(--weight-regular) 20px / 1.5 var(--font-body); color: var(--charcoal); margin: 0; max-width: 46ch; text-wrap: pretty;">Vous avez un meuble, un tableau, un objet de famille ? Appelez-nous. Nous venons le voir, nous le photographions, nous écrivons son histoire et nous le vendons. Vous n’avez rien à remplir.</p>
+          <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
+            <div style="font: var(--weight-medium) clamp(28px, 3vw, 40px) / 1.1 var(--font-heading);">{{ phone }}</div>
+            <div style="font: var(--type-body-md); color: var(--mute);">Du lundi au samedi, 9h – 19h. Une vraie personne répond.</div>
+          </div>
+        </div>
+        <div style="position: relative; background: var(--soft-cloud); min-height: 460px;">
+          <image-slot id="troov-sell-hero" shape="rect" placeholder="Photo — notre expert chez un vendeur, 4:3"></image-slot>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl) 0;">
+        <h2 style="font: var(--type-heading-lg); margin: 0 0 var(--space-lg);">Choisissez comment nous joindre</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-sm);">
+          <div style="border: 1px solid var(--hairline); padding: var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-md);">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="phone" size="{{ iconLg }}" hint-size="28px,28px"></x-import>
+            <div style="font: var(--type-heading-lg);">Par téléphone</div>
+            <div style="font: var(--weight-medium) 28px / 1.2 var(--font-heading);">{{ phone }}</div>
+            <p style="font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--charcoal); margin: 0;">C’est le plus simple. Racontez-nous ce que vous avez, nous vous disons tout de suite si c’est pour nous.</p>
+            <div style="margin-top: auto; padding-top: var(--space-md);">
+              <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" size="lg" full="{{ yes }}" hint-size="100%,56px">Appeler maintenant</x-import>
+            </div>
+          </div>
+          <div style="border: 1px solid var(--hairline); padding: var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-md);">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="message-circle" size="{{ iconLg }}" hint-size="28px,28px"></x-import>
+            <div style="font: var(--type-heading-lg);">Par WhatsApp</div>
+            <div style="font: var(--weight-medium) 28px / 1.2 var(--font-heading);">06 12 34 56 78</div>
+            <p style="font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--charcoal); margin: 0;">Envoyez une photo prise avec votre téléphone, même approximative. Nous répondons dans la journée.</p>
+            <div style="margin-top: auto; padding-top: var(--space-md);">
+              <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" variant="secondary" size="lg" full="{{ yes }}" hint-size="100%,56px">Écrire sur WhatsApp</x-import>
+            </div>
+          </div>
+          <div style="border: 1px solid var(--hairline); padding: var(--space-xxl); display: flex; flex-direction: column; gap: var(--space-md);">
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Icon" name="mail" size="{{ iconLg }}" hint-size="28px,28px"></x-import>
+            <div style="font: var(--type-heading-lg);">Par e-mail</div>
+            <div style="font: var(--weight-medium) 24px / 1.3 var(--font-heading); word-break: break-word;">bonjour@troovante.fr</div>
+            <p style="font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--charcoal); margin: 0;">Écrivez-nous quelques lignes, avec ou sans photo. Réponse sous 24 heures ouvrées.</p>
+            <div style="margin-top: auto; padding-top: var(--space-md);">
+              <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" variant="secondary" size="lg" full="{{ yes }}" hint-size="100%,56px">Envoyer un e-mail</x-import>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl) 0;">
+        <h2 style="font: var(--type-heading-lg); margin: 0 0 var(--space-lg);">Comment ça se passe</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-xl);">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column; gap: var(--space-md); border-top: 1px solid var(--ink); padding-top: var(--space-lg);">
+              <div style="font: var(--weight-medium) 48px / 1 var(--font-campaign); color: {{ accent }};">{{ s.num }}</div>
+              <div style="font: var(--type-heading-md);">{{ s.title }}</div>
+              <p style="font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--charcoal); margin: 0; text-wrap: pretty;">{{ s.body }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="max-width: var(--container-max); margin: 0 auto; padding: var(--space-section) var(--space-xl);">
+        <div style="background: var(--ink); color: var(--canvas); padding: var(--space-section) var(--space-xxl); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-section);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+            <h2 style="font: var(--type-heading-xl); margin: 0; color: var(--canvas); text-wrap: pretty;">Préférez-vous qu’on vous rappelle ?</h2>
+            <p style="font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--canvas); margin: 0; max-width: 46ch;">Laissez votre prénom et votre numéro. Nous vous appelons quand cela vous arrange — pas de démarchage, pas d’inscription.</p>
+            <div style="font: var(--type-caption-md); color: var(--stone);">Aucun frais avant la vente. Nous prenons 20 % uniquement si l’objet est vendu.</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-md); max-width: 420px;">
+            <label style="display: flex; flex-direction: column; gap: var(--space-xs); font: var(--type-body-strong); color: var(--canvas);">
+              Votre prénom
+              <input type="text" placeholder="Marie" style="height: 56px; padding: 0 var(--space-lg); font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--ink); background: var(--canvas); border: none; border-radius: var(--radius-none); outline: none;">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: var(--space-xs); font: var(--type-body-strong); color: var(--canvas);">
+              Votre numéro de téléphone
+              <input type="tel" placeholder="06 00 00 00 00" style="height: 56px; padding: 0 var(--space-lg); font: var(--weight-regular) 18px / 1.5 var(--font-body); color: var(--ink); background: var(--canvas); border: none; border-radius: var(--radius-none); outline: none;">
+            </label>
+            <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.Button" variant="inverse" size="lg" full="{{ yes }}" hint-size="100%,56px">On vous rappelle</x-import>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <x-import component-from-global-scope="NikeRetailDesignSystem_5e7285.SiteFooter" columns="{{ footerColumns }}" locale="France" legal="© 2026 TROOVANTE" legal-links="{{ footerLegal }}" hint-size="100%,320px"></x-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;accueil&quot;,&quot;categorie&quot;,&quot;objet&quot;,&quot;vendre&quot;],&quot;default&quot;:&quot;accueil&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Maquette&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#8a5a3b&quot;,&quot;options&quot;:[&quot;#8a5a3b&quot;,&quot;#111111&quot;,&quot;#4c012d&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;},&quot;phone&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;01 84 80 12 34&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
+const CATS = {
+  "Mobilier": {
+    title: "Mobilier ancien",
+    tagline: "Des meubles qui ont déjà une vie",
+    intro: "Commodes estampillées, buffets de campagne, bergères et guéridons : du XVIIIe siècle aux éditions des années 60. Chaque meuble a été vu, daté et vérifié chez le marchand avant d’arriver ici.",
+    count: "1 284",
+    tiles: ["Commode", "Fauteuil", "Table", "Buffet"],
+    filterGroups: [
+      { label: "Catégories", options: ["Commode", "Buffet & enfilade", "Table & guéridon", "Fauteuil & bergère", "Chaise", "Bibliothèque", "Secrétaire"] },
+      { label: "Époque", options: ["XVIIIe siècle", "XIXe siècle", "Art déco", "1950–1970"] }
+    ],
+    items: [
+      ["Commode Louis XV en placage de bois de rose", "France, vers 1760 · Galerie Bertheau", "4 800 €", "Pièce unique"],
+      ["Paire de fauteuils cabriolet en noyer", "France, XIXe siècle · Atelier Marsan", "2 200 €", "Pièce unique"],
+      ["Buffet en bois de rose marqueté d’attributs", "France, vers 1780 · Galerie Bertheau", "3 400 €", "Pièce unique"],
+      ["Guéridon tripode en acajou et laiton", "France, vers 1830 · Maison Delaunay", "1 150 €", "Pièce unique"],
+      ["Enfilade en chêne cérusé, quatre portes", "France, vers 1955 · Atelier Marsan", "1 890 €", "Pièce unique"],
+      ["Bibliothèque ouverte en noyer massif", "Lyon, vers 1900 · Maison Delaunay", "2 450 €", "Pièce unique"],
+      ["Table de salon en placage de bois de rose", "France, vers 1765 · Galerie Bertheau", "3 900 €", "Pièce unique"],
+      ["Secrétaire à abattant en marqueterie", "France, vers 1790 · Maison Delaunay", "5 200 €", "Pièce unique"]
+    ]
+  },
+  "Luminaires": {
+    title: "Luminaires vintage",
+    tagline: "La lumière qui fait l’intérieur",
+    intro: "Lustres à pampilles, appliques en opaline, suspensions de designers italiens. Toutes nos pièces sont refaites aux normes électriques actuelles par notre atelier avant expédition.",
+    count: "612",
+    tiles: ["Lampe à poser", "Applique", "Suspension", "Plafonnier"],
+    filterGroups: [
+      { label: "Catégories", options: ["Abat-jour", "Applique", "Lampadaire", "Lampe à poser", "Lustre", "Plafonnier", "Suspension"] },
+      { label: "Matière", options: ["Laiton", "Opaline", "Cristal", "Rotin", "Verre soufflé"] }
+    ],
+    items: [
+      ["Lustre à pampilles de cristal, huit feux", "France, vers 1900 · Galerie Sainte-Anne", "3 100 €", "Pièce unique"],
+      ["Suspension en opaline blanche", "France, années 60 · Atelier Verrier", "420 €", "Pièce unique"],
+      ["Paire d’appliques en laiton et verre", "Italie, vers 1955 · Studio Milano", "680 €", "Pièce unique"],
+      ["Lampadaire tripode en teck et lin", "Danemark, années 50 · Studio Nord", "890 €", "Pièce unique"],
+      ["Plafonnier en rotin tressé", "France, années 70 · Atelier Verrier", "340 €", "Pièce unique"],
+      ["Lampe à poser en céramique émaillée", "Vallauris, vers 1960 · Galerie Sainte-Anne", "520 €", "Pièce unique"],
+      ["Suspension globe en verre dépoli", "Italie, vers 1965 · Studio Milano", "760 €", "Pièce unique"],
+      ["Lampe de bureau articulée en acier laqué", "France, vers 1950 · Studio Nord", "450 €", "Pièce unique"]
+    ]
+  },
+  "Arts de la table": {
+    title: "Arts de la table",
+    tagline: "Recevoir comme autrefois",
+    intro: "Services en faïence, verres taillés, argenterie poinçonnée et ménagères complètes. Nous vérifions le nombre de pièces, les poinçons et l’état de chaque ensemble avant la mise en ligne.",
+    count: "938",
+    tiles: ["Service", "Verrerie", "Argenterie", "Faïence"],
+    filterGroups: [
+      { label: "Catégories", options: ["Assiette & service", "Verre & carafe", "Argenterie", "Plat de service", "Théière & cafetière", "Ménagère"] },
+      { label: "Matière", options: ["Faïence", "Porcelaine", "Cristal", "Argent massif", "Métal argenté"] }
+    ],
+    items: [
+      ["Service en faïence de Gien, 24 pièces", "France, vers 1920 · Maison Tessier", "740 €", "Pièce unique"],
+      ["Six verres à vin en cristal taillé", "Lorraine, vers 1930 · Galerie Sainte-Anne", "290 €", "Pièce unique"],
+      ["Ménagère en métal argenté, 12 couverts", "France, vers 1950 · Maison Tessier", "560 €", "Pièce unique"],
+      ["Soupière en porcelaine à filets d’or", "Limoges, vers 1900 · Maison Tessier", "380 €", "Pièce unique"],
+      ["Carafe à whisky et son plateau", "France, années 60 · Atelier Verrier", "210 €", "Pièce unique"],
+      ["Théière en argent massif poinçonné", "Paris, vers 1880 · Galerie Sainte-Anne", "1 250 €", "Pièce unique"],
+      ["Paire de plats de service en barbotine", "France, vers 1890 · Maison Tessier", "320 €", "Pièce unique"],
+      ["Douze assiettes plates en faïence fine", "France, vers 1940 · Maison Tessier", "260 €", "Pièce unique"]
+    ]
+  },
+  "Tableaux & miroirs": {
+    title: "Tableaux & miroirs",
+    tagline: "Ce qu’on accroche au mur",
+    intro: "Huiles sur toile, aquarelles, gravures anciennes et miroirs en bois doré. Chaque œuvre est vendue avec ce que nous savons de sa provenance, sans jamais forcer une attribution.",
+    count: "471",
+    tiles: ["Huile sur toile", "Aquarelle", "Gravure", "Miroir doré"],
+    filterGroups: [
+      { label: "Catégories", options: ["Huile sur toile", "Aquarelle & dessin", "Gravure & estampe", "Photographie", "Miroir", "Cadre ancien"] },
+      { label: "Sujet", options: ["Paysage", "Portrait", "Nature morte", "Marine", "Abstraction"] }
+    ],
+    items: [
+      ["Miroir à parecloses en bois doré", "Italie, vers 1880 · Galerie Sainte-Anne", "1 450 €", "Pièce unique"],
+      ["Paysage de Provence, huile sur toile", "France, vers 1930 · Galerie Bertheau", "1 800 €", "Pièce unique"],
+      ["Marine au crépuscule, huile sur panneau", "France, XIXe siècle · Maison Delaunay", "980 €", "Pièce unique"],
+      ["Miroir de sorcière en bois noirci", "France, vers 1900 · Galerie Sainte-Anne", "420 €", "Pièce unique"],
+      ["Nature morte aux pivoines, aquarelle", "France, vers 1950 · Galerie Bertheau", "540 €", "Pièce unique"],
+      ["Trumeau Louis XVI en bois peint", "France, vers 1785 · Maison Delaunay", "2 600 €", "Pièce unique"],
+      ["Suite de quatre gravures botaniques", "Angleterre, vers 1850 · Galerie Sainte-Anne", "360 €", "Pièce unique"],
+      ["Portrait de femme au chignon, fusain", "France, vers 1925 · Galerie Bertheau", "480 €", "Pièce unique"]
+    ]
+  },
+  "Créateurs": {
+    title: "Créateurs",
+    tagline: "Des noms qu’on reconnaît de loin",
+    intro: "Ébénistes estampillés, verriers, céramistes et designers du XXe siècle. Nous ne retenons une attribution que si la signature, l’estampille ou la documentation la confirment — sinon nous écrivons « dans le goût de ».",
+    count: "356",
+    tiles: ["Ébénistes", "Verriers", "Céramistes", "Design XXe"],
+    filterGroups: [
+      { label: "Créateurs", options: ["Pierre Roussel", "Émile Gallé", "Jean Prouvé", "Charlotte Perriand", "Suzanne Ramié", "Gio Ponti", "Serge Mouille"] },
+      { label: "Discipline", options: ["Ébénisterie", "Verrerie", "Céramique", "Mobilier design", "Luminaire d’auteur"] }
+    ],
+    items: [
+      ["Commode estampillée P. Roussel", "Paris, vers 1760 · Galerie Bertheau", "4 800 €", "Pièce unique"],
+      ["Vase soufflé signé Gallé, décor floral", "Nancy, vers 1900 · Atelier Verrier", "2 900 €", "Pièce unique"],
+      ["Paire de vases en céramique, atelier Madoura", "Vallauris, vers 1955 · Galerie Sainte-Anne", "1 650 €", "Pièce unique"],
+      ["Chaise Standard en tôle pliée et bois", "France, vers 1950 · Studio Nord", "1 380 €", "Pièce unique"],
+      ["Bibliothèque en chêne et aluminium laqué", "France, vers 1953 · Studio Nord", "6 400 €", "Pièce unique"],
+      ["Lampe à deux bras en tôle laquée noire", "France, vers 1954 · Studio Milano", "3 200 €", "Pièce unique"],
+      ["Table basse à plateau de céramique signée", "Italie, vers 1958 · Studio Milano", "2 750 €", "Pièce unique"],
+      ["Coupe en verre irisé, signature à la pointe", "France, vers 1910 · Atelier Verrier", "890 €", "Pièce unique"]
+    ]
+  },
+  "Curiosités": {
+    title: "Objets de curiosité",
+    tagline: "Ce qui ne rentre dans aucune case",
+    intro: "Instruments de marine, cabinets de curiosités, sculptures et objets d’atelier. Ce sont souvent nos pièces les plus rares : une seule chance de les voir passer.",
+    count: "294",
+    tiles: ["Sculpture", "Instrument", "Cabinet", "Objet d’atelier"],
+    filterGroups: [
+      { label: "Catégories", options: ["Sculpture", "Instrument scientifique", "Marine", "Taxidermie", "Objet d’atelier", "Horlogerie"] },
+      { label: "Matière", options: ["Bronze", "Marbre", "Bois", "Laiton", "Porphyre"] }
+    ],
+    items: [
+      ["Ensemble de quatre colonnes en porphyre", "Italie, XIXe siècle · Maison Delaunay", "2 600 €", "Pièce unique"],
+      ["Globe terrestre sur piètement d’acajou", "France, vers 1890 · Galerie Sainte-Anne", "1 900 €", "Pièce unique"],
+      ["Sextant de marine dans son coffret", "Angleterre, vers 1900 · Studio Nord", "860 €", "Pièce unique"],
+      ["Buste en bronze à patine brune", "France, vers 1870 · Maison Delaunay", "1 480 €", "Pièce unique"],
+      ["Cartel d’applique en bronze doré", "Paris, vers 1770 · Galerie Bertheau", "1 800 €", "Pièce unique"],
+      ["Établi de horloger et ses tiroirs", "France, vers 1910 · Studio Nord", "990 €", "Pièce unique"],
+      ["Maquette de coque de voilier", "France, vers 1940 · Studio Nord", "620 €", "Pièce unique"],
+      ["Microscope de laboratoire en laiton", "Allemagne, vers 1895 · Galerie Sainte-Anne", "740 €", "Pièce unique"]
+    ]
+  }
+};
+
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+class Component extends DCLogic {
+  state = { screen: null, cat: "Mobilier", openNav: null };
+
+  openMenu = (label) => () => this.setState({ openNav: label });
+  closeMenu = () => this.setState({ openNav: null });
+
+  menuFor(key) {
+    const c = CATS[key];
+    if (!c) return null;
+    const pick = (label) => () => {
+      this.setState({ screen: "categorie", cat: key, openNav: null });
+      window.scrollTo(0, 0);
+    };
+    const columns = [
+      { label: "Sous-univers", links: c.tiles.map((t) => ({ label: t, onClick: pick(t) })) },
+      ...c.filterGroups.map((g) => ({ label: g.label, links: g.options.slice(0, 7).map((o) => ({ label: o, onClick: pick(o) })) }))
+    ].map((col, i) => ({ ...col, delay: `${60 + i * 50}ms` }));
+    return {
+      columns,
+      count: c.count,
+      promo: c.tagline,
+      slotId: `troov-menu-${slug(key)}`,
+      slotLabel: `${c.title} — photo d’ambiance, 4:3`,
+      onAll: pick(key)
+    };
+  }
+
+  go(screen) {
+    return () => {
+      this.setState({ screen });
+      window.scrollTo(0, 0);
+    };
+  }
+
+  goCat(key) {
+    return () => {
+      this.setState({ screen: "categorie", cat: key });
+      window.scrollTo(0, 0);
+    };
+  }
+
+  category() {
+    const key = CATS[this.state.cat] ? this.state.cat : "Mobilier";
+    const c = CATS[key];
+    const k = slug(key);
+    return {
+      title: c.title,
+      tagline: c.tagline,
+      intro: c.intro,
+      count: c.count,
+      filterGroups: c.filterGroups,
+      tiles: c.tiles.map((label, i) => ({ label, slotId: `troov-${k}-tile-${i + 1}` })),
+      items: c.items.map(([name, meta, price, tag], i) => ({
+        name, meta, price, tag,
+        slotId: `troov-${k}-item-${i + 1}`,
+        slotLabel: `${name} — fond gris clair, carré`
+      }))
+    };
+  }
+
+  renderVals() {
+    const screen = this.state.screen || this.props.screen || "accueil";
+    return {
+      isCategory: screen === "categorie",
+      cat: this.category(),
+      iconSm: 18,
+      menuOpen: !!CATS[this.state.openNav],
+      menu: this.menuFor(this.state.openNav) || { columns: [], count: "", promo: "", slotId: "troov-menu-none", slotLabel: "", onAll: () => {} },
+      closeMenu: this.closeMenu,
+      navItems: Object.keys(CATS).map((label) => ({
+        label,
+        onClick: this.goCat(label),
+        onEnter: this.openMenu(label),
+        caret: this.state.openNav === label ? "180deg" : "0deg"
+      })),
+      chips: Object.keys(CATS).map((label) => ({ label, onClick: this.goCat(label) })),
+      isHome: screen === "accueil",
+      isObject: screen === "objet",
+      isSell: screen === "vendre",
+      goHome: this.go("accueil"),
+      goObject: this.go("objet"),
+      goSell: this.go("vendre"),
+      accent: this.props.accent ?? "#8a5a3b",
+      phone: this.props.phone ?? "01 84 80 12 34",
+      yes: true,
+      iconLg: 28,
+      searchW: 260,
+      searchWide: 340,
+      categories: [
+        "Mobilier", "Luminaires", "Arts de la table", "Tableaux & miroirs",
+        "Céramique", "Tapis & textiles", "Objets de curiosité"
+      ],
+      products: [
+        { slotId: "troov-p1", slotLabel: "Commode — fond gris clair, 4:5", name: "Commode Louis XV en placage de bois de rose", meta: "Mobilier · France, vers 1760", price: "4 800 €" },
+        { slotId: "troov-p2", slotLabel: "Paire de fauteuils, 4:5", name: "Paire de fauteuils cabriolet en noyer", meta: "Sièges · France, XIXe siècle", price: "2 200 €" },
+        { slotId: "troov-p3", slotLabel: "Miroir doré, 4:5", name: "Miroir à parecloses en bois doré", meta: "Miroirs · Italie, vers 1880", price: "1 450 €" },
+        { slotId: "troov-p4", slotLabel: "Lustre à pampilles, 4:5", name: "Lustre à pampilles de cristal, huit feux", meta: "Luminaires · France, vers 1900", price: "3 100 €" },
+        { slotId: "troov-p5", slotLabel: "Table basse marbre, 4:5", name: "Table basse à plateau de marbre, piètement tulipe", meta: "Design · Édition des années 1960", price: "2 900 €" },
+        { slotId: "troov-p6", slotLabel: "Colonnes en porphyre, 4:5", name: "Ensemble de quatre colonnes en porphyre", meta: "Curiosités · Italie, XIXe siècle", price: "2 600 €" },
+        { slotId: "troov-p7", slotLabel: "Paravent en bois, 4:5", name: "Paravent en lamelles de bois courbé", meta: "Mobilier · Milieu du XXe siècle", price: "950 €" },
+        { slotId: "troov-p8", slotLabel: "Buffet marqueté, 4:5", name: "Buffet en bois de rose marqueté d’attributs", meta: "Mobilier · France, vers 1780", price: "3 400 €" }
+      ],
+      related: [
+        { slotId: "troov-r1", slotLabel: "Table de salon, 4:5", name: "Table de salon en placage de bois de rose", meta: "France, vers 1765", price: "3 900 €" },
+        { slotId: "troov-r2", slotLabel: "Commode noyer, 4:5", name: "Commode en noyer à façade sinueuse", meta: "Lyon, vers 1750", price: "2 700 €" },
+        { slotId: "troov-r3", slotLabel: "Paire de bergères, 4:5", name: "Paire de bergères à oreilles", meta: "France, fin XVIIIe", price: "4 100 €" },
+        { slotId: "troov-r4", slotLabel: "Cartel d’applique, 4:5", name: "Cartel d’applique en bronze doré", meta: "Paris, vers 1770", price: "1 800 €" }
+      ],
+      steps: [
+        { num: "1", title: "Vous nous appelez", body: "Décrivez l’objet avec vos mots : ce que c’est, où il se trouve, depuis quand vous l’avez. Cinq minutes suffisent." },
+        { num: "2", title: "Nous venons le voir", body: "Un expert se déplace chez vous, estime l’objet et le photographie. C’est gratuit et sans engagement." },
+        { num: "3", title: "Nous vendons, vous êtes payé", body: "Nous rédigeons la fiche, nous gérons l’acheteur et la livraison. Vous recevez votre virement sous 7 jours." }
+      ],
+      footerColumns: [
+        { label: "Acheter", links: ["Tous les objets", "Nouveautés", "Univers déco", "Nos marchands", "Guide d’achat"] },
+        { label: "Vendre", links: ["Vendre un objet", "Nous appeler", "Estimation gratuite", "Devenir marchand partenaire"] },
+        { label: "Aide", links: ["Nous contacter", "Livraison", "Retours", "Paiement en 3 fois", "Questions fréquentes"] },
+        { label: "TROOVANTE", links: ["Notre sélection", "Nos experts", "Journal", "Recrutement"] }
+      ],
+      footerLegal: ["Conditions de vente", "Conditions d’utilisation", "Confidentialité", "Cookies"]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

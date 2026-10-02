@@ -1,0 +1,52 @@
+:root {
+  /* ---- base palette ---- */
+  --ink: #111111;
+  --canvas: #ffffff;
+  --soft-cloud: #f5f5f5;
+  --charcoal: #39393b;
+  --ash: #4b4b4d;
+  --mute: #707072;
+  --stone: #9e9ea0;
+  --hairline: #cacacb;
+  --hairline-soft: #e5e5e5;
+
+  /* ---- semantic signal ---- */
+  --sale: #d30005;
+  --sale-deep: #780700;
+  --success: #007d48;
+  --success-bright: #1eaa52;
+  --info: #1151ff;
+  --info-deep: #0034e3;
+
+  /* ---- category accents (editorial / swatch only) ---- */
+  --accent-pink: #ed1aa0;
+  --accent-pink-soft: #ffb0dd;
+  --accent-purple-soft: #beaffd;
+  --accent-purple-pale: #d6d1ff;
+  --accent-teal: #0a7281;
+  --accent-pink-deep: #4c012d;
+
+  /* ---- semantic aliases ---- */
+  --color-primary: var(--ink);
+  --color-on-primary: var(--canvas);
+
+  --surface-page: var(--canvas);
+  --surface-soft: var(--soft-cloud);
+  --surface-inverse: var(--ink);
+  --surface-product-stage: var(--soft-cloud);
+
+  --text-primary: var(--ink);
+  --text-body: var(--charcoal);
+  --text-secondary: var(--mute);
+  --text-lowest: var(--ash);
+  --text-inverse: var(--canvas);
+  --text-inverse-secondary: var(--stone);
+  --text-sale: var(--sale);
+  --text-success: var(--success);
+  --text-link: var(--ink);
+
+  --border-divider: var(--hairline);
+  --border-inset: var(--hairline-soft);
+  --border-focus: var(--ink);
+  --focus-halo: var(--soft-cloud);
+}

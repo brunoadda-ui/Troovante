@@ -1,0 +1,23 @@
+/* SUBSTITUTED WEBFONTS — see readme.md § Typography.
+   Nike Futura ND, Helvetica Now Display/Text and Neue Frutiger Arabic are proprietary
+   and were NOT supplied with the source. Per the source spec's own substitution guidance:
+     display campaign tier  -> Bebas Neue (geometric condensed, uppercase, 0.9 line-height)
+     UI / body / heading    -> Inter (weights 400 / 500 / 700)
+   Loaded from Google Fonts; no font binaries ship in this project.
+   Replace this file with local @font-face rules + /assets/fonts binaries when licensed
+   Nike font files are available. */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* base families */
+  --font-display-campaign: "Bebas Neue", "Futura", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-text: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-utility: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* semantic aliases */
+  --font-campaign: var(--font-display-campaign);
+  --font-heading: var(--font-display);
+  --font-body: var(--font-text);
+  --font-ui: var(--font-text);
+}

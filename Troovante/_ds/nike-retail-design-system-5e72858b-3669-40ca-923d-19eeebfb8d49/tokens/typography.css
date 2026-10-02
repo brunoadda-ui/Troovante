@@ -1,0 +1,38 @@
+:root {
+  /* sizes */
+  --text-size-display-campaign: 96px;
+  --text-size-xl: 32px;
+  --text-size-lg: 24px;
+  --text-size-md: 16px;
+  --text-size-sm: 14px;
+  --text-size-xs: 12px;
+  --text-size-utility: 9px;
+
+  /* weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* line heights */
+  --leading-campaign: 0.9;
+  --leading-tight: 1.2;
+  --leading-body: 1.5;
+  --leading-loose: 1.75;
+
+  --tracking-flat: 0;
+  --tracking-campaign: -0.005em; /* substitute-font optical correction */
+
+  /* ---- composed type tokens (font / size / weight / leading) ---- */
+  --type-display-campaign: var(--weight-medium) var(--text-size-display-campaign) / var(--leading-campaign) var(--font-campaign);
+  --type-heading-xl: var(--weight-medium) var(--text-size-xl) / var(--leading-tight) var(--font-heading);
+  --type-heading-lg: var(--weight-medium) var(--text-size-lg) / var(--leading-tight) var(--font-heading);
+  --type-heading-md: var(--weight-medium) var(--text-size-md) / var(--leading-loose) var(--font-heading);
+  --type-body-md: var(--weight-regular) var(--text-size-md) / var(--leading-body) var(--font-body);
+  --type-body-strong: var(--weight-medium) var(--text-size-md) / var(--leading-body) var(--font-body);
+  --type-button-lg: var(--weight-medium) var(--text-size-lg) / var(--leading-tight) var(--font-heading);
+  --type-button-md: var(--weight-medium) var(--text-size-md) / var(--leading-body) var(--font-ui);
+  --type-button-sm: var(--weight-medium) var(--text-size-sm) / var(--leading-body) var(--font-ui);
+  --type-link-md: var(--weight-medium) var(--text-size-md) / var(--leading-loose) var(--font-body);
+  --type-caption-md: var(--weight-medium) var(--text-size-sm) / var(--leading-body) var(--font-ui);
+  --type-caption-sm: var(--weight-medium) var(--text-size-xs) / var(--leading-body) var(--font-ui);
+  --type-utility-xs: var(--weight-medium) var(--text-size-utility) / var(--leading-loose) var(--font-utility);
+}

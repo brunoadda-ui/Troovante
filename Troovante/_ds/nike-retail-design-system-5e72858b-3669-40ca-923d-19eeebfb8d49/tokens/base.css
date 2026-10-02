@@ -1,0 +1,6 @@
+html { -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--surface-page); color: var(--text-primary); font: var(--type-body-md); }
+* { box-sizing: border-box; }
+a { color: var(--text-link); text-decoration: none; }
+a:hover { color: var(--charcoal); text-decoration: underline; }
+button { font: inherit; }

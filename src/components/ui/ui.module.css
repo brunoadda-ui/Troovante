@@ -1,0 +1,253 @@
+/* ---------- Button : pilule, un seul bouton noir par écran ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  transition:
+    opacity var(--duration-press) var(--ease-press),
+    transform var(--duration-press) var(--ease-press);
+}
+
+.button:active {
+  opacity: var(--press-opacity);
+  transform: scale(0.96);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.primary {
+  background: var(--ink);
+  color: var(--canvas);
+}
+
+.secondary {
+  background: var(--soft-cloud);
+  color: var(--ink);
+}
+
+.inverse {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+.sm {
+  font: var(--type-button-sm);
+  padding: 12px 24px;
+  min-height: 40px;
+}
+
+.md {
+  font: var(--type-button-md);
+  padding: 16px 32px;
+  min-height: var(--height-button);
+}
+
+.lg {
+  font: var(--type-button-lg);
+  padding: 16px 32px;
+  min-height: 56px;
+}
+
+.full {
+  width: 100%;
+}
+
+/* Sur petit écran, un libellé long doit pouvoir passer à la ligne. */
+@media (max-width: 639px) {
+  .button {
+    white-space: normal;
+  }
+
+  .lg {
+    font-size: 20px;
+    padding-inline: 24px;
+  }
+}
+
+/* ---------- FilterChip ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  height: var(--height-chip);
+  padding: 8px 16px;
+  font: var(--type-button-md);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ---------- IconButton ---------- */
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  flex: 0 0 auto;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: opacity var(--duration-press) var(--ease-press);
+}
+
+.iconButton:active {
+  opacity: var(--press-opacity);
+}
+
+/* ---------- SearchPill ---------- */
+
+.search {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  height: 40px;
+  padding: 8px 16px;
+  width: var(--search-width, 260px);
+  color: var(--ink);
+  background: var(--soft-cloud);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    width 150ms var(--ease-press),
+    background 150ms var(--ease-press);
+}
+
+.search:focus-within {
+  width: var(--search-width-focus, 340px);
+  background: var(--canvas);
+  border-color: var(--ink);
+  box-shadow: var(--focus-ring);
+}
+
+.search svg {
+  flex: 0 0 auto;
+}
+
+.searchInput {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  font: var(--type-body-md);
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.searchInput,
+.searchInput::-webkit-search-cancel-button,
+.searchInput::-webkit-search-decoration {
+  appearance: none;
+}
+
+.searchInput::placeholder {
+  color: var(--mute);
+  opacity: 1;
+}
+
+/* ---------- PromoBadge ---------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font: var(--type-caption-sm);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  white-space: nowrap;
+}
+
+/* ---------- DisclosureRow ---------- */
+
+.disclosure {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.disclosureSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-xl) 0;
+  font: var(--type-body-strong);
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+.disclosureSummary::-webkit-details-marker {
+  display: none;
+}
+
+.disclosureChevron {
+  flex: 0 0 auto;
+  transition: transform 200ms var(--ease-menu);
+}
+
+.disclosure[open] .disclosureChevron {
+  transform: rotate(180deg);
+}
+
+.disclosureBody {
+  max-width: 620px;
+  padding-bottom: var(--space-xl);
+  font: var(--type-body-md);
+  color: var(--charcoal);
+}
+
+.disclosureBody p {
+  margin: 0;
+}
+
+.disclosureBody p + p {
+  margin-top: 12px;
+}
+
+/* ---------- Photo : image recadrée, ou emplacement vide légendé ---------- */
+
+.photo {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--soft-cloud);
+}
+
+.photoImg {
+  object-fit: cover;
+}
+
+.photoCaption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  font: var(--type-caption-sm);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--stone);
+}

@@ -1,0 +1,345 @@
+/* ---------- Barre utilitaire ---------- */
+
+.utility {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-lg);
+  height: var(--height-utility-bar);
+  padding: 0 var(--gutter-page);
+  font: var(--type-caption-sm);
+  color: var(--mute);
+  background: var(--soft-cloud);
+  white-space: nowrap;
+}
+
+.utilityLink {
+  color: var(--ink);
+}
+
+.utilityLink:hover {
+  color: var(--mute);
+}
+
+/* ---------- Navigation principale ---------- */
+
+.navWrap {
+  position: relative;
+  z-index: 30;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-xl);
+  min-height: var(--height-primary-nav);
+  padding: var(--space-sm) var(--gutter-page);
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 0 0 auto;
+}
+
+.logoImg {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  /* Le fond crème du logo se fond dans le blanc de la barre. */
+  mix-blend-mode: multiply;
+}
+
+.wordmark {
+  font: var(--weight-medium) 22px / 1 var(--font-campaign);
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0 auto;
+  padding: var(--space-xs) 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 0 2px;
+  font: var(--type-body-strong);
+  color: var(--ink);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: border-color 150ms ease;
+}
+
+.navLink:hover,
+.navLink[data-open="true"] {
+  border-bottom-color: var(--ink);
+}
+
+.caret {
+  transition: transform 200ms var(--ease-menu);
+}
+
+.navLink[data-open="true"] .caret {
+  transform: rotate(180deg);
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 0 0 auto;
+}
+
+.tools .burger,
+.bar .searchMobile {
+  display: none;
+}
+
+/* Sur les écrans d'ordinateur portable, la barre n'a pas la place d'afficher
+   le champ de recherche en entier : il se réduit à sa loupe et se déplie,
+   par-dessus les liens, quand on clique dessus. */
+@media (min-width: 1280px) and (max-width: 1519px) {
+  .tools {
+    position: relative;
+  }
+
+  .tools .searchDesktop {
+    justify-content: center;
+    gap: 0;
+    width: 40px;
+    padding: 8px 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .tools .searchDesktop input {
+    width: 0;
+  }
+
+  .tools .searchDesktop:focus-within {
+    position: absolute;
+    top: 0;
+    /* Juste à gauche des boutons Favoris et Panier. */
+    right: 96px;
+    z-index: 2;
+    justify-content: flex-start;
+    gap: var(--space-sm);
+    width: 340px;
+    padding: 8px 16px;
+    background: var(--canvas);
+    cursor: text;
+  }
+
+  .tools .searchDesktop:focus-within input {
+    width: 100%;
+  }
+}
+
+/* ---------- Grand menu déroulant ---------- */
+
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
+  animation: panelIn 260ms var(--ease-menu) both;
+  will-change: transform, opacity;
+}
+
+.panelInner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: var(--space-xxl);
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: var(--space-xxl) var(--gutter-page);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-width: 0;
+  animation: colIn 300ms var(--ease-menu) both;
+}
+
+.colLabel {
+  font: var(--type-caption-md);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.colLink {
+  font: var(--type-body-md);
+  color: var(--ink);
+  transition:
+    transform 150ms ease,
+    color 150ms ease;
+}
+
+.colLink:hover {
+  transform: translateX(4px);
+  color: var(--mute);
+}
+
+.promo {
+  font: var(--type-body-strong);
+  text-wrap: pretty;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes colIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Menu plein écran (mobile et tablette) ---------- */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--canvas);
+  overflow-y: auto;
+  animation: drawerIn 220ms var(--ease-menu) both;
+}
+
+.drawerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--height-primary-nav);
+  padding: var(--space-sm) var(--gutter-page);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--gutter-page);
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg) 0;
+  font: var(--type-heading-lg);
+  color: var(--ink);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.drawerCount {
+  display: block;
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.drawerFoot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-xl) var(--gutter-page) var(--space-section);
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.drawerPhone {
+  margin-top: var(--space-sm);
+  font: var(--type-heading-lg);
+  color: var(--ink);
+}
+
+@keyframes drawerIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sous 1280px, les sept liens ne tiennent plus sur une ligne : la navigation
+   passe dans le menu plein écran et la recherche occupe toute la largeur. */
+@media (max-width: 1279px) {
+  .links,
+  .tools .searchDesktop,
+  .panel {
+    display: none;
+  }
+
+  .tools .burger {
+    display: inline-flex;
+  }
+
+  .bar {
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  .bar .searchMobile {
+    display: inline-flex;
+    flex: 1 1 100%;
+    width: 100%;
+    margin-bottom: var(--space-xs);
+  }
+
+  .bar .searchMobile:focus-within {
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .drawer {
+    display: none;
+  }
+}
+
+@media (max-width: 479px) {
+  .utility {
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+}

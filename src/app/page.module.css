@@ -1,0 +1,237 @@
+/* ---------- Visuel d'ouverture ---------- */
+
+.hero {
+  width: 100%;
+  background: var(--hero-backdrop);
+}
+
+.heroImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Promesse et boutons ---------- */
+
+.intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  padding-top: var(--space-xxl);
+}
+
+.introText {
+  max-width: 60ch;
+  margin: 0;
+  font: var(--type-body-md);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.introActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.textLink {
+  padding: 16px 0;
+  font: var(--type-button-md);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.textLink:hover {
+  color: var(--mute);
+}
+
+/* ---------- Trois engagements ---------- */
+
+.engagements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--space-xl);
+  padding-top: var(--space-xxl);
+  padding-bottom: var(--space-xxl);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.engagement {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.engagementIcon {
+  flex: 0 0 auto;
+}
+
+.engagementTitle {
+  font: var(--type-body-strong);
+}
+
+.engagementText {
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+/* ---------- Sections ---------- */
+
+.section {
+  padding-top: var(--space-section);
+}
+
+.sectionLast {
+  padding-bottom: var(--space-section);
+}
+
+.h2 {
+  margin: 0 0 var(--space-lg);
+  font: var(--type-heading-lg);
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.sectionHead .h2 {
+  margin: 0;
+}
+
+.sectionNote {
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--space-sm);
+}
+
+/* ---------- Deux styles ---------- */
+
+.styleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-sm);
+}
+
+.styleTile {
+  display: block;
+  color: var(--ink);
+}
+
+.styleText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-top: var(--space-md);
+}
+
+.styleTitle {
+  font: var(--weight-medium) 32px / 1 var(--font-campaign);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---------- Nos marchands ---------- */
+
+.marchands {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  align-items: center;
+  gap: var(--space-section);
+  padding: var(--space-section) var(--space-xxl);
+  background: var(--soft-cloud);
+}
+
+.marchandsText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.eyebrow {
+  font: var(--type-caption-md);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.marchandsTitle {
+  margin: 0;
+  font: var(--type-heading-xl);
+  text-wrap: pretty;
+}
+
+.marchandsBody {
+  max-width: 52ch;
+  margin: 0;
+  font: var(--type-body-md);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-xl);
+  font: var(--type-body-strong);
+}
+
+.statSep {
+  color: var(--hairline);
+}
+
+/* Sur le bloc gris, l'emplacement photo passe en blanc pour rester lisible. */
+.marchands .marchandsPhoto {
+  background: var(--canvas);
+}
+
+/* ---------- Téléphone ---------- */
+
+@media (max-width: 639px) {
+  .intro {
+    padding-top: var(--space-xl);
+  }
+
+  .introActions {
+    width: 100%;
+  }
+
+  /* Deux cartes par ligne, quelle que soit la largeur du téléphone. */
+  .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg) var(--space-sm);
+  }
+
+  .marchands {
+    padding: var(--space-xl) var(--gutter-page);
+    /* Le bloc gris va d'un bord à l'autre de l'écran. */
+    margin-inline: calc(var(--gutter-page) * -1);
+  }
+
+  .marchandsTitle {
+    font-size: 28px;
+  }
+
+  .stats {
+    gap: var(--space-xs) var(--space-md);
+  }
+}

@@ -1,0 +1,50 @@
+.footer {
+  padding: var(--space-section) var(--gutter-page) var(--space-xl);
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-xl);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.columnLabel {
+  font: var(--type-body-strong);
+  color: var(--ink);
+}
+
+.column a:hover,
+.legal a:hover {
+  color: var(--ink);
+}
+
+.rule {
+  margin: var(--space-xxl) 0 var(--space-lg);
+  border: none;
+  border-top: 1px solid var(--hairline);
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  font: var(--type-utility-xs);
+  color: var(--mute);
+}
+
+/* Deux colonnes sur téléphone plutôt qu'une longue liste. */
+@media (max-width: 479px) {
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

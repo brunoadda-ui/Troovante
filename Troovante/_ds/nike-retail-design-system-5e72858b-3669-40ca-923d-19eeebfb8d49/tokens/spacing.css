@@ -1,0 +1,31 @@
+:root {
+  /* 8px base scale, as extracted */
+  --space-xxs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 18px;
+  --space-xl: 24px;
+  --space-xxl: 30px;
+  --space-section: 48px;
+
+  /* semantic aliases */
+  --gap-grid: var(--space-sm);          /* PLP card gutters */
+  --gap-card-meta: var(--space-sm);     /* product card metadata rows */
+  --gap-filter-group: var(--space-lg);  /* filter sidebar groups */
+  --pad-disclosure-row: var(--space-xl);/* PDP / FAQ accordion rows */
+  --rhythm-section: var(--space-section);
+  --rhythm-section-tablet: 32px;
+  --rhythm-section-mobile: var(--space-xl);
+
+  /* layout */
+  --container-max: 1440px;
+  --gutter-page: var(--space-xl);
+  --gutter-page-wide: 80px;
+  --rail-filter-width: 220px;
+  --height-utility-bar: 36px;
+  --height-primary-nav: 56px;
+  --height-button: 48px;
+  --height-chip: 40px;
+  --size-icon-button: 40px;
+}

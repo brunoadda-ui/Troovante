@@ -1,0 +1,17 @@
+:root {
+  --radius-none: 0px;
+  --radius-sm: 18px;
+  --radius-md: 24px;
+  --radius-lg: 30px;
+  --radius-full: 9999px;
+
+  /* semantic aliases */
+  --radius-card: var(--radius-none);
+  --radius-tile: var(--radius-none);
+  --radius-input: var(--radius-md);
+  --radius-button: var(--radius-lg);
+  --radius-chip: var(--radius-lg);
+  --radius-badge: var(--radius-lg);
+  --radius-avatar: var(--radius-sm);
+  --radius-dot: var(--radius-full);
+}
