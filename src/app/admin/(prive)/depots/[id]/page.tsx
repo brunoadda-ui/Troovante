@@ -9,10 +9,15 @@ import { PROFILS } from "@/lib/depot";
 import { liensPhotosPrivees, lireDepot, type Depot } from "@/lib/depots";
 import { formatPrix } from "@/lib/format";
 import { lienTelephone } from "@/data/site";
+import { DECORS, briaConfigure, decorParDefaut } from "@/lib/miseEnSituation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { changerStatutDepot } from "../../../actions";
 import s from "../../../admin.module.css";
 import FichePublication from "./FichePublication";
+import RelanceSituation from "./RelanceSituation";
+
+// La génération d'une mise en situation peut durer une minute.
+export const maxDuration = 120;
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -97,7 +102,49 @@ export default async function PageDepot({ params }: Props) {
                 )}
               </div>
             )}
-            <p className={s.muted}>Cliquer sur une photo l’ouvre en grand. La mise en situation automatique arrivera ici.</p>
+            <p className={s.muted}>Cliquer sur une photo l’ouvre en grand.</p>
+          </div>
+
+          <div className={s.block}>
+            <h2 className={s.subtitle}>Mise en situation</h2>
+            <p className={s.muted}>
+              {!briaConfigure
+                ? "La génération n’est pas activée : la clé Bria (BRIA_API_TOKEN) n’est pas renseignée dans .env.local."
+                : depot.iaStatut === "en_cours"
+                  ? "Génération en cours. Rechargez la page dans un instant."
+                  : depot.iaStatut === "echec"
+                    ? `La dernière génération a échoué : ${depot.iaErreur ?? "motif inconnu"}`
+                    : depot.photosSituation.length > 0
+                      ? "Le décor est généré autour de l’objet de la photo principale. Comparez avec l’original avant de publier."
+                      : "Aucune image générée pour l’instant."}
+            </p>
+            {depot.photosSituation.length > 0 && (
+              <div className={s.photos}>
+                {depot.photosSituation.map(
+                  (chemin, rang) =>
+                    liens[chemin] && (
+                      <a key={chemin} href={liens[chemin]} target="_blank" rel="noreferrer" className={s.photoTall}>
+                        <Image
+                          src={liens[chemin]}
+                          alt={`Mise en situation ${rang + 1}`}
+                          fill
+                          unoptimized
+                          sizes="200px"
+                          className={s.photoImg}
+                        />
+                      </a>
+                    ),
+                )}
+              </div>
+            )}
+            {briaConfigure && depot.statut === "nouveau" && depot.iaStatut !== "en_cours" && (
+              <RelanceSituation
+                depotId={depot.id}
+                decors={DECORS.map((decor) => ({ cle: decor.cle, label: decor.label }))}
+                decorParDefaut={decorParDefaut(depot.universSlug).cle}
+                dejaFaite={depot.photosSituation.length > 0}
+              />
+            )}
           </div>
 
           <div className={s.block}>
@@ -183,8 +230,14 @@ export default async function PageDepot({ params }: Props) {
                 }}
                 univers={univers.map((u) => ({ slug: u.slug, nom: u.nom, filtres: u.filtres }))}
                 photos={[
-                  ...depot.photosSituation.map((chemin) => ({ chemin, lien: liens[chemin], situation: true })),
-                  ...depot.photosOrigine.map((chemin) => ({ chemin, lien: liens[chemin], situation: false })),
+                  // Seule la mise en situation la plus récente est cochée d'office.
+                  ...depot.photosSituation.map((chemin, rang) => ({
+                    chemin,
+                    lien: liens[chemin],
+                    situation: true,
+                    cochee: rang === 0,
+                  })),
+                  ...depot.photosOrigine.map((chemin) => ({ chemin, lien: liens[chemin], situation: false, cochee: true })),
                 ]}
               />
 

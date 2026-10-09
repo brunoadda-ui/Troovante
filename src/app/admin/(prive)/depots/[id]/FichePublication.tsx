@@ -25,7 +25,7 @@ type Props = {
   depotId: string;
   initiale: FicheInitiale;
   univers: { slug: string; nom: string; filtres: GroupeFiltres[] }[];
-  photos: { chemin: string; lien?: string; situation: boolean }[];
+  photos: { chemin: string; lien?: string; situation: boolean; cochee: boolean }[];
 };
 
 const INITIAL: EtatAction = { statut: "initial" };
@@ -137,11 +137,14 @@ export default function FichePublication({ depotId, initiale, univers, photos }:
       </div>
 
       <fieldset className={s.group}>
-        <legend className={s.groupLabel}>Photos à publier</legend>
+        <legend className={s.groupLabel}>
+          Photos à publier{" "}
+          <span className={f.optional}>(les mises en situation passent en premier sur la fiche)</span>
+        </legend>
         <div className={s.photos}>
           {photos.map((photo, rang) => (
             <label key={photo.chemin} className={s.pick}>
-              <input type="checkbox" name="photo" value={photo.chemin} defaultChecked />
+              <input type="checkbox" name="photo" value={photo.chemin} defaultChecked={photo.cochee} />
               <span className={s.photo}>
                 {photo.lien && (
                   <Image

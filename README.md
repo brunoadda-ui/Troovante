@@ -20,7 +20,7 @@ Puis ouvrir <http://localhost:3000> dans un navigateur. Le site se met à jour t
 | 2 | Catalogue vivant : base de données, recherche, filtres, tri, favoris, demandes d'achat et de rappel | Fait, base à brancher (voir ci-dessous) |
 | 3A | Espace professionnel : page d'information et formulaire de dépôt d'objet (photos, dimensions, prix…) | Fait, à tester sur la base |
 | 3B | Page privée `/admin` où TROOVANTE valide, corrige et publie chaque dépôt | Fait, publication à tester une fois connecté |
-| 3C | Mise en situation automatique des photos par IA (service Bria), objet conservé intact | À faire |
+| 3C | Mise en situation automatique des photos par IA (service Bria), objet conservé intact | Codé, à tester avec une clé Bria et de vraies photos |
 | 4 | Mise en ligne : nom de domaine, mentions légales, confidentialité, cookies | À faire |
 
 Le paiement en ligne viendra après, une fois le concept validé.
@@ -61,12 +61,21 @@ Par précaution, désactiver les inscriptions libres dans Supabase (**Authentica
 
 Pour corriger une fiche déjà publiée ou la retirer du site, modifier sa ligne dans la table `objets` (statut `vendu` pour la retirer).
 
+## La mise en situation par IA (Bria)
+
+À chaque dépôt, la photo principale est envoyée au service Bria, qui garde l'objet tel quel et génère un décor autour. L'image arrive dans la page du dépôt, où l'on peut en générer d'autres avec un autre décor, puis choisir celles à publier. Sur la fiche publique, elle porte l'étiquette « Mise en situation » et la photo d'origine reste visible.
+
+- **Activation** : coller la clé du compte Bria dans `.env.local`, ligne `BRIA_API_TOKEN`. Sans clé, tout fonctionne mais sans mise en situation.
+- **Coût** : chaque image générée est facturée par Bria (quelques centimes). Au-delà de 40 dépôts reçus dans la journée, la génération automatique s'arrête d'elle-même ; elle reste possible à la main depuis la page du dépôt.
+- **Décors** : ils sont décrits dans `src/lib/miseEnSituation.ts` (salon, console, table dressée, mur), avec un décor par défaut selon l'univers.
+- **Limite** : l'image générée fait environ un million de pixels (896 × 1120).
+
 ## Ce qui est encore factice
 
 - **Tout le contenu** (objets, prix, marchands, téléphone, WhatsApp, e-mail) vient de la maquette et est fictif.
 - **Seule la commode Louis XV a des photos et un texte complet** ; les autres fiches affichent « Photo à venir ».
 - **Les demandes et les dépôts arrivent dans les tables `demandes` et `depots`**, sans e-mail d'alerte pour l'instant.
-- **Les photos publiées sont celles du professionnel, telles quelles** : la mise en situation automatique reste à faire.
+- **La mise en situation n'a pas encore été essayée sur de vraies photos** : qualité des décors et fidélité de l'objet restent à juger.
 - **La plupart des liens du pied de page** n'ont pas encore de page.
 - **Les promesses de livraison faites aux acheteurs** (transporteur spécialisé, livraison incluse, retour à notre charge) datent de la maquette et ne correspondent plus à l'expédition par le professionnel.
 - **Le site demande aux moteurs de recherche de ne pas le référencer** (réglage dans `src/app/layout.tsx`), à retirer au lancement.

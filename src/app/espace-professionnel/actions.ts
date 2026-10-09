@@ -1,6 +1,7 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
+import { after } from "next/server";
 import { getUnivers } from "@/lib/catalogue";
 import {
   FORMATS_PHOTO,
@@ -13,6 +14,7 @@ import {
   type ReponsePreparation,
 } from "@/lib/depot";
 import { lireEntier } from "@/lib/filtres";
+import { mettreEnSituationAuto } from "@/lib/miseEnSituation";
 import { supabaseAdmin, supabaseAdminConfigure } from "@/lib/supabaseAdmin";
 
 /**
@@ -158,6 +160,9 @@ export async function enregistrerDepot(formulaire: FormData): Promise<ReponseDep
     console.error("Enregistrement d'un dépôt impossible :", error.message);
     return refus(ECHEC);
   }
+
+  // La mise en situation part une fois la réponse envoyée : le professionnel n'attend pas.
+  after(() => mettreEnSituationAuto(depotId));
 
   return { ok: true };
 }

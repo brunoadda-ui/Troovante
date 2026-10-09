@@ -7,6 +7,7 @@ import { getUnivers } from "@/lib/catalogue";
 import { STOCKAGE_DEPOTS, STOCKAGE_PHOTOS } from "@/lib/depot";
 import { lireDepot } from "@/lib/depots";
 import { lireEntier } from "@/lib/filtres";
+import { mettreEnSituation } from "@/lib/miseEnSituation";
 import { slugifier } from "@/lib/slug";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import type { PhotoObjet } from "@/lib/types";
@@ -168,6 +169,20 @@ export async function publierDepot(_precedent: EtatAction, formulaire: FormData)
     return erreur(`La fiche est en ligne, mais le dépôt n’a pas pu être marqué comme publié : ${suivi.error.message}`);
   }
 
+  redirect(`/admin/depots/${depot.id}`);
+}
+
+/**
+ * Lance (ou relance) la mise en situation d'un dépôt, avec le décor choisi.
+ * L'action attend la fin de la génération : compter jusqu'à une minute.
+ */
+export async function relancerMiseEnSituation(formulaire: FormData) {
+  await exigerAdmin();
+
+  const depot = await lireDepot(champ(formulaire, "id", 40));
+  if (!depot) redirect("/admin");
+
+  await mettreEnSituation(depot.id, champ(formulaire, "decor", 40) || undefined);
   redirect(`/admin/depots/${depot.id}`);
 }
 

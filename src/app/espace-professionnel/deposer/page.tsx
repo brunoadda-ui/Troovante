@@ -4,6 +4,9 @@ import { getUnivers } from "@/lib/catalogue";
 import FormulaireDepot from "./FormulaireDepot";
 import s from "./deposer.module.css";
 
+// Après l'envoi, la mise en situation de l'objet se génère en arrière-plan (jusqu'à une minute).
+export const maxDuration = 120;
+
 export const metadata: Metadata = {
   title: "Déposer un objet",
   description: "Formulaire de dépôt d’un objet par un marchand ou un créateur partenaire de TROOVANTE.",

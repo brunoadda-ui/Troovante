@@ -264,8 +264,28 @@
   background: var(--soft-cloud);
 }
 
+/* Mises en situation : au format 4:5 de la fiche. */
+.photoTall {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  background: var(--soft-cloud);
+}
+
 .photoImg {
   object-fit: contain;
+}
+
+.relance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  max-width: 380px;
+}
+
+.relance label {
+  width: 100%;
 }
 
 /* ---------- Fiche à publier ---------- */
