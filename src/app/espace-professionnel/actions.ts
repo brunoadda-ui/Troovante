@@ -60,6 +60,8 @@ export async function preparerEnvoi(photos: { type: string; taille: number }[]):
 const champ = (formulaire: FormData, nom: string, longueurMax: number) =>
   String(formulaire.get(nom) ?? "")
     .trim()
+    // Les navigateurs envoient les retours à la ligne des zones de texte sous la forme « \r\n ».
+    .replace(/\r\n/g, "\n")
     .slice(0, longueurMax);
 
 /** « 128,5 » → 128.5. Renvoie `undefined` si ce n'est pas une mesure plausible. */

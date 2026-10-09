@@ -7,6 +7,7 @@ import FavoriButton from "@/components/Favoris/FavoriButton";
 import ObjetCard from "@/components/ObjetCard/ObjetCard";
 import DisclosureRow from "@/components/ui/DisclosureRow";
 import Photo from "@/components/ui/Photo";
+import PromoBadge from "@/components/ui/PromoBadge";
 import { site } from "@/data/site";
 import { getDuMemeMarchand, getObjetParSlug, versCarte } from "@/lib/catalogue";
 import { urlOption } from "@/lib/filtres";
@@ -97,14 +98,21 @@ export default async function PageObjet({ params }: Props) {
 
       <div className={`container ${s.layout}`}>
         <div className={s.gallery}>
-          <Photo
-            src={photoPrincipale?.src}
-            alt={photoPrincipale?.alt ?? objet.nom}
-            legende="Photo à venir"
-            ratio="4 / 5"
-            sizes="(min-width: 800px) 50vw, 100vw"
-            priority
-          />
+          <div className={s.mainPhoto}>
+            <Photo
+              src={photoPrincipale?.src}
+              alt={photoPrincipale?.alt ?? objet.nom}
+              legende="Photo à venir"
+              ratio="4 / 5"
+              sizes="(min-width: 800px) 50vw, 100vw"
+              priority
+            />
+            {photoPrincipale?.miseEnSituation && (
+              <span className={s.staged}>
+                <PromoBadge>Mise en situation</PromoBadge>
+              </span>
+            )}
+          </div>
           {autresPhotos.length > 0 && (
             <div className={s.thumbs}>
               {autresPhotos.slice(0, 3).map((photo) => (
@@ -117,6 +125,12 @@ export default async function PageObjet({ params }: Props) {
                 />
               ))}
             </div>
+          )}
+          {objet.photos.some((photo) => photo.miseEnSituation) && (
+            <p className={s.stagedNote}>
+              La première image est une mise en situation : le décor est créé par ordinateur, l’objet est celui de la
+              photo d’origine, visible ci-dessus.
+            </p>
           )}
         </div>
 

@@ -39,6 +39,26 @@
   min-width: 0;
 }
 
+.mainPhoto {
+  position: relative;
+}
+
+/* Étiquette posée sur une image dont le décor a été généré. */
+.staged {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  display: inline-flex;
+  pointer-events: none;
+}
+
+.stagedNote {
+  margin: 0;
+  font: var(--type-caption-md);
+  color: var(--mute);
+  text-wrap: pretty;
+}
+
 .thumbs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

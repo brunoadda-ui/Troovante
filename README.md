@@ -19,7 +19,7 @@ Puis ouvrir <http://localhost:3000> dans un navigateur. Le site se met à jour t
 | 1 | Les 4 écrans de la maquette reconstruits à l'identique, avec une version mobile | Fait |
 | 2 | Catalogue vivant : base de données, recherche, filtres, tri, favoris, demandes d'achat et de rappel | Fait, base à brancher (voir ci-dessous) |
 | 3A | Espace professionnel : page d'information et formulaire de dépôt d'objet (photos, dimensions, prix…) | Fait, à tester sur la base |
-| 3B | Page privée où TROOVANTE valide, corrige et publie chaque dépôt | À faire |
+| 3B | Page privée `/admin` où TROOVANTE valide, corrige et publie chaque dépôt | Fait, publication à tester une fois connecté |
 | 3C | Mise en situation automatique des photos par IA (service Bria), objet conservé intact | À faire |
 | 4 | Mise en ligne : nom de domaine, mentions légales, confidentialité, cookies | À faire |
 
@@ -46,14 +46,27 @@ Ensuite, le contenu se consulte et se modifie dans Supabase (**Table Editor**) :
 | `demandes` | Les demandes d'achat, questions et demandes de rappel laissées par les visiteurs |
 | `depots` | Les objets déposés par les professionnels, avec leurs coordonnées. Table privée |
 
-Les photos reçues des professionnels sont dans **Storage**, espace privé `depots`, un dossier par dépôt.
+Les photos reçues des professionnels sont dans **Storage**, espace privé `depots`, un dossier par dépôt. Les images des objets publiés sont dans l'espace public `photos`.
+
+## L'espace privé (`/admin`)
+
+C'est là que se traitent les objets déposés : liste des dépôts, fiche préremplie à corriger, choix des photos, puis **Publier** ou **Refuser**. Publier crée l'objet dans `objets` et le met aussitôt en ligne.
+
+Pour y entrer, il faut :
+
+1. un compte dans Supabase : **Authentication → Users → Add user**, en cochant « Auto Confirm User » ;
+2. que l'adresse de ce compte figure dans `ADMIN_EMAILS` (fichier `.env.local`, adresses séparées par des virgules).
+
+Par précaution, désactiver les inscriptions libres dans Supabase (**Authentication → Sign In / Providers → Allow new users to sign up**).
+
+Pour corriger une fiche déjà publiée ou la retirer du site, modifier sa ligne dans la table `objets` (statut `vendu` pour la retirer).
 
 ## Ce qui est encore factice
 
 - **Tout le contenu** (objets, prix, marchands, téléphone, WhatsApp, e-mail) vient de la maquette et est fictif.
 - **Seule la commode Louis XV a des photos et un texte complet** ; les autres fiches affichent « Photo à venir ».
 - **Les demandes et les dépôts arrivent dans les tables `demandes` et `depots`**, sans e-mail d'alerte pour l'instant.
-- **Un dépôt n'est pas encore publiable depuis le site** : la page privée de validation reste à faire.
+- **Les photos publiées sont celles du professionnel, telles quelles** : la mise en situation automatique reste à faire.
 - **La plupart des liens du pied de page** n'ont pas encore de page.
 - **Les promesses de livraison faites aux acheteurs** (transporteur spécialisé, livraison incluse, retour à notre charge) datent de la maquette et ne correspondent plus à l'expédition par le professionnel.
 - **Le site demande aux moteurs de recherche de ne pas le référencer** (réglage dans `src/app/layout.tsx`), à retirer au lancement.
@@ -65,6 +78,8 @@ Les photos reçues des professionnels sont dans **Storage**, espace privé `depo
 | `src/app/` | Les pages : accueil, `univers/[slug]`, `objets/[slug]`, `recherche`, `favoris`, `vendre`, `espace-professionnel` |
 | `src/app/actions.ts` | L'enregistrement des demandes des visiteurs |
 | `src/app/espace-professionnel/actions.ts` | L'enregistrement des objets déposés par les professionnels |
+| `src/app/admin/` | L'espace privé : connexion, liste des dépôts, publication |
+| `src/proxy.ts` | Le maintien de la connexion à l'espace privé |
 | `src/app/globals.css` | Le design system : couleurs, polices, espacements |
 | `src/components/` | Les briques réutilisées : en-tête, pied de page, carte objet, boutons… |
 | `src/lib/` | La lecture du catalogue, les filtres, le tri, la recherche, les favoris |

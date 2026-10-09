@@ -3,6 +3,9 @@
 /** Espace de stockage privé : photos telles qu'envoyées par les professionnels. */
 export const STOCKAGE_DEPOTS = "depots";
 
+/** Espace de stockage public : images des objets publiés sur le site. */
+export const STOCKAGE_PHOTOS = "photos";
+
 export const PHOTOS_MAX = 5;
 export const TAILLE_PHOTO_MAX = 15 * 1024 * 1024;
 

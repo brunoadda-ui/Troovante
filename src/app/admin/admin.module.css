@@ -1,0 +1,389 @@
+/* Espace privé de TROOVANTE : sobre et dense, même design system que le site. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-section);
+}
+
+/* ---------- Bandeau de l'espace privé ---------- */
+
+.bar {
+  background: var(--ink);
+  color: var(--canvas);
+}
+
+.barInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-xl);
+  min-height: 44px;
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  font: var(--type-caption-md);
+}
+
+.barTitle {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.barRight {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-lg);
+  color: var(--stone);
+}
+
+.barButton {
+  padding: 0;
+  font: inherit;
+  color: var(--canvas);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.bar :focus-visible {
+  outline-color: var(--canvas);
+}
+
+/* ---------- Titres ---------- */
+
+.title {
+  margin: 0;
+  font: var(--type-heading-xl);
+  text-wrap: pretty;
+}
+
+.subtitle {
+  margin: 0;
+  font: var(--type-heading-lg);
+}
+
+.muted {
+  margin: 0;
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.back {
+  font: var(--type-caption-md);
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.back:hover {
+  color: var(--mute);
+}
+
+/* ---------- Connexion ---------- */
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-width: 420px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ---------- Onglets par statut ---------- */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  height: var(--height-chip);
+  padding: 8px 16px;
+  font: var(--type-button-md);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  white-space: nowrap;
+}
+
+.tab[aria-current="page"] {
+  color: var(--canvas);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.tabCount {
+  color: var(--mute);
+}
+
+.tab[aria-current="page"] .tabCount {
+  color: var(--stone);
+}
+
+/* ---------- Liste des dépôts ---------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--hairline);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 2fr) minmax(0, 1.4fr) auto;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+  color: var(--ink);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.row:hover .rowTitle {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.thumb {
+  position: relative;
+  width: 72px;
+  aspect-ratio: 1 / 1;
+  background: var(--soft-cloud);
+}
+
+.thumbImg {
+  object-fit: cover;
+}
+
+.rowTitle {
+  font: var(--type-body-strong);
+  text-wrap: pretty;
+}
+
+.rowMeta {
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.rowPrice {
+  font: var(--type-body-strong);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--space-xl) 0;
+  color: var(--charcoal);
+}
+
+/* ---------- Détail d'un dépôt ---------- */
+
+.detail {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: start;
+  gap: var(--space-section);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  min-width: 0;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-lg);
+  border: 1px solid var(--hairline);
+}
+
+.card a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.cardTitle {
+  font: var(--type-body-strong);
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--soft-cloud);
+}
+
+.status p {
+  margin: 0;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-sm);
+}
+
+.photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  background: var(--soft-cloud);
+}
+
+.photoLarge {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: var(--soft-cloud);
+}
+
+.photoImg {
+  object-fit: contain;
+}
+
+/* ---------- Fiche à publier ---------- */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: var(--space-lg) var(--space-md);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.groupLabel {
+  padding: 0;
+  font: var(--type-body-strong);
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font: var(--type-caption-md);
+  cursor: pointer;
+}
+
+.option input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+.pick {
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.pick input {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+}
+
+.refuse {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--hairline);
+}
+
+.refuse label {
+  width: 100%;
+}
+
+@media (max-width: 899px) {
+  .detail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-xl);
+  }
+}
+
+@media (max-width: 639px) {
+  .row {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: var(--space-md);
+  }
+
+  .thumb {
+    width: 56px;
+  }
+
+  .rowPro,
+  .rowPrice {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .row2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}

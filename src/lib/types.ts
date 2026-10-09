@@ -37,7 +37,12 @@ export type Marchand = {
   presentation?: string;
 };
 
-export type PhotoObjet = { src: string; alt?: string };
+export type PhotoObjet = {
+  src: string;
+  alt?: string;
+  /** Vrai si le décor a été généré : l'image est alors signalée comme « mise en situation ». */
+  miseEnSituation?: boolean;
+};
 
 export type Objet = {
   id: string;
