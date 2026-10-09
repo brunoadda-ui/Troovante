@@ -69,15 +69,6 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
 
   return (
     <header>
-      <div className={s.utility}>
-        <span>Nos experts</span>
-        <span>Aide</span>
-        <Link href="/vendre" className={s.utilityLink}>
-          Vendre un objet
-        </Link>
-        <span>Se connecter</span>
-      </div>
-
       <div
         className={s.navWrap}
         onMouseLeave={fermer}
@@ -107,8 +98,8 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
                 <ChevronDown size={18} strokeWidth={1.5} aria-hidden="true" className={s.caret} />
               </Link>
             ))}
-            <Link href="/vendre" className={s.navLink} onMouseEnter={fermer} onFocus={fermer}>
-              Vendre un objet
+            <Link href="/espace-professionnel" className={s.navLink} onMouseEnter={fermer} onFocus={fermer}>
+              Espace professionnel
             </Link>
           </nav>
 
@@ -190,8 +181,8 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
                 <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
               </Link>
             ))}
-            <Link href="/vendre" className={s.drawerLink} onClick={fermerTiroir}>
-              Vendre un objet
+            <Link href="/espace-professionnel" className={s.drawerLink} onClick={fermerTiroir}>
+              Espace professionnel
               <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
             </Link>
           </nav>

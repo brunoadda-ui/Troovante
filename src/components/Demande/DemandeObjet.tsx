@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { envoyerDemande, type EtatDemande } from "@/app/actions";
 import Button from "@/components/ui/Button";
+import f from "@/components/ui/form.module.css";
 import s from "./Demande.module.css";
 
 type Mode = "achat" | "question";
@@ -54,12 +55,12 @@ function Formulaire({ mode, slug, fermer }: { mode: Mode; slug: string; fermer: 
       <input type="hidden" name="type" value={mode} />
       <input type="hidden" name="objet" value={slug} />
       {/* Piège à robots : invisible et à laisser vide. */}
-      <input type="text" name="site_web" tabIndex={-1} autoComplete="off" className={s.trap} aria-hidden="true" />
+      <input type="text" name="site_web" tabIndex={-1} autoComplete="off" className={f.trap} aria-hidden="true" />
 
       <p className={s.intro}>{textes.intro}</p>
 
       {/* Après un refus, le formulaire se réaffiche avec ce qui avait été saisi. */}
-      <label className={s.field}>
+      <label className={f.field}>
         Votre prénom
         <input
           type="text"
@@ -70,15 +71,15 @@ function Formulaire({ mode, slug, fermer }: { mode: Mode; slug: string; fermer: 
           defaultValue={saisie?.prenom}
         />
       </label>
-      <label className={s.field}>
+      <label className={f.field}>
         Votre e-mail
         <input type="email" name="email" maxLength={160} autoComplete="email" defaultValue={saisie?.email} />
       </label>
-      <label className={s.field}>
+      <label className={f.field}>
         Votre téléphone
         <input type="tel" name="telephone" maxLength={30} autoComplete="tel" defaultValue={saisie?.telephone} />
       </label>
-      <label className={s.field}>
+      <label className={f.field}>
         {mode === "question" ? "Votre question" : "Un mot pour nous (facultatif)"}
         <textarea
           name="message"
@@ -90,7 +91,7 @@ function Formulaire({ mode, slug, fermer }: { mode: Mode; slug: string; fermer: 
       </label>
 
       {etat.statut === "erreur" && (
-        <p className={s.error} role="alert">
+        <p className={f.error} role="alert">
           {etat.message}
         </p>
       )}

@@ -78,55 +78,7 @@
   text-wrap: pretty;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  font: var(--type-body-strong);
-}
-
-.field input,
-.field textarea {
-  width: 100%;
-  padding: 0 var(--space-md);
-  font: var(--type-body-md);
-  color: var(--ink);
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-none);
-}
-
-.field input {
-  height: 48px;
-}
-
-.field textarea {
-  padding-block: var(--space-md);
-  resize: vertical;
-}
-
-.field input:focus-visible,
-.field textarea:focus-visible {
-  outline: none;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 1px var(--ink);
-}
-
-.trap {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-}
-
-.error {
-  margin: 0;
-  padding: var(--space-md);
-  font: var(--type-caption-md);
-  color: var(--ink);
-  border: 1px solid var(--ink);
-}
+/* Les champs, le message d'erreur et le piège à robots viennent de ui/form.module.css. */
 
 .privacy {
   margin: 0;

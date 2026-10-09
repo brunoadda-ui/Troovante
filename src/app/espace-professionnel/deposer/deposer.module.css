@@ -1,0 +1,268 @@
+.page {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-section);
+}
+
+.breadcrumb {
+  padding-bottom: var(--space-lg);
+  font: var(--type-caption-md);
+  color: var(--mute);
+}
+
+.breadcrumb a,
+.breadcrumbCurrent {
+  color: var(--ink);
+}
+
+.breadcrumb a:hover {
+  color: var(--mute);
+}
+
+/* Le formulaire reste étroit pour se lire d'une traite. */
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: 820px;
+}
+
+.title {
+  margin: 0;
+  font: var(--weight-medium) clamp(40px, 4vw, 64px) / 0.95 var(--font-campaign);
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 60ch;
+  margin: 0;
+  font: var(--type-body-lg);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--ink);
+}
+
+.sectionTitle {
+  margin: 0;
+  font: var(--type-heading-lg);
+}
+
+.sectionIntro {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.row2,
+.row4 {
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+  align-items: end;
+}
+
+.row2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.row4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Champ seul sur sa ligne, de la largeur d'une demi-ligne. */
+.half {
+  max-width: calc(50% - var(--space-md) / 2);
+}
+
+/* ---------- Marchand ou créateur ---------- */
+
+.profils {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.profil {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border: 1px solid var(--hairline);
+  cursor: pointer;
+}
+
+.profil:has(input:checked) {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.profil input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 3px 0 0;
+  accent-color: var(--ink);
+}
+
+.profilLabel {
+  display: block;
+  font: var(--type-body-strong);
+}
+
+/* ---------- Photos ---------- */
+
+.photos {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+
+.photo,
+.photoAdd {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--soft-cloud);
+}
+
+.photoImg {
+  object-fit: cover;
+}
+
+.photoMain,
+.photoFirst {
+  position: absolute;
+  left: var(--space-xs);
+  bottom: var(--space-xs);
+  padding: 2px 8px;
+  font: var(--type-caption-sm);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  white-space: nowrap;
+}
+
+.photoFirst {
+  cursor: pointer;
+}
+
+.photoRemove {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--canvas);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+}
+
+.photoAdd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  font: var(--type-caption-md);
+  color: var(--ink);
+  text-align: center;
+  border: 1px dashed var(--stone);
+  cursor: pointer;
+}
+
+.photoAdd:hover,
+.photoAdd:focus-within {
+  border-color: var(--ink);
+  border-style: solid;
+}
+
+/* ---------- Envoi ---------- */
+
+.submit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.privacy {
+  margin: 0;
+  font: var(--type-caption-md);
+  color: var(--mute);
+  text-align: center;
+}
+
+.done {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+  padding: var(--space-xxl);
+  color: var(--charcoal);
+  background: var(--soft-cloud);
+  /* Laisse l'en-tête respirer quand la page remonte sur ce bloc. */
+  scroll-margin-top: var(--space-xl);
+}
+
+.done p {
+  max-width: 60ch;
+  margin: 0;
+}
+
+.doneTitle {
+  margin: 0;
+  font: var(--type-heading-xl);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.doneActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+@media (max-width: 639px) {
+  .row2,
+  .profils {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .row4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .half {
+    max-width: none;
+  }
+
+  .photos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .done {
+    padding: var(--space-xl) var(--gutter-page);
+  }
+
+  .doneTitle {
+    font-size: 28px;
+  }
+}

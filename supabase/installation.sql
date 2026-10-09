@@ -75,20 +75,76 @@ create table if not exists public.demandes (
   created_at  timestamptz not null default now()
 );
 
+-- ---------- Les objets déposés par les professionnels (Espace professionnel) ----------
+-- Table privée : elle contient les coordonnées du professionnel. Un dépôt ne
+-- devient un objet du catalogue qu'après validation par TROOVANTE.
+create table if not exists public.depots (
+  id                uuid primary key default gen_random_uuid(),
+  -- Le professionnel (jamais affiché sur le site)
+  profil            text not null check (profil in ('marchand', 'createur')),
+  nom               text not null,
+  societe           text,
+  email             text not null,
+  telephone         text not null,
+  ville             text,
+  -- L'objet, tel que décrit par le professionnel
+  titre             text not null,
+  univers_slug      text references public.univers (slug) on update cascade on delete set null,
+  description       text not null,
+  origine           text not null,
+  signature         text,
+  etat              text not null,
+  hauteur_cm        numeric(7, 1) not null check (hauteur_cm > 0),
+  largeur_cm        numeric(7, 1) not null check (largeur_cm > 0),
+  profondeur_cm     numeric(7, 1) check (profondeur_cm > 0),
+  poids_kg          numeric(7, 1) check (poids_kg > 0),
+  prix_souhaite     integer not null check (prix_souhaite > 0),
+  -- L'engagement d'exclusivité doit avoir été coché
+  exclusivite       boolean not null check (exclusivite),
+  -- Photos reçues : chemins dans l'espace de stockage privé « depots »
+  photos_origine    jsonb not null default '[]',
+  -- Mises en situation générées par IA : chemins dans le même espace privé
+  photos_situation  jsonb not null default '[]',
+  ia_statut         text not null default 'en_attente'
+                    check (ia_statut in ('en_attente', 'en_cours', 'terminee', 'echec')),
+  ia_erreur         text,
+  -- Suivi par TROOVANTE : nouveau → publie (ou refuse)
+  statut            text not null default 'nouveau' check (statut in ('nouveau', 'publie', 'refuse')),
+  objet_id          uuid references public.objets (id) on delete set null,
+  note_interne      text,
+  created_at        timestamptz not null default now()
+);
+
+create index if not exists depots_suivi_idx on public.depots (statut, created_at desc);
+
+-- ---------- Le stockage des photos ----------
+-- « depots » : privé, photos telles qu'envoyées par les professionnels.
+-- « photos » : public, images des objets publiés sur le site.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values
+  ('depots', 'depots', false, 15728640, array['image/jpeg', 'image/png', 'image/webp']),
+  ('photos', 'photos', true, 15728640, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do nothing;
+
 -- =====================================================================
 -- Droits d'accès : le site (visiteur anonyme) ne peut que
 --  - lire les univers, les marchands et les objets publiés ;
 --  - déposer une demande, sans jamais pouvoir relire celles des autres.
+-- Les dépôts des professionnels ne sont accessibles qu'au serveur du site,
+-- qui utilise la clé secrète.
 -- =====================================================================
 
 alter table public.univers   enable row level security;
 alter table public.marchands enable row level security;
 alter table public.objets    enable row level security;
 alter table public.demandes  enable row level security;
+alter table public.depots    enable row level security;
 
-grant usage on schema public to anon, authenticated;
+grant usage on schema public to anon, authenticated, service_role;
 grant select on public.univers, public.marchands, public.objets to anon, authenticated;
 grant insert on public.demandes to anon, authenticated;
+revoke all on public.depots from anon, authenticated;
+grant all on public.univers, public.marchands, public.objets, public.demandes, public.depots to service_role;
 
 drop policy if exists "Lecture publique des univers" on public.univers;
 create policy "Lecture publique des univers" on public.univers

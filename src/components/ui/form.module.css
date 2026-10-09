@@ -1,0 +1,87 @@
+/* Champs de formulaire sur fond clair : carrés, filet gris, contour noir à la saisie. */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+  font: var(--type-body-strong);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  min-width: 0;
+  padding: 0 var(--space-md);
+  font: var(--type-body-md);
+  color: var(--ink);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+}
+
+.field input,
+.field select {
+  height: 48px;
+}
+
+.field textarea {
+  padding-block: var(--space-md);
+  resize: vertical;
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible,
+.field select:focus-visible {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+/* Précision sous le libellé d'un champ. */
+.hint {
+  font: var(--type-caption-md);
+  font-weight: var(--weight-regular);
+  color: var(--mute);
+}
+
+.optional {
+  font-weight: var(--weight-regular);
+  color: var(--mute);
+}
+
+/* Case à cocher accompagnée d'un texte de plusieurs lignes. */
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  font: var(--type-body-md);
+  color: var(--charcoal);
+  cursor: pointer;
+}
+
+.check input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 3px 0 0;
+  accent-color: var(--ink);
+}
+
+.error {
+  margin: 0;
+  padding: var(--space-md);
+  font: var(--type-caption-md);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+
+/* Piège à robots : présent dans la page, invisible pour un humain. */
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}

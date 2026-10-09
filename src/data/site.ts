@@ -43,7 +43,7 @@ export const piedDePage: { label: string; liens: LienPied[] }[] = [
       { label: "Vendre un objet", href: "/vendre" },
       { label: "Nous appeler", href: "/vendre" },
       { label: "Estimation gratuite", href: "/vendre" },
-      { label: "Devenir marchand partenaire" },
+      { label: "Devenir marchand partenaire", href: "/espace-professionnel" },
     ],
   },
   {

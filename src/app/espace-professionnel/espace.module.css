@@ -1,0 +1,214 @@
+/* ---------- Ouverture ---------- */
+
+.hero {
+  background: var(--soft-cloud);
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xl);
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.eyebrow {
+  font: var(--type-caption-md);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.title {
+  margin: 0;
+  font: var(--weight-medium) clamp(44px, 5vw, 96px) / 0.92 var(--font-campaign);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 54ch;
+  margin: 0;
+  font: var(--weight-regular) 20px / 1.5 var(--font-body);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+.heroActions {
+  padding-top: var(--space-xs);
+}
+
+/* ---------- Sections ---------- */
+
+.section {
+  padding-top: var(--space-section);
+}
+
+.sectionLast {
+  padding-bottom: var(--space-section);
+}
+
+.h2 {
+  margin: 0 0 var(--space-lg);
+  font: var(--type-heading-lg);
+}
+
+.text {
+  margin: 0;
+  font: var(--type-body-lg);
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+/* ---------- Marchands / créateurs ---------- */
+
+.publics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-sm);
+}
+
+.public {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-xxl);
+  border: 1px solid var(--hairline);
+}
+
+.publicTitle {
+  margin: 0;
+  font: var(--weight-medium) 32px / 1 var(--font-campaign);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ---------- Les quatre étapes ---------- */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: var(--space-xl);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--ink);
+}
+
+.stepNum {
+  font: var(--weight-medium) 48px / 1 var(--font-campaign);
+  color: var(--accent);
+}
+
+.stepTitle {
+  margin: 0;
+  font: var(--type-heading-md);
+}
+
+/* ---------- Conditions et pièces à préparer ---------- */
+
+.items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--space-xl);
+}
+
+.items4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.itemIcon {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.itemTitle {
+  margin: 0;
+  font: var(--type-body-strong);
+}
+
+.itemText {
+  margin: var(--space-xs) 0 0;
+  color: var(--charcoal);
+  text-wrap: pretty;
+}
+
+/* ---------- Appel final ---------- */
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl) var(--space-section);
+  padding: var(--space-section) var(--space-xxl);
+  color: var(--canvas);
+  background: var(--ink);
+}
+
+.ctaText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1 1 420px;
+}
+
+.ctaTitle {
+  margin: 0;
+  font: var(--type-heading-xl);
+  text-wrap: pretty;
+}
+
+.ctaLead {
+  max-width: 56ch;
+  margin: 0;
+  font: var(--type-body-lg);
+  text-wrap: pretty;
+}
+
+.ctaLink {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+
+/* Sur fond noir, le contour de navigation au clavier doit être blanc. */
+.cta :focus-visible {
+  outline-color: var(--canvas);
+}
+
+@media (max-width: 639px) {
+  .heroInner {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-xxl);
+  }
+
+  .lead {
+    font-size: 18px;
+  }
+
+  .public {
+    padding: var(--space-xl);
+  }
+
+  .cta {
+    padding: var(--space-xxl) var(--gutter-page);
+    /* Le bloc noir va d'un bord à l'autre de l'écran. */
+    margin-inline: calc(var(--gutter-page) * -1);
+  }
+
+  .ctaTitle {
+    font-size: 28px;
+  }
+}

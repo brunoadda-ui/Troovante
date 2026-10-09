@@ -54,7 +54,11 @@ type LigneObjet = {
   created_at: string;
 };
 
-async function lireSupabase(): Promise<{ univers: Univers[]; marchands: Marchand[]; objets: Objet[] }> {
+/** Codes d'erreur renvoyés quand une table n'existe pas encore dans la base. */
+const TABLE_ABSENTE = new Set(["PGRST205", "42P01"]);
+
+/** Renvoie `null` si la base est branchée mais que ses tables n'ont pas encore été créées. */
+async function lireSupabase(): Promise<{ univers: Univers[]; marchands: Marchand[]; objets: Objet[] } | null> {
   // Le catalogue change en base : la page doit être recalculée à chaque visite,
   // et non figée au moment de la mise en ligne.
   await connection();
@@ -68,6 +72,13 @@ async function lireSupabase(): Promise<{ univers: Univers[]; marchands: Marchand
 
   const erreur = univers.error ?? marchands.error ?? objets.error;
   if (erreur) {
+    if (TABLE_ABSENTE.has(erreur.code)) {
+      console.warn(
+        "Supabase est branché mais ses tables n'existent pas encore : exécuter supabase/installation.sql. " +
+          "En attendant, le site affiche le catalogue de démonstration.",
+      );
+      return null;
+    }
     throw new Error(`Lecture du catalogue impossible (Supabase) : ${erreur.message}`);
   }
 
@@ -113,9 +124,11 @@ async function lireSupabase(): Promise<{ univers: Univers[]; marchands: Marchand
 
 /** Le catalogue complet. Lu une seule fois par page affichée. */
 export const chargerCatalogue = cache(async (): Promise<Catalogue> => {
-  const source = supabaseConfigure
-    ? await lireSupabase()
-    : { univers: demoUnivers, marchands: demoMarchands, objets: demoObjets };
+  const source = (supabaseConfigure ? await lireSupabase() : null) ?? {
+    univers: demoUnivers,
+    marchands: demoMarchands,
+    objets: demoObjets,
+  };
 
   const universParSlug = new Map(source.univers.map((u) => [u.slug, u]));
   const marchandParId = new Map(source.marchands.map((m) => [m.id, m]));
