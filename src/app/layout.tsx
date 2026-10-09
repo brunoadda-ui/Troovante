@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
 import Footer from "@/components/Footer/Footer";
 import Header, { type EntreeMenu } from "@/components/Header/Header";
-import { lienTelephone, site } from "@/data/site";
+import { lienTelephone, photosMenu, site } from "@/data/site";
 import { getChiffres, getUnivers } from "@/lib/catalogue";
 import { urlOption } from "@/lib/filtres";
 import { compter, formatNombre } from "@/lib/format";
@@ -36,16 +36,15 @@ async function construireMenu(): Promise<EntreeMenu[]> {
       nombreObjets: compter(nombre, "objet", "objets"),
       voirTout: nombre > 1 ? `Voir les ${formatNombre(nombre)} objets` : "Voir l’univers",
       image: u.image,
-      colonnes: [
-        {
-          label: "Sous-univers",
-          liens: u.tuiles.map((t) => ({ label: t.label, href: urlOption(u.slug, t.groupe, t.option) })),
-        },
-        ...u.filtres.map((g) => ({
-          label: g.label,
-          liens: g.options.slice(0, 7).map((option) => ({ label: option, href: urlOption(u.slug, g.cle, option) })),
-        })),
-      ],
+      photos: (photosMenu[u.slug] ?? []).map((p) => ({
+        label: p.label,
+        image: p.image,
+        href: urlOption(u.slug, p.groupe, p.option),
+      })),
+      colonnes: u.filtres.map((g) => ({
+        label: g.label,
+        liens: g.options.slice(0, 7).map((option) => ({ label: option, href: urlOption(u.slug, g.cle, option) })),
+      })),
     };
   });
 }

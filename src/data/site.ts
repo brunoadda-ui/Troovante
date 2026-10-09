@@ -1,3 +1,5 @@
+import type { Tuile } from "@/lib/types";
+
 /**
  * Coordonnées et textes communs à tout le site.
  * ATTENTION : valeurs fictives reprises de la maquette, à remplacer avant mise en ligne.
@@ -23,6 +25,27 @@ export function lienTelephone(numero: string): string {
 export function lienWhatsapp(numero: string): string {
   return `https://wa.me/33${numero.replace(/\D/g, "").replace(/^0/, "")}`;
 }
+
+/**
+ * Photos du grand menu, par univers : chacune ouvre l'univers avec le filtre
+ * correspondant déjà coché. Un univers absent d'ici garde sa photo d'ambiance.
+ */
+export const photosMenu: Record<string, Tuile[]> = {
+  luminaires: [
+    {
+      label: "Lampadaire",
+      groupe: "categories",
+      option: "Lampadaire",
+      image: "/images/univers/luminaires-lampadaire.webp",
+    },
+    {
+      label: "Lampe à poser",
+      groupe: "categories",
+      option: "Lampe à poser",
+      image: "/images/univers/luminaires-lampe-a-poser.webp",
+    },
+  ],
+};
 
 export type LienPied = { label: string; href?: string };
 

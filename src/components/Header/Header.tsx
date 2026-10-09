@@ -20,7 +20,10 @@ export type EntreeMenu = {
   nombreObjets: string;
   /** Libellé du bouton du menu : « Voir les 12 objets ». */
   voirTout: string;
+  /** Photo d'ambiance, affichée seule quand l'univers n'a pas de photos cliquables. */
   image?: string;
+  /** Photos cliquables, à droite des colonnes : chacune mène à une catégorie. */
+  photos: { label: string; image?: string; href: string }[];
   colonnes: { label: string; liens: { label: string; href: string }[] }[];
 };
 
@@ -124,7 +127,11 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
 
         {entree && (
           <div className={s.panel}>
-            <div className={s.panelInner}>
+            {/* Les colonnes de liens, puis deux emplacements de photo à droite. */}
+            <div
+              className={s.panelInner}
+              style={{ gridTemplateColumns: `repeat(${entree.colonnes.length + 2}, minmax(0, 1fr))` }}
+            >
               {entree.colonnes.map((col, i) => (
                 <div
                   key={`${entree.slug}-${col.label}`}
@@ -139,21 +146,48 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
                   ))}
                 </div>
               ))}
-              <div key={`${entree.slug}-promo`} className={s.col} style={{ animationDelay: "120ms" }}>
-                <Photo
-                  src={entree.image}
-                  alt={`${entree.titre} — photo d’ambiance`}
-                  legende={entree.titre}
-                  ratio="4 / 3"
-                  sizes="(min-width: 1024px) 25vw, 100vw"
-                />
-                <div className={s.promo}>{entree.accroche}</div>
-                <div>
-                  <Button href={`/univers/${entree.slug}`} onClick={fermer}>
-                    {entree.voirTout}
-                  </Button>
+              {entree.photos.length > 0 ? (
+                <div key={`${entree.slug}-photos`} className={s.visuels} style={{ animationDelay: "120ms" }}>
+                  {entree.photos.map((photo) => (
+                    <Link key={photo.label} href={photo.href} className={s.photoLien} onClick={fermer}>
+                      <Photo
+                        src={photo.image}
+                        alt=""
+                        legende={photo.label}
+                        ratio="4 / 3"
+                        sizes="(min-width: 1024px) 25vw, 100vw"
+                      />
+                      <span className={s.photoLabel}>{photo.label}</span>
+                    </Link>
+                  ))}
+                  <div className={s.visuelsPied}>
+                    <div className={s.promo}>{entree.accroche}</div>
+                    <Button href={`/univers/${entree.slug}`} onClick={fermer}>
+                      {entree.voirTout}
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div
+                  key={`${entree.slug}-promo`}
+                  className={`${s.col} ${s.colPromo}`}
+                  style={{ animationDelay: "120ms" }}
+                >
+                  <Photo
+                    src={entree.image}
+                    alt={`${entree.titre} — photo d’ambiance`}
+                    legende={entree.titre}
+                    ratio="4 / 3"
+                    sizes="(min-width: 1024px) 25vw, 100vw"
+                  />
+                  <div className={s.promo}>{entree.accroche}</div>
+                  <div>
+                    <Button href={`/univers/${entree.slug}`} onClick={fermer}>
+                      {entree.voirTout}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

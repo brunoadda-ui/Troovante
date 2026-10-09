@@ -174,9 +174,9 @@
   will-change: transform, opacity;
 }
 
+/* Le nombre de colonnes est fixé par le composant : liens, puis deux photos. */
 .panelInner {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: var(--space-xxl);
   max-width: var(--container-max);
   margin: 0 auto;
@@ -209,6 +209,51 @@
 .colLink:hover {
   transform: translateX(4px);
   color: var(--mute);
+}
+
+/* Sans photos cliquables, la photo d'ambiance reste seule, calée à droite. */
+.colPromo {
+  grid-column-end: -1;
+}
+
+/* Deux photos cliquables côte à côte ; l'accroche et le bouton en dessous. */
+.visuels {
+  grid-column: span 2 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: var(--space-lg) var(--space-xxl);
+  min-width: 0;
+  animation: colIn 300ms var(--ease-menu) both;
+}
+
+.photoLien {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+  color: var(--ink);
+}
+
+.photoLien img {
+  transition: transform 400ms var(--ease-menu);
+}
+
+.photoLien:hover img {
+  transform: scale(1.04);
+}
+
+.photoLabel {
+  font: var(--type-body-strong);
+}
+
+.visuelsPied {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md) var(--space-lg);
 }
 
 .promo {
