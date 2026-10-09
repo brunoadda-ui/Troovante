@@ -20,7 +20,7 @@ const TEXTES: Record<Mode, { titre: string; intro: string; envoyer: string }> = 
   achat: {
     titre: "Acheter cette pièce",
     intro:
-      "Laissez-nous vos coordonnées : nous vous rappelons sous 24 heures ouvrées pour organiser le paiement et la livraison. La pièce n’est réservée qu’après cet échange.",
+      "Laissez-nous vos coordonnées : nous vous rappelons sous 24 heures ouvrées pour organiser le paiement et vous indiquer les frais de livraison, qui s’ajoutent au prix. La pièce n’est réservée qu’après cet échange.",
     envoyer: "Envoyer ma demande d’achat",
   },
   question: {

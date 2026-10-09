@@ -239,8 +239,6 @@ const bruts: Brut[] = [
       dimensions:
         "Hauteur 85 cm · Largeur 128 cm · Profondeur 60 cm · 62 kg. Deux tiroirs sans traverse, serrure fonctionnelle livrée avec sa clé.",
       etat: "Très bon état d’usage pour son âge. Restaurations anciennes du placage sur le côté droit, visibles à la lumière rasante. Un éclat comblé à l’arrière gauche du marbre. Bronzes d’origine, patine non retouchée.",
-      livraison:
-        "Enlèvement sous 5 jours, livraison en France sous 10 à 15 jours par transporteur spécialisé mobilier. Retour accepté 14 jours après réception, frais de retour à notre charge.",
     },
   ],
   ["mobilier", "Paire de fauteuils cabriolet en noyer", "France, XIXe siècle", "Atelier Marsan", 2200, { categories: ["Fauteuil & bergère"], epoque: ["XIXe siècle"] }],

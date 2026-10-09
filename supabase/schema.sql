@@ -143,21 +143,29 @@ alter table public.depots    enable row level security;
 grant usage on schema public to anon, authenticated, service_role;
 grant select on public.univers, public.marchands, public.objets to anon, authenticated;
 grant insert on public.demandes to anon, authenticated;
-revoke all on public.depots from anon, authenticated;
 grant all on public.univers, public.marchands, public.objets, public.demandes, public.depots to service_role;
 
-drop policy if exists "Lecture publique des univers" on public.univers;
-create policy "Lecture publique des univers" on public.univers
-  for select to anon, authenticated using (true);
+-- Chaque règle n'est créée que si elle n'existe pas déjà. Aucune règle n'est
+-- écrite pour « depots » : sans règle, la table reste fermée aux visiteurs.
+do $$
+begin
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Lecture publique des univers') then
+    create policy "Lecture publique des univers" on public.univers
+      for select to anon, authenticated using (true);
+  end if;
 
-drop policy if exists "Lecture publique des marchands" on public.marchands;
-create policy "Lecture publique des marchands" on public.marchands
-  for select to anon, authenticated using (true);
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Lecture publique des marchands') then
+    create policy "Lecture publique des marchands" on public.marchands
+      for select to anon, authenticated using (true);
+  end if;
 
-drop policy if exists "Lecture publique des objets publiés" on public.objets;
-create policy "Lecture publique des objets publiés" on public.objets
-  for select to anon, authenticated using (statut = 'publie');
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Lecture publique des objets publiés') then
+    create policy "Lecture publique des objets publiés" on public.objets
+      for select to anon, authenticated using (statut = 'publie');
+  end if;
 
-drop policy if exists "Dépôt public d'une demande" on public.demandes;
-create policy "Dépôt public d'une demande" on public.demandes
-  for insert to anon, authenticated with check (statut = 'nouvelle');
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Dépôt public des demandes') then
+    create policy "Dépôt public des demandes" on public.demandes
+      for insert to anon, authenticated with check (statut = 'nouvelle');
+  end if;
+end $$;

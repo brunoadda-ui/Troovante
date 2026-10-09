@@ -19,7 +19,7 @@ type Props = { params: Promise<{ slug: string }> };
 const GARANTIES = [
   { Icone: BadgeCheck, texte: "Authenticité et datation vérifiées par nos experts" },
   { Icone: ShieldCheck, texte: "Paiement sécurisé, remboursé sous 14 jours après réception" },
-  { Icone: Truck, texte: "Livraison par transporteur spécialisé, emballage sur mesure" },
+  { Icone: Truck, texte: "Expédié par le marchand ; frais de livraison en sus, indiqués avant l’achat" },
 ];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -133,7 +133,7 @@ export default async function PageObjet({ params }: Props) {
           <div className={s.priceBlock}>
             <div className={s.price}>{prix}</div>
             <div className={s.priceNote}>
-              Emballage et livraison en France inclus · Paiement en 3 fois possible
+              Hors frais de livraison · Paiement en 3 fois possible
             </div>
           </div>
 

@@ -11,7 +11,7 @@ export const site = {
   horaires: "Du lundi au samedi, 9h – 19h. Une vraie personne répond.",
   /** Affiché sur la fiche d'un objet qui n'a pas ses propres conditions de livraison. */
   livraisonParDefaut:
-    "Enlèvement sous 5 jours, livraison en France sous 10 à 15 jours par transporteur spécialisé. Retour accepté 14 jours après réception, frais de retour à notre charge.",
+    "L’objet est emballé et expédié par le marchand. Les frais de livraison ne sont pas inclus dans le prix : ils vous sont indiqués avant l’achat. Retour accepté 14 jours après réception.",
 };
 
 /** « 01 84 80 12 34 » → « tel:+33184801234 » */

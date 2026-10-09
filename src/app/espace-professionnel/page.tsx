@@ -67,7 +67,8 @@ const CONDITIONS = [
   {
     Icone: Package,
     titre: "Vous expédiez",
-    texte: "À la vente, c’est vous qui emballez et expédiez la pièce à l’acheteur.",
+    texte:
+      "À la vente, c’est vous qui emballez et expédiez la pièce. Les frais de livraison sont réglés par l’acheteur, en plus du prix.",
   },
 ];
 

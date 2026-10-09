@@ -143,24 +143,32 @@ alter table public.depots    enable row level security;
 grant usage on schema public to anon, authenticated, service_role;
 grant select on public.univers, public.marchands, public.objets to anon, authenticated;
 grant insert on public.demandes to anon, authenticated;
-revoke all on public.depots from anon, authenticated;
 grant all on public.univers, public.marchands, public.objets, public.demandes, public.depots to service_role;
 
-drop policy if exists "Lecture publique des univers" on public.univers;
-create policy "Lecture publique des univers" on public.univers
-  for select to anon, authenticated using (true);
+-- Chaque règle n'est créée que si elle n'existe pas déjà. Aucune règle n'est
+-- écrite pour « depots » : sans règle, la table reste fermée aux visiteurs.
+do $$
+begin
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Lecture publique des univers') then
+    create policy "Lecture publique des univers" on public.univers
+      for select to anon, authenticated using (true);
+  end if;
 
-drop policy if exists "Lecture publique des marchands" on public.marchands;
-create policy "Lecture publique des marchands" on public.marchands
-  for select to anon, authenticated using (true);
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Lecture publique des marchands') then
+    create policy "Lecture publique des marchands" on public.marchands
+      for select to anon, authenticated using (true);
+  end if;
 
-drop policy if exists "Lecture publique des objets publiés" on public.objets;
-create policy "Lecture publique des objets publiés" on public.objets
-  for select to anon, authenticated using (statut = 'publie');
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Lecture publique des objets publiés') then
+    create policy "Lecture publique des objets publiés" on public.objets
+      for select to anon, authenticated using (statut = 'publie');
+  end if;
 
-drop policy if exists "Dépôt public d'une demande" on public.demandes;
-create policy "Dépôt public d'une demande" on public.demandes
-  for insert to anon, authenticated with check (statut = 'nouvelle');
+  if not exists (select 1 from pg_policies where schemaname = 'public' and policyname = 'Dépôt public des demandes') then
+    create policy "Dépôt public des demandes" on public.demandes
+      for insert to anon, authenticated with check (statut = 'nouvelle');
+  end if;
+end $$;
 
 -- =====================================================================
 -- Catalogue de démonstration (fictif, repris de la maquette).
@@ -214,7 +222,7 @@ insert into public.marchands (slug, nom, ville, region, presentation) values
 insert into public.objets (slug, univers_slug, marchand_id, nom, nom_court, origine, signature, prix, statut, attributs, photos, histoire, dimensions, etat, livraison, publie_le) values
   ('commode-louis-xv-en-placage-de-bois-de-rose', 'mobilier', (select id from public.marchands where slug = 'galerie-bertheau'), 'Commode Louis XV en placage de bois de rose', 'Commode Louis XV', 'France, vers 1760', 'Estampillée P. Roussel', 4800, 'publie', '{"categories":["Commode"],"epoque":["XVIIIe siècle"]}'::jsonb, '[{"src":"/images/objets/commode-louis-xv-1.webp","alt":"Commode Louis XV en placage de bois de rose, vue d’ensemble"},{"src":"/images/objets/commode-louis-xv-2.webp","alt":"Commode Louis XV, vue en situation"}]'::jsonb, 'Réalisée à Paris au milieu du XVIIIe siècle, cette commode à façade galbée illustre le goût Louis XV pour les bois exotiques : un placage de bois de rose en frisage, souligné de filets de bois de violette.
 
-Elle provient d’un hôtel particulier bordelais et est restée dans la même famille pendant quatre générations. Le marbre brèche d’Alep est celui d’origine.', 'Hauteur 85 cm · Largeur 128 cm · Profondeur 60 cm · 62 kg. Deux tiroirs sans traverse, serrure fonctionnelle livrée avec sa clé.', 'Très bon état d’usage pour son âge. Restaurations anciennes du placage sur le côté droit, visibles à la lumière rasante. Un éclat comblé à l’arrière gauche du marbre. Bronzes d’origine, patine non retouchée.', 'Enlèvement sous 5 jours, livraison en France sous 10 à 15 jours par transporteur spécialisé mobilier. Retour accepté 14 jours après réception, frais de retour à notre charge.', now() - interval '0 hours')
+Elle provient d’un hôtel particulier bordelais et est restée dans la même famille pendant quatre générations. Le marbre brèche d’Alep est celui d’origine.', 'Hauteur 85 cm · Largeur 128 cm · Profondeur 60 cm · 62 kg. Deux tiroirs sans traverse, serrure fonctionnelle livrée avec sa clé.', 'Très bon état d’usage pour son âge. Restaurations anciennes du placage sur le côté droit, visibles à la lumière rasante. Un éclat comblé à l’arrière gauche du marbre. Bronzes d’origine, patine non retouchée.', null, now() - interval '0 hours')
   on conflict (slug) do nothing;
 insert into public.objets (slug, univers_slug, marchand_id, nom, nom_court, origine, signature, prix, statut, attributs, photos, histoire, dimensions, etat, livraison, publie_le) values
   ('paire-de-fauteuils-cabriolet-en-noyer', 'mobilier', (select id from public.marchands where slug = 'atelier-marsan'), 'Paire de fauteuils cabriolet en noyer', null, 'France, XIXe siècle', null, 2200, 'publie', '{"categories":["Fauteuil & bergère"],"epoque":["XIXe siècle"]}'::jsonb, '[]'::jsonb, null, null, null, null, now() - interval '1 hours')

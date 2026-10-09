@@ -22,8 +22,8 @@ const ENGAGEMENTS = [
   },
   {
     Icone: Truck,
-    titre: "Livraison protégée",
-    texte: "Transporteur spécialisé, emballage sur mesure, retour 14 jours.",
+    titre: "Expédié par le marchand",
+    texte: "Emballé et envoyé par le professionnel. Frais de livraison en sus, retour 14 jours.",
   },
 ];
 
