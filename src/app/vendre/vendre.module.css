@@ -25,9 +25,7 @@
 
 .heroTitle {
   margin: 0;
-  font: var(--weight-medium) clamp(44px, 5vw, 96px) / 0.92 var(--font-campaign);
-  letter-spacing: -0.005em;
-  text-transform: uppercase;
+  font: var(--weight-medium) clamp(42px, 4.6vw, 80px) / 1.02 var(--font-campaign);
 }
 
 .heroLead {

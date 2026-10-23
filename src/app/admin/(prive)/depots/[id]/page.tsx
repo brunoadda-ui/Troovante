@@ -219,6 +219,7 @@ export default async function PageDepot({ params }: Props) {
                 initiale={{
                   nom: depot.titre,
                   universSlug: depot.universSlug ?? "",
+                  attributs: depot.attributs,
                   origine: depot.origine,
                   signature: depot.signature ?? "",
                   prix: depot.prixSouhaite,

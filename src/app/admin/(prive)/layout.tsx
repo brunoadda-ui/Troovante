@@ -17,9 +17,14 @@ export default async function LayoutPrive({ children }: Readonly<{ children: Rea
     <>
       <div className={s.bar}>
         <div className={`container ${s.barInner}`}>
-          <Link href="/admin" className={s.barTitle}>
-            Espace privé · Dépôts
-          </Link>
+          <nav className={s.barNav} aria-label="Espace privé">
+            <Link href="/admin" className={s.barTitle}>
+              Espace privé · Dépôts
+            </Link>
+            <Link href="/admin/reglages" className={s.barLink}>
+              Réglages de l’accueil
+            </Link>
+          </nav>
           <div className={s.barRight}>
             <span>{admin.email}</span>
             <form action={seDeconnecter}>

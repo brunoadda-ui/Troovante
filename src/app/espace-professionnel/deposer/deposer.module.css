@@ -18,26 +18,76 @@
   color: var(--mute);
 }
 
-/* Le formulaire reste étroit pour se lire d'une traite. */
-.inner {
+/* Deux colonnes : la présentation et les conditions à gauche, le formulaire à droite. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+  gap: calc(2 * var(--space-section));
+  align-items: start;
+}
+
+.aside {
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
-  max-width: 820px;
+}
+
+/* Sur un écran assez haut, la colonne de gauche reste visible pendant qu'on descend dans le formulaire. */
+@media (min-height: 760px) {
+  .aside {
+    position: sticky;
+    top: calc(var(--height-primary-nav) + var(--space-xxl));
+  }
 }
 
 .title {
   margin: 0;
-  font: var(--weight-medium) clamp(40px, 4vw, 64px) / 0.95 var(--font-campaign);
-  text-transform: uppercase;
+  font: var(--weight-medium) clamp(36px, 3.4vw, 54px) / 1.05 var(--font-campaign);
 }
 
 .lead {
-  max-width: 60ch;
   margin: 0;
-  font: var(--type-body-lg);
-  color: var(--charcoal);
+  font: var(--type-body-md);
+  color: var(--mute);
   text-wrap: pretty;
+}
+
+.infos {
+  margin: 0;
+  border-top: 1px solid var(--hairline-soft);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding-block: var(--space-lg);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+
+.infoLabel {
+  font: var(--type-caption-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.infoText {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font: var(--type-body-strong);
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.infoLink {
+  width: fit-content;
+  color: var(--ink);
+}
+
+.infoLink:hover {
+  text-decoration: underline;
 }
 
 .form {
@@ -49,7 +99,7 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-xxl);
   padding-top: var(--space-lg);
   border-top: 1px solid var(--ink);
 }
@@ -69,7 +119,7 @@
 .row2,
 .row4 {
   display: grid;
-  gap: var(--space-lg) var(--space-md);
+  gap: var(--space-xxl) var(--space-xl);
   align-items: end;
 }
 
@@ -83,7 +133,7 @@
 
 /* Champ seul sur sa ligne, de la largeur d'une demi-ligne. */
 .half {
-  max-width: calc(50% - var(--space-md) / 2);
+  max-width: calc(50% - var(--space-xl) / 2);
 }
 
 /* ---------- Marchand ou créateur ---------- */
@@ -238,6 +288,18 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-md);
+}
+
+/* Tablette et téléphone : une seule colonne, la présentation au-dessus du formulaire. */
+@media (max-width: 1023px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-section);
+  }
+
+  .aside {
+    position: static;
+  }
 }
 
 @media (max-width: 639px) {

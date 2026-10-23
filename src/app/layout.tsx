@@ -1,26 +1,31 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter } from "next/font/google";
 import Footer from "@/components/Footer/Footer";
-import Header, { type EntreeMenu } from "@/components/Header/Header";
+import type { CSSProperties } from "react";
+import Header, { type EntreeMenu, type ReglageBarre } from "@/components/Header/Header";
 import { lienTelephone, photosMenu, site } from "@/data/site";
 import { getChiffres, getUnivers } from "@/lib/catalogue";
 import { urlOption } from "@/lib/filtres";
 import { compter, formatNombre } from "@/lib/format";
+import { CLASSES_POLICES } from "@/lib/polices";
+import { police } from "@/lib/reglages/css";
+import { lireReglages } from "@/lib/reglages/fichier";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const bebas = Bebas_Neue({ subsets: ["latin"], weight: "400", variable: "--font-bebas", display: "swap" });
 
-export const metadata: Metadata = {
-  title: {
-    default: `${site.nom} — ${site.signature}`,
-    template: `%s — ${site.nom}`,
-  },
-  description:
-    "Antiquités et objets anciens choisis, datés et vérifiés par nos experts, confiés en exclusivité par des marchands professionnels.",
-  // Contenu de démonstration : le site ne doit pas être référencé avant le lancement.
-  robots: { index: false, follow: false },
-};
+/** Le titre de l'onglet du navigateur reprend le slogan réglé pour l'accueil. */
+export async function generateMetadata(): Promise<Metadata> {
+  const slogan = (await lireReglages()).textes.titre.texte.replace(/\s*\n\s*/g, " ").trim() || site.signature;
+  return {
+    title: {
+      default: `${site.nom} — ${slogan}`,
+      template: `%s — ${site.nom}`,
+    },
+    description:
+      "Antiquités et objets anciens choisis, datés et vérifiés par nos experts, confiés en exclusivité par des marchands professionnels.",
+    // Contenu de démonstration : le site ne doit pas être référencé avant le lancement.
+    robots: { index: false, follow: false },
+  };
+}
 
 /** Chaque lien du menu ouvre l'univers avec le filtre correspondant déjà coché. */
 async function construireMenu(): Promise<EntreeMenu[]> {
@@ -49,14 +54,35 @@ async function construireMenu(): Promise<EntreeMenu[]> {
   });
 }
 
+/** Les réglages de la barre de navigation, traduits pour l'en-tête. */
+async function reglageBarre(): Promise<ReglageBarre> {
+  const { barre } = await lireReglages();
+  return {
+    transparente: barre.transparente,
+    liens: barre.liens,
+    style: {
+      "--nom-police": police(barre.nom.police),
+      "--nom-taille": `${barre.nom.taille}px`,
+      "--nom-graisse": barre.nom.graisse,
+      "--nom-espacement": `${barre.nom.espacement / 100}em`,
+      "--nom-decalage": `${barre.nom.decalage}px`,
+      "--liens-police": police(barre.liensStyle.police),
+      "--liens-taille": `${barre.liensStyle.taille}px`,
+      "--liens-graisse": barre.liensStyle.graisse,
+    } as CSSProperties,
+  };
+}
+
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const [menu, barre] = await Promise.all([construireMenu(), reglageBarre()]);
   return (
-    <html lang="fr" className={`${inter.variable} ${bebas.variable}`}>
+    <html lang="fr" className={CLASSES_POLICES}>
       <body>
         <Header
-          menu={await construireMenu()}
+          menu={menu}
           telephone={site.telephone}
           lienTelephone={lienTelephone(site.telephone)}
+          barre={barre}
         />
         <main>{children}</main>
         <Footer />

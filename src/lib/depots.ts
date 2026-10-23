@@ -22,6 +22,8 @@ export type Depot = {
   ville?: string;
   titre: string;
   universSlug?: string;
+  /** Choix des déroulants du formulaire, rangés par clé de liste : { categories: ["Commode"] }. */
+  attributs: Record<string, string[]>;
   description: string;
   origine: string;
   signature?: string;
@@ -52,6 +54,7 @@ type Ligne = {
   ville: string | null;
   titre: string;
   univers_slug: string | null;
+  attributs: Record<string, string[]> | null;
   description: string;
   origine: string;
   signature: string | null;
@@ -81,6 +84,7 @@ const versDepot = (l: Ligne): Depot => ({
   ville: l.ville ?? undefined,
   titre: l.titre,
   universSlug: l.univers_slug ?? undefined,
+  attributs: l.attributs ?? {},
   description: l.description,
   origine: l.origine,
   signature: l.signature ?? undefined,

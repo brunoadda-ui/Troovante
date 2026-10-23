@@ -4,11 +4,13 @@ import { randomUUID } from "node:crypto";
 import { after } from "next/server";
 import { getUnivers } from "@/lib/catalogue";
 import {
+  CHOIX_AUTRE,
   FORMATS_PHOTO,
   PHOTOS_MAX,
   PROFILS,
   STOCKAGE_DEPOTS,
   TAILLE_PHOTO_MAX,
+  listesDeClassement,
   type EnvoiPhoto,
   type ReponseDepot,
   type ReponsePreparation,
@@ -114,7 +116,19 @@ export async function enregistrerDepot(formulaire: FormData): Promise<ReponseDep
   if (formulaire.get("exclusivite") !== "on") return refus("L’engagement d’exclusivité est nécessaire pour déposer un objet.");
   if (formulaire.get("professionnel") !== "on") return refus("Le dépôt est réservé aux professionnels.");
 
-  if (!(await getUnivers()).some((u) => u.slug === universSlug)) return refus("Choisissez l’univers de l’objet.");
+  const univers = (await getUnivers()).find((u) => u.slug === universSlug);
+  if (!univers) return refus("Choisissez la catégorie de l’objet.");
+
+  // Un choix par déroulant. « Autre », ou une valeur retirée de la liste entre-temps, n'est pas gardé.
+  const attributs: Record<string, string[]> = {};
+  for (const [rang, groupe] of listesDeClassement(univers.slug, univers.filtres).entries()) {
+    const choix = champ(formulaire, `attribut:${groupe.cle}`, 200);
+    if (!choix) {
+      return refus(rang === 0 ? "Choisissez la sous-catégorie de l’objet." : `Choisissez une valeur pour « ${groupe.label} ».`);
+    }
+    if (choix !== CHOIX_AUTRE && groupe.options.includes(choix)) attributs[groupe.cle] = [choix];
+  }
+
   if (!UUID.test(depotId)) return refus("Les photos n’ont pas été reçues. Réessayez l’envoi.");
   if (!supabaseAdminConfigure) return refus(NON_BRANCHE);
 
@@ -143,6 +157,7 @@ export async function enregistrerDepot(formulaire: FormData): Promise<ReponseDep
     ville: ville || null,
     titre,
     univers_slug: universSlug,
+    attributs,
     description,
     origine,
     signature: signature || null,

@@ -32,6 +32,23 @@
   text-transform: uppercase;
 }
 
+.barNav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-xl);
+}
+
+.barLink {
+  color: var(--stone);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.barLink:hover {
+  color: var(--canvas);
+}
+
 .barRight {
   display: flex;
   flex-wrap: wrap;

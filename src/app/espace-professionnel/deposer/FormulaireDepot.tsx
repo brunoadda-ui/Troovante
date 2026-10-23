@@ -5,46 +5,27 @@ import { useRef, useState, type FormEvent } from "react";
 import { ImagePlus, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import f from "@/components/ui/form.module.css";
-import { FORMATS_PHOTO, PHOTOS_MAX, PROFILS, STOCKAGE_DEPOTS, TAILLE_PHOTO_MAX } from "@/lib/depot";
+import {
+  CHOIX_AUTRE,
+  FORMATS_PHOTO,
+  PHOTOS_MAX,
+  PROFILS,
+  STOCKAGE_DEPOTS,
+  TAILLE_PHOTO_MAX,
+  listesDeClassement,
+} from "@/lib/depot";
 import { supabase } from "@/lib/supabase";
+import { alleger } from "@/lib/imagesNavigateur";
+import type { GroupeFiltres } from "@/lib/types";
 import { enregistrerDepot, preparerEnvoi } from "../actions";
 import s from "./deposer.module.css";
 
 type PhotoChoisie = { fichier: File; apercu: string };
 
-const COTE_MAX = 2560;
+type Props = { univers: { slug: string; nom: string; filtres: GroupeFiltres[] }[] };
 
-/**
- * Réduit une photo trop lourde avant l'envoi (les téléphones produisent des
- * fichiers de 5 à 10 Mo). En cas de souci, la photo d'origine est gardée.
- */
-async function alleger(fichier: File): Promise<File> {
-  try {
-    const image = await createImageBitmap(fichier, { imageOrientation: "from-image" });
-    const echelle = Math.min(1, COTE_MAX / Math.max(image.width, image.height));
-    if (echelle === 1 && fichier.size < 3 * 1024 * 1024) {
-      image.close();
-      return fichier;
-    }
-    const toile = document.createElement("canvas");
-    toile.width = Math.round(image.width * echelle);
-    toile.height = Math.round(image.height * echelle);
-    const dessin = toile.getContext("2d");
-    if (!dessin) return fichier;
-    // Fond blanc : une image à fond transparent deviendrait noire en JPEG.
-    dessin.fillStyle = "#ffffff";
-    dessin.fillRect(0, 0, toile.width, toile.height);
-    dessin.drawImage(image, 0, 0, toile.width, toile.height);
-    image.close();
-    const blob = await new Promise<Blob | null>((fini) => toile.toBlob(fini, "image/jpeg", 0.9));
-    if (!blob) return fichier;
-    return new File([blob], `${fichier.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg" });
-  } catch {
-    return fichier;
-  }
-}
-
-export default function FormulaireDepot({ univers }: { univers: { slug: string; nom: string }[] }) {
+export default function FormulaireDepot({ univers }: Props) {
+  const [universSlug, setUniversSlug] = useState("");
   const [photos, setPhotos] = useState<PhotoChoisie[]>([]);
   const [phase, setPhase] = useState<"saisie" | "envoi" | "termine">("saisie");
   const [avancement, setAvancement] = useState("");
@@ -118,6 +99,7 @@ export default function FormulaireDepot({ univers }: { univers: { slug: string; 
 
       photos.forEach((p) => URL.revokeObjectURL(p.apercu));
       setPhotos([]);
+      setUniversSlug("");
       setPhase("termine");
       hautDePage.current?.scrollIntoView({ block: "start" });
     } catch {
@@ -144,6 +126,8 @@ export default function FormulaireDepot({ univers }: { univers: { slug: string; 
   }
 
   const enEnvoi = phase === "envoi";
+  const choisi = univers.find((u) => u.slug === universSlug);
+  const listes = choisi ? listesDeClassement(choisi.slug, choisi.filtres) : [];
 
   return (
     <div ref={hautDePage}>
@@ -202,8 +186,8 @@ export default function FormulaireDepot({ univers }: { univers: { slug: string; 
               <input type="text" name="titre" required maxLength={160} placeholder="Commode en noyer à façade galbée" />
             </label>
             <label className={f.field}>
-              Univers
-              <select name="univers" required defaultValue="">
+              Catégorie
+              <select name="univers" required value={universSlug} onChange={(e) => setUniversSlug(e.target.value)}>
                 <option value="" disabled>
                   Choisir…
                 </option>
@@ -214,6 +198,34 @@ export default function FormulaireDepot({ univers }: { univers: { slug: string; 
                 ))}
               </select>
             </label>
+          </div>
+          {/* Les listes de la catégorie choisie : celles du menu de l'accueil, la sous-catégorie en premier. */}
+          <div className={s.row2}>
+            {listes.length === 0 ? (
+              <label className={f.field}>
+                Sous-catégorie
+                <select disabled defaultValue="">
+                  <option value="">Choisissez d’abord la catégorie</option>
+                </select>
+              </label>
+            ) : (
+              listes.map((groupe, rang) => (
+                <label key={`${universSlug}-${groupe.cle}`} className={f.field}>
+                  {rang === 0 ? "Sous-catégorie" : groupe.label}
+                  <select name={`attribut:${groupe.cle}`} required defaultValue="">
+                    <option value="" disabled>
+                      Choisir…
+                    </option>
+                    {groupe.options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                    <option value={CHOIX_AUTRE}>Autre / je ne sais pas</option>
+                  </select>
+                </label>
+              ))
+            )}
           </div>
           <label className={f.field}>
             Description

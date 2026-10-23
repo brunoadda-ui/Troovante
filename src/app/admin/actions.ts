@@ -14,6 +14,9 @@ import type { PhotoObjet } from "@/lib/types";
 
 export type EtatAction = { statut: "initial" } | { statut: "erreur"; message: string };
 
+/** Résultat d'une publication : réussie, ou refusée avec son motif. */
+export type EtatPublication = EtatAction | { statut: "publie" };
+
 const erreur = (message: string): EtatAction => ({ statut: "erreur", message });
 
 const champ = (formulaire: FormData, nom: string, longueurMax: number) =>
@@ -59,9 +62,22 @@ export async function seDeconnecter() {
  * Publie un dépôt : crée l'objet au catalogue (et le marchand s'il est
  * nouveau), copie les photos retenues dans le stockage public.
  */
-export async function publierDepot(_precedent: EtatAction, formulaire: FormData): Promise<EtatAction> {
+export async function publierDepot(_precedent: EtatAction, formulaire: FormData): Promise<EtatPublication> {
   await exigerAdmin();
 
+  // Toute erreur imprévue est renvoyée avec son motif, pour s'afficher sous le bouton
+  // au lieu de remplacer la page par un écran d'erreur générique.
+  try {
+    return await publierSansControle(formulaire);
+  } catch (probleme) {
+    const motif = probleme instanceof Error ? probleme.message : String(probleme);
+    console.error("Publication d'un dépôt impossible :", probleme);
+    return erreur(`Publication impossible : ${motif}`);
+  }
+}
+
+/** La publication elle-même. À n'appeler qu'après exigerAdmin(). */
+async function publierSansControle(formulaire: FormData): Promise<EtatPublication> {
   const depot = await lireDepot(champ(formulaire, "id", 40));
   if (!depot) return erreur("Ce dépôt est introuvable.");
   if (depot.statut === "publie") return erreur("Ce dépôt est déjà publié.");
@@ -83,7 +99,7 @@ export async function publierDepot(_precedent: EtatAction, formulaire: FormData)
   if (!marchandNom) return erreur("Indiquez le nom public du marchand ou du créateur.");
 
   const univers = (await getUnivers()).find((u) => u.slug === universSlug);
-  if (!univers) return erreur("Choisissez l’univers de l’objet.");
+  if (!univers) return erreur("Choisissez la catégorie de l’objet.");
 
   // Caractéristiques cochées : on ne garde que celles qui existent dans l'univers choisi.
   const attributs: Record<string, string[]> = {};
@@ -169,12 +185,12 @@ export async function publierDepot(_precedent: EtatAction, formulaire: FormData)
     return erreur(`La fiche est en ligne, mais le dépôt n’a pas pu être marqué comme publié : ${suivi.error.message}`);
   }
 
-  redirect(`/admin/depots/${depot.id}`);
+  return { statut: "publie" };
 }
 
 /**
  * Lance (ou relance) la mise en situation d'un dépôt, avec le décor choisi.
- * L'action attend la fin de la génération : compter jusqu'à une minute.
+ * L'action attend la fin de la génération (jusqu'à une minute) ; la page se recharge ensuite.
  */
 export async function relancerMiseEnSituation(formulaire: FormData) {
   await exigerAdmin();
@@ -182,8 +198,8 @@ export async function relancerMiseEnSituation(formulaire: FormData) {
   const depot = await lireDepot(champ(formulaire, "id", 40));
   if (!depot) redirect("/admin");
 
+  // Ne lève jamais d'erreur : le résultat (image ou motif d'échec) est noté dans le dépôt.
   await mettreEnSituation(depot.id, champ(formulaire, "decor", 40) || undefined);
-  redirect(`/admin/depots/${depot.id}`);
 }
 
 /** Refuse un dépôt (avec une note interne facultative), ou le remet en attente. */

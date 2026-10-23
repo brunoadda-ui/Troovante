@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ChevronDown, ChevronRight, Heart, Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState, useSyncExternalStore, type CSSProperties } from "react";
+import { ChevronRight, Heart, Menu, Search, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import IconButton from "@/components/ui/IconButton";
 import Photo from "@/components/ui/Photo";
@@ -27,20 +27,69 @@ export type EntreeMenu = {
   colonnes: { label: string; liens: { label: string; href: string }[] }[];
 };
 
+/** Réglages de la barre (voir /admin/reglages). */
+export type ReglageBarre = {
+  /** Barre posée sur la photo de l'accueil, en blanc, jusqu'au premier défilement. */
+  transparente: boolean;
+  /** Liens dans l'ordre : slugs d'univers et « espace-professionnel », avec leur titre éventuellement renommé. */
+  liens: { cle: string; afficher: boolean; libelle?: string }[];
+  /** Variables CSS du nom TROOVANTE et des liens (police, taille, épaisseur, espacement). */
+  style: CSSProperties;
+};
+
 type Props = {
   menu: EntreeMenu[];
   telephone: string;
   lienTelephone: string;
+  barre: ReglageBarre;
 };
+
+type LienBarre = { cle: string; label: string; href: string; entree?: EntreeMenu };
+
+/** Les liens à afficher, dans l'ordre réglé. Un univers absent des réglages s'ajoute à la fin. */
+function liensAffiches(menu: EntreeMenu[], reglage: ReglageBarre["liens"]): LienBarre[] {
+  const ordre = [...reglage];
+  for (const m of menu) if (!ordre.some((l) => l.cle === m.slug)) ordre.push({ cle: m.slug, afficher: true });
+  if (!ordre.some((l) => l.cle === "espace-professionnel")) ordre.push({ cle: "espace-professionnel", afficher: true });
+
+  return ordre.flatMap((lien): LienBarre[] => {
+    if (!lien.afficher) return [];
+    if (lien.cle === "espace-professionnel") {
+      return [{ cle: lien.cle, label: lien.libelle || "Espace professionnel", href: "/espace-professionnel" }];
+    }
+    const entree = menu.find((m) => m.slug === lien.cle);
+    return entree ? [{ cle: entree.slug, label: lien.libelle || entree.nom, href: `/univers/${entree.slug}`, entree }] : [];
+  });
+}
 
 const PLACEHOLDER_RECHERCHE = "Rechercher un objet, un style, une époque";
 
-export default function Header({ menu, telephone, lienTelephone }: Props) {
+/** Vrai dès que la page a défilé de quelques pixels. Faux côté serveur. */
+function useADefile(): boolean {
+  return useSyncExternalStore(
+    (surChangement) => {
+      window.addEventListener("scroll", surChangement, { passive: true });
+      return () => window.removeEventListener("scroll", surChangement);
+    },
+    () => window.scrollY > 24,
+    () => false,
+  );
+}
+
+export default function Header({ menu, telephone, lienTelephone, barre }: Props) {
   // Univers dont le grand menu est déplié (ordinateur).
   const [ouvert, setOuvert] = useState<string | null>(null);
   // Menu plein écran (mobile et tablette).
   const [tiroir, setTiroir] = useState(false);
   const nombreFavoris = useFavoris().length;
+  const chemin = usePathname();
+  const aDefile = useADefile();
+
+  // Sur l'accueil, la barre est posée sur la photo, transparente, en blanc.
+  // Elle redevient blanche dès qu'on fait défiler la page ou qu'un menu s'ouvre.
+  const accueil = chemin === "/";
+  const transparente = accueil && barre.transparente && !aDefile && !ouvert;
+  const liens = liensAffiches(menu, barre.liens);
 
   const fermer = () => setOuvert(null);
   const fermerTiroir = () => setTiroir(false);
@@ -71,7 +120,12 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
   }, [tiroir]);
 
   return (
-    <header>
+    <header
+      className={[s.header, accueil && barre.transparente ? s.headerAccueil : "", transparente ? s.transparent : ""]
+        .filter(Boolean)
+        .join(" ")}
+      style={barre.style}
+    >
       <div
         className={s.navWrap}
         onMouseLeave={fermer}
@@ -81,33 +135,46 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
       >
         <div className={s.bar}>
           <Link href="/" className={s.logo} onClick={fermer} aria-label="TROOVANTE — accueil">
-            <Image src="/images/troovante-logo.png" alt="" width={45} height={34} className={s.logoImg} priority />
             <span className={s.wordmark}>TROOVANTE</span>
           </Link>
 
           <nav className={s.links} aria-label="Univers">
-            {menu.map((m) => (
-              <Link
-                key={m.slug}
-                href={`/univers/${m.slug}`}
-                className={s.navLink}
-                data-open={ouvert === m.slug}
-                aria-expanded={ouvert === m.slug}
-                onMouseEnter={() => setOuvert(m.slug)}
-                onFocus={() => setOuvert(m.slug)}
-                onClick={fermer}
-              >
-                {m.nom}
-                <ChevronDown size={18} strokeWidth={1.5} aria-hidden="true" className={s.caret} />
-              </Link>
-            ))}
-            <Link href="/espace-professionnel" className={s.navLink} onMouseEnter={fermer} onFocus={fermer}>
-              Espace professionnel
-            </Link>
+            {liens.map((lien) =>
+              lien.entree ? (
+                <Link
+                  key={lien.cle}
+                  href={lien.href}
+                  className={s.navLink}
+                  data-open={ouvert === lien.cle}
+                  aria-expanded={ouvert === lien.cle}
+                  aria-current={chemin.startsWith(lien.href) ? "page" : undefined}
+                  onMouseEnter={() => setOuvert(lien.cle)}
+                  onFocus={() => setOuvert(lien.cle)}
+                  onClick={fermer}
+                >
+                  {lien.label}
+                </Link>
+              ) : (
+                <Link
+                  key={lien.cle}
+                  href={lien.href}
+                  className={s.navLink}
+                  onMouseEnter={fermer}
+                  onFocus={fermer}
+                  aria-current={chemin.startsWith(lien.href) ? "page" : undefined}
+                >
+                  {lien.label}
+                </Link>
+              ),
+            )}
           </nav>
 
           <div className={s.tools}>
             <SearchPill placeholder={PLACEHOLDER_RECHERCHE} className={s.searchDesktop} />
+            {/* Sur téléphone et tablette, la loupe ouvre la page de recherche. */}
+            <Link href="/recherche" className={s.searchLink} aria-label="Rechercher" onClick={fermer}>
+              <Search size={20} strokeWidth={1.5} aria-hidden="true" />
+            </Link>
             <Link
               href="/favoris"
               className={s.favoris}
@@ -122,7 +189,6 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
             </IconButton>
           </div>
 
-          <SearchPill placeholder={PLACEHOLDER_RECHERCHE} className={s.searchMobile} />
         </div>
 
         {entree && (
@@ -197,7 +263,6 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
         <div className={s.drawer} role="dialog" aria-modal="true" aria-label="Menu">
           <div className={s.drawerTop}>
             <Link href="/" className={s.logo} onClick={fermerTiroir} aria-label="TROOVANTE — accueil">
-              <Image src="/images/troovante-logo.png" alt="" width={45} height={34} className={s.logoImg} />
               <span className={s.wordmark}>TROOVANTE</span>
             </Link>
             <IconButton label="Fermer le menu" onClick={fermerTiroir}>
@@ -206,19 +271,15 @@ export default function Header({ menu, telephone, lienTelephone }: Props) {
           </div>
 
           <nav className={s.drawerNav} aria-label="Univers">
-            {menu.map((m) => (
-              <Link key={m.slug} href={`/univers/${m.slug}`} className={s.drawerLink} onClick={fermerTiroir}>
+            {liens.map((lien) => (
+              <Link key={lien.cle} href={lien.href} className={s.drawerLink} onClick={fermerTiroir}>
                 <span>
-                  {m.nom}
-                  <span className={s.drawerCount}>{m.nombreObjets}</span>
+                  {lien.label}
+                  {lien.entree && <span className={s.drawerCount}>{lien.entree.nombreObjets}</span>}
                 </span>
                 <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
               </Link>
             ))}
-            <Link href="/espace-professionnel" className={s.drawerLink} onClick={fermerTiroir}>
-              Espace professionnel
-              <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
-            </Link>
           </nav>
 
           <div className={s.drawerFoot}>

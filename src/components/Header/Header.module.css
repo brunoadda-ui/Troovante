@@ -1,4 +1,18 @@
-/* ---------- Navigation principale ---------- */
+/* ---------- En-tête ---------- */
+
+/* La barre reste visible en haut de l'écran quand on fait défiler la page. */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+/* Sur l'accueil, elle est posée sur la photo au lieu de la précéder. */
+.headerAccueil {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
 
 .navWrap {
   position: relative;
@@ -7,88 +21,113 @@
 
 .bar {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-sm) var(--space-xl);
-  min-height: var(--height-primary-nav);
+  min-height: 64px;
   padding: var(--space-sm) var(--gutter-page);
+  color: var(--ink);
   background: var(--canvas);
-  border-bottom: 1px solid var(--hairline-soft);
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
 }
 
+/* Barre transparente : texte blanc, et un léger voile sombre en haut de la
+   photo pour qu'il reste lisible sur les zones claires. */
+.transparent .bar {
+  color: var(--canvas);
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0));
+}
+
+/* Le nom est décalé vers la droite selon les réglages (--nom-decalage). */
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
   flex: 0 0 auto;
+  margin-left: var(--nom-decalage, 0px);
 }
 
-.logoImg {
-  display: block;
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  /* Le fond crème du logo se fond dans le blanc de la barre. */
-  mix-blend-mode: multiply;
-}
-
+/* « TROOVANTE » en capitales fines et très espacées. */
+/* Police, taille, épaisseur et espacement viennent des réglages (variables --nom-…). */
 .wordmark {
-  font: var(--weight-medium) 22px / 1 var(--font-campaign);
-  letter-spacing: 0.12em;
-  color: var(--ink);
+  font: var(--nom-graisse, 300) var(--nom-taille, 21px) / 1 var(--nom-police, var(--font-wordmark));
+  letter-spacing: var(--nom-espacement, 0.34em);
+  /* L'espacement s'ajoute aussi après la dernière lettre : on le compense. */
+  margin-right: calc(-1 * var(--nom-espacement, 0.34em));
+  color: inherit;
 }
 
 .links {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-xl);
   flex: 1 1 auto;
   min-width: 0;
-  margin: 0 auto;
   padding: var(--space-xs) 0;
   overflow-x: auto;
   scrollbar-width: none;
 }
 
 .navLink {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 0 2px;
-  font: var(--type-body-strong);
-  color: var(--ink);
-  border-bottom: 2px solid transparent;
+  padding: 6px 0;
+  font: var(--liens-graisse, 400) var(--liens-taille, 15px) / 1.4 var(--liens-police, var(--font-ui));
+  color: inherit;
   white-space: nowrap;
-  transition: border-color 150ms ease;
 }
 
-.navLink:hover,
-.navLink[data-open="true"] {
-  border-bottom-color: var(--ink);
+/* Un trait fin sous le lien survolé ou la page en cours : il se dessine de
+   gauche à droite à l'arrivée de la souris, et se retire vers la droite à son départ. */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 450ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.caret {
-  transition: transform 200ms var(--ease-menu);
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink[data-open="true"]::after,
+.navLink[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left center;
 }
 
-.navLink[data-open="true"] .caret {
-  transform: rotate(180deg);
+@media (prefers-reduced-motion: reduce) {
+  .navLink::after {
+    transition: none;
+  }
 }
 
 .tools {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
   flex: 0 0 auto;
 }
 
 .tools .burger,
-.bar .searchMobile {
+.tools .searchLink {
   display: none;
 }
 
-/* Lien « Mes favoris » : un cœur, et le nombre de favoris dans une pastille. */
-.favoris {
+.tools .burger {
+  color: inherit;
+}
+
+/* Liens « Mes favoris » et loupe (téléphone) : une icône dans un rond de 40px. */
+.favoris,
+.searchLink {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -96,12 +135,13 @@
   flex: 0 0 auto;
   width: 40px;
   height: 40px;
-  color: var(--ink);
+  color: inherit;
   border-radius: var(--radius-full);
   transition: opacity var(--duration-press) var(--ease-press);
 }
 
-.favoris:active {
+.favoris:active,
+.searchLink:active {
   opacity: var(--press-opacity);
 }
 
@@ -121,44 +161,44 @@
   border-radius: var(--radius-full);
 }
 
-/* Sur les écrans d'ordinateur portable, la barre n'a pas la place d'afficher
-   le champ de recherche en entier : il se réduit à sa loupe et se déplie,
-   par-dessus les liens, quand on clique dessus. */
-@media (min-width: 1280px) and (max-width: 1519px) {
-  .tools {
-    position: relative;
-  }
+.transparent .count {
+  color: var(--ink);
+  background: var(--canvas);
+}
 
-  .tools .searchDesktop {
-    justify-content: center;
-    gap: 0;
-    width: 40px;
-    padding: 8px 0;
-    background: transparent;
-    cursor: pointer;
-  }
+/* La recherche se réduit à sa loupe, comme sur le modèle, et se déplie
+   par-dessus les liens quand on clique dessus. */
+.tools .searchDesktop {
+  justify-content: center;
+  gap: 0;
+  width: 40px;
+  padding: 8px 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
 
-  .tools .searchDesktop input {
-    width: 0;
-  }
+.tools .searchDesktop input {
+  width: 0;
+}
 
-  .tools .searchDesktop:focus-within {
-    position: absolute;
-    top: 0;
-    /* Juste à gauche du bouton Favoris. */
-    right: 48px;
-    z-index: 2;
-    justify-content: flex-start;
-    gap: var(--space-sm);
-    width: 340px;
-    padding: 8px 16px;
-    background: var(--canvas);
-    cursor: text;
-  }
+.tools .searchDesktop:focus-within {
+  position: absolute;
+  top: 0;
+  /* Juste à gauche du bouton Favoris. */
+  right: 44px;
+  z-index: 2;
+  justify-content: flex-start;
+  gap: var(--space-sm);
+  width: 340px;
+  padding: 8px 16px;
+  color: var(--ink);
+  background: var(--canvas);
+  cursor: text;
+}
 
-  .tools .searchDesktop:focus-within input {
-    width: 100%;
-  }
+.tools .searchDesktop:focus-within input {
+  width: 100%;
 }
 
 /* ---------- Grand menu déroulant ---------- */
@@ -357,7 +397,7 @@
 }
 
 /* Sous 1280px, les sept liens ne tiennent plus sur une ligne : la navigation
-   passe dans le menu plein écran et la recherche occupe toute la largeur. */
+   passe dans le menu plein écran, et la loupe mène à la page de recherche. */
 @media (max-width: 1279px) {
   .links,
   .tools .searchDesktop,
@@ -365,25 +405,24 @@
     display: none;
   }
 
-  .tools .burger {
+  .tools .burger,
+  .tools .searchLink {
     display: inline-flex;
   }
 
   .bar {
     justify-content: space-between;
     gap: var(--space-sm);
+    min-height: 56px;
   }
 
-  .bar .searchMobile {
-    display: inline-flex;
-    flex: 1 1 100%;
-    width: 100%;
-    margin-bottom: var(--space-xs);
+  .wordmark {
+    font-size: calc(var(--nom-taille, 21px) * 0.86);
   }
 
-  .bar .searchMobile:focus-within {
-    width: 100%;
-    box-shadow: none;
+  /* Sur un petit écran, la place manque : le décalage est réduit de moitié. */
+  .logo {
+    margin-left: calc(var(--nom-decalage, 0px) / 2);
   }
 }
 

@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
 import Button from "@/components/ui/Button";
 import f from "@/components/ui/form.module.css";
+import { listesDeClassement } from "@/lib/depot";
 import type { GroupeFiltres } from "@/lib/types";
 import { publierDepot, type EtatAction } from "../../../actions";
 import s from "../../../admin.module.css";
@@ -11,6 +13,8 @@ import s from "../../../admin.module.css";
 export type FicheInitiale = {
   nom: string;
   universSlug: string;
+  /** Choix du professionnel dans les déroulants, cochés d'office. */
+  attributs: Record<string, string[]>;
   origine: string;
   signature: string;
   prix: number;
@@ -30,6 +34,13 @@ type Props = {
 
 const INITIAL: EtatAction = { statut: "initial" };
 
+/** Les redirections de Next.js voyagent comme des erreurs marquées « NEXT_REDIRECT ». */
+const estRedirection = (probleme: unknown) =>
+  typeof probleme === "object" &&
+  probleme !== null &&
+  "digest" in probleme &&
+  String((probleme as { digest: unknown }).digest).startsWith("NEXT_REDIRECT");
+
 /**
  * La fiche telle qu'elle paraîtra sur le site, préremplie avec la saisie du
  * professionnel. TROOVANTE la corrige, choisit les photos, puis publie.
@@ -38,7 +49,10 @@ export default function FichePublication({ depotId, initiale, univers, photos }:
   const [universSlug, setUniversSlug] = useState(initiale.universSlug);
   const [etat, setEtat] = useState<EtatAction>(INITIAL);
   const [enCours, demarrer] = useTransition();
-  const groupes = univers.find((u) => u.slug === universSlug)?.filtres ?? [];
+  const router = useRouter();
+  const groupes = listesDeClassement(universSlug, univers.find((u) => u.slug === universSlug)?.filtres ?? []);
+  // Les choix du professionnel ne valent que pour la catégorie qu'il a choisie.
+  const choixDuPro = universSlug === initiale.universSlug ? initiale.attributs : {};
 
   // Envoi « à la main » plutôt que par l'attribut action du formulaire : en cas
   // de refus, les corrections déjà saisies restent en place.
@@ -46,7 +60,19 @@ export default function FichePublication({ depotId, initiale, univers, photos }:
     evenement.preventDefault();
     const donnees = new FormData(evenement.currentTarget);
     demarrer(async () => {
-      setEtat(await publierDepot(INITIAL, donnees));
+      try {
+        const resultat = await publierDepot(INITIAL, donnees);
+        // Publié : la page se recharge et affiche le lien vers la fiche.
+        if (resultat.statut === "publie") router.refresh();
+        else setEtat(resultat);
+      } catch (probleme) {
+        // Une session expirée renvoie vers la connexion : on laisse Next.js s'en charger.
+        if (estRedirection(probleme)) throw probleme;
+        setEtat({
+          statut: "erreur",
+          message: "Le serveur n’a pas répondu. Rechargez la page et réessayez.",
+        });
+      }
     });
   };
 
@@ -61,7 +87,7 @@ export default function FichePublication({ depotId, initiale, univers, photos }:
 
       <div className={s.row2}>
         <label className={f.field}>
-          Univers
+          Catégorie
           <select name="univers" required value={universSlug} onChange={(e) => setUniversSlug(e.target.value)}>
             <option value="" disabled>
               Choisir…
@@ -79,15 +105,20 @@ export default function FichePublication({ depotId, initiale, univers, photos }:
         </label>
       </div>
 
-      {groupes.map((groupe) => (
+      {groupes.map((groupe, rang) => (
         <fieldset key={`${universSlug}-${groupe.cle}`} className={s.group}>
           <legend className={s.groupLabel}>
-            {groupe.label} <span className={f.optional}>(filtres du site)</span>
+            {rang === 0 ? "Sous-catégorie" : groupe.label} <span className={f.optional}>(filtres du site)</span>
           </legend>
           <div className={s.options}>
             {groupe.options.map((option) => (
               <label key={option} className={s.option}>
-                <input type="checkbox" name={`attribut:${groupe.cle}`} value={option} />
+                <input
+                  type="checkbox"
+                  name={`attribut:${groupe.cle}`}
+                  value={option}
+                  defaultChecked={choixDuPro[groupe.cle]?.includes(option)}
+                />
                 {option}
               </label>
             ))}

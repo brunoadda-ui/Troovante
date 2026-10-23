@@ -1,11 +1,17 @@
-/* Champs de formulaire sur fond clair : carrés, filet gris, contour noir à la saisie. */
+/*
+ * Champs de formulaire : libellé en petites capitales espacées, saisie sans
+ * cadre posée sur un simple filet, qui s'épaissit et noircit à la saisie.
+ */
 
 .field {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
   min-width: 0;
-  font: var(--type-body-strong);
+  font: var(--type-caption-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--charcoal);
 }
 
 .field input,
@@ -13,36 +19,69 @@
 .field select {
   width: 100%;
   min-width: 0;
-  padding: 0 var(--space-md);
+  padding: 0;
   font: var(--type-body-md);
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--ink);
-  background: var(--canvas);
-  border: 1px solid var(--hairline);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--hairline);
   border-radius: var(--radius-none);
 }
 
 .field input,
 .field select {
-  height: 48px;
+  height: 44px;
 }
 
 .field textarea {
-  padding-block: var(--space-md);
+  padding-block: var(--space-sm);
   resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--stone);
+}
+
+/* Déroulant : flèche dessinée à droite, à la place de celle du navigateur. */
+.field select {
+  padding-right: var(--space-xl);
+  appearance: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")
+    no-repeat right center / 16px;
+  cursor: pointer;
+}
+
+/* Tant que rien n'est choisi, « Choisir… » s'affiche en gris, comme une indication. */
+.field select:invalid,
+.field select:disabled {
+  color: var(--mute);
+}
+
+.field select:disabled {
+  cursor: not-allowed;
+}
+
+.field select option {
+  color: var(--ink);
 }
 
 .field input:focus-visible,
 .field textarea:focus-visible,
 .field select:focus-visible {
   outline: none;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 1px var(--ink);
+  border-bottom-color: var(--ink);
+  box-shadow: 0 1px 0 0 var(--ink);
 }
 
 /* Précision sous le libellé d'un champ. */
 .hint {
   font: var(--type-caption-md);
   font-weight: var(--weight-regular);
+  letter-spacing: normal;
+  text-transform: none;
   color: var(--mute);
 }
 

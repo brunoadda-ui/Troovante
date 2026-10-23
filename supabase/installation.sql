@@ -90,6 +90,8 @@ create table if not exists public.depots (
   -- L'objet, tel que décrit par le professionnel
   titre             text not null,
   univers_slug      text references public.univers (slug) on update cascade on delete set null,
+  -- Sous-catégorie et autres listes choisies dans le formulaire : { "categories": ["Commode"], "epoque": [...] }
+  attributs         jsonb not null default '{}',
   description       text not null,
   origine           text not null,
   signature         text,
@@ -114,6 +116,9 @@ create table if not exists public.depots (
   note_interne      text,
   created_at        timestamptz not null default now()
 );
+
+-- Colonnes ajoutées après la création de la table : complète une base déjà installée.
+alter table public.depots add column if not exists attributs jsonb not null default '{}';
 
 create index if not exists depots_suivi_idx on public.depots (statut, created_at desc);
 

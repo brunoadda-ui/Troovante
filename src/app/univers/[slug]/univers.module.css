@@ -42,8 +42,7 @@
 
 .title {
   margin: 0;
-  font: var(--weight-medium) 44px / 0.95 var(--font-campaign);
-  text-transform: uppercase;
+  font: var(--weight-medium) 44px / 1.05 var(--font-campaign);
   text-wrap: pretty;
 }
 

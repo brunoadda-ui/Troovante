@@ -1,55 +1,8 @@
-/* ---------- Visuel d'ouverture ---------- */
+/* Le visuel d'ouverture a sa propre feuille de style : components/Accueil/Visuel.module.css. */
 
-.hero {
-  position: relative;
-  width: 100%;
-  /* Proportions de la photo : elle s'affiche en entier. */
-  aspect-ratio: 1672 / 941;
-  background: var(--hero-backdrop);
-  overflow: hidden;
-}
-
-.heroImg {
-  object-fit: cover;
-  object-position: center;
-}
-
-/* ---------- Promesse et boutons ---------- */
-
-.intro {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-xl);
-  padding-top: var(--space-xxl);
-}
-
-.introText {
-  max-width: 60ch;
-  margin: 0;
-  font: var(--type-body-md);
-  color: var(--charcoal);
-  text-wrap: pretty;
-}
-
-.introActions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.textLink {
-  padding: 16px 0;
-  font: var(--type-button-md);
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-.textLink:hover {
-  color: var(--mute);
+/* La barre fixe ne doit pas masquer le titre de la section visée par le bouton. */
+.ancre {
+  scroll-margin-top: 72px;
 }
 
 /* ---------- Trois engagements ---------- */
@@ -148,9 +101,7 @@
 }
 
 .styleTitle {
-  font: var(--weight-medium) 32px / 1 var(--font-campaign);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font: var(--weight-medium) 34px / 1.05 var(--font-campaign);
 }
 
 /* ---------- Nos marchands ---------- */
@@ -215,20 +166,6 @@
 /* ---------- Téléphone ---------- */
 
 @media (max-width: 639px) {
-  /* Cadrage vertical centré sur le logo et la signature, qui resteraient
-     illisibles si la photo était simplement réduite à la largeur de l'écran. */
-  .hero {
-    aspect-ratio: 4 / 5;
-  }
-
-  .intro {
-    padding-top: var(--space-xl);
-  }
-
-  .introActions {
-    width: 100%;
-  }
-
   /* Deux cartes par ligne, quelle que soit la largeur du téléphone. */
   .productGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

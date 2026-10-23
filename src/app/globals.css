@@ -6,7 +6,11 @@
 
 :root {
   /* ---- polices (chargées dans layout.tsx) ---- */
-  --font-campaign: var(--font-bebas), "Futura", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Titres : une écriture à empattements, classique, qui va aux objets anciens. */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  /* Nom TROOVANTE et petites lignes en capitales espacées. */
+  --font-wordmark: var(--font-jost), "Jost", "Futura", "Helvetica Neue", Arial, sans-serif;
+  --font-campaign: var(--font-serif);
   --font-heading: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-ui: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -42,8 +46,10 @@
   --leading-loose: 1.75;
 
   --type-display-campaign: var(--weight-medium) var(--text-size-display-campaign) / var(--leading-campaign) var(--font-campaign);
-  --type-heading-xl: var(--weight-medium) var(--text-size-xl) / var(--leading-tight) var(--font-heading);
-  --type-heading-lg: var(--weight-medium) var(--text-size-lg) / var(--leading-tight) var(--font-heading);
+  /* Les grands titres passent en écriture à empattements, un peu plus grande :
+     à taille égale, elle paraît plus petite que le texte courant. */
+  --type-heading-xl: var(--weight-medium) 38px / 1.12 var(--font-serif);
+  --type-heading-lg: var(--weight-medium) 28px / 1.18 var(--font-serif);
   --type-heading-md: var(--weight-medium) var(--text-size-md) / var(--leading-loose) var(--font-heading);
   --type-body-lg: var(--weight-regular) 18px / var(--leading-body) var(--font-body);
   --type-body-md: var(--weight-regular) var(--text-size-md) / var(--leading-body) var(--font-body);
@@ -151,6 +157,13 @@ img {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* Les liens vers une section de la même page y descendent en douceur. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

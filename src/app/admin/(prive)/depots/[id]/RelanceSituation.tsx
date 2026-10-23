@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import Button from "@/components/ui/Button";
 import f from "@/components/ui/form.module.css";
@@ -17,6 +18,7 @@ type Props = {
 /** Choix du décor et lancement de la mise en situation. La génération prend jusqu'à une minute. */
 export default function RelanceSituation({ depotId, decors, decorParDefaut, dejaFaite }: Props) {
   const [enCours, demarrer] = useTransition();
+  const router = useRouter();
 
   return (
     <form
@@ -24,7 +26,11 @@ export default function RelanceSituation({ depotId, decors, decorParDefaut, deja
       onSubmit={(evenement) => {
         evenement.preventDefault();
         const donnees = new FormData(evenement.currentTarget);
-        demarrer(() => relancerMiseEnSituation(donnees));
+        demarrer(async () => {
+          await relancerMiseEnSituation(donnees);
+          // Affiche la nouvelle image, ou le motif de l'échec.
+          router.refresh();
+        });
       }}
     >
       <input type="hidden" name="id" value={depotId} />
