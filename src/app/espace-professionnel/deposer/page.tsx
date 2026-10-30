@@ -5,7 +5,7 @@ import { getUnivers } from "@/lib/catalogue";
 import FormulaireDepot from "./FormulaireDepot";
 import s from "./deposer.module.css";
 
-// Après l'envoi, la mise en situation de l'objet se génère en arrière-plan (jusqu'à une minute).
+// Après l'envoi, la mise en situation demandée se génère en arrière-plan (jusqu'à une minute).
 export const maxDuration = 120;
 
 export const metadata: Metadata = {
@@ -40,8 +40,8 @@ export default async function PageDeposer() {
         <aside className={s.aside}>
           <h1 className={s.title}>Déposer un objet</h1>
           <p className={s.lead}>
-            Quelques photos et ce que vous savez de la pièce : nous nous chargeons de la retouche, de la mise en
-            situation et de la fiche. Rien n’est publié sans la validation de nos experts.
+            Quelques photos et ce que vous savez de la pièce : nous nous chargeons de la retouche et de la fiche, et de
+            la mise en situation si vous la demandez. Rien n’est publié sans la validation de nos experts.
           </p>
           <dl className={s.infos}>
             {CONDITIONS.map((condition) => (

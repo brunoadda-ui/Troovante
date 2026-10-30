@@ -20,7 +20,7 @@ Puis ouvrir <http://localhost:3000> dans un navigateur. Le site se met à jour t
 | 2 | Catalogue vivant : base de données, recherche, filtres, tri, favoris, demandes d'achat et de rappel | Fait, base à brancher (voir ci-dessous) |
 | 3A | Espace professionnel : page d'information et formulaire de dépôt d'objet (photos, dimensions, prix…) | Fait, à tester sur la base |
 | 3B | Page privée `/admin` où TROOVANTE valide, corrige et publie chaque dépôt | Fait, publication à tester une fois connecté |
-| 3C | Mise en situation automatique des photos par IA (service Bria), objet conservé intact | Codé, à tester avec une clé Bria et de vraies photos |
+| 3C | Mise en situation automatique des photos par IA (service Photoroom), objet conservé | Fait, essayé sur de vraies photos |
 | 4 | Mise en ligne : nom de domaine, mentions légales, confidentialité, cookies | À faire |
 
 Le paiement en ligne viendra après, une fois le concept validé.
@@ -52,6 +52,8 @@ Les photos reçues des professionnels sont dans **Storage**, espace privé `depo
 
 C'est là que se traitent les objets déposés : liste des dépôts, fiche préremplie à corriger, choix des photos, puis **Publier** ou **Refuser**. Publier crée l'objet dans `objets` et le met aussitôt en ligne.
 
+Tant qu'un dépôt est à traiter, on peut y ajouter des photos (5 au maximum), en supprimer définitivement, retirer une mise en situation et choisir la photo principale, celle qui sert à la mise en situation. Une fois l'objet publié, ses photos ne se modifient plus ici.
+
 Pour y entrer, il faut :
 
 1. un compte dans Supabase : **Authentication → Users → Add user**, en cochant « Auto Confirm User » ;
@@ -61,21 +63,23 @@ Par précaution, désactiver les inscriptions libres dans Supabase (**Authentica
 
 Pour corriger une fiche déjà publiée ou la retirer du site, modifier sa ligne dans la table `objets` (statut `vendu` pour la retirer).
 
-## La mise en situation par IA (Bria)
+## La mise en situation par IA (Photoroom)
 
-À chaque dépôt, la photo principale est envoyée au service Bria, qui garde l'objet tel quel et génère un décor autour. L'image arrive dans la page du dépôt, où l'on peut en générer d'autres avec un autre décor, puis choisir celles à publier. Sur la fiche publique, elle porte l'étiquette « Mise en situation » et la photo d'origine reste visible.
+La mise en situation est facultative : le formulaire de dépôt propose une case, décochée par défaut. Si le professionnel la coche, la photo principale est envoyée au service Photoroom, qui détoure l'objet et génère une pièce autour. Sinon, TROOVANTE peut toujours la lancer à la main depuis la page du dépôt. L'objet n'est pas redessiné : seules sa lumière et sa netteté sont ajustées. L'image arrive dans la page du dépôt, où l'on peut en générer d'autres avec un autre décor, puis choisir celles à publier. Sur la fiche publique, elle porte l'étiquette « Mise en situation » et la photo d'origine reste visible.
 
-- **Activation** : coller la clé du compte Bria dans `.env.local`, ligne `BRIA_API_TOKEN`. Sans clé, tout fonctionne mais sans mise en situation.
-- **Coût** : chaque image générée est facturée par Bria (quelques centimes). Au-delà de 40 dépôts reçus dans la journée, la génération automatique s'arrête d'elle-même ; elle reste possible à la main depuis la page du dépôt.
-- **Décors** : ils sont décrits dans `src/lib/miseEnSituation.ts` (salon, console, table dressée, mur), avec un décor par défaut selon l'univers.
-- **Limite** : l'image générée fait environ un million de pixels (896 × 1120).
+- **Activation** : coller la clé du compte Photoroom dans `.env.local`, ligne `PHOTOROOM_API_KEY`, et dans les réglages de Vercel pour le site en ligne. Sans clé, tout fonctionne mais sans mise en situation.
+- **Coût** : chaque image générée est facturée 0,10 $. Au-delà de 40 dépôts reçus dans la journée, la génération automatique s'arrête d'elle-même ; elle reste possible à la main depuis la page du dépôt.
+- **Essais gratuits** : préfixer la clé par `sandbox_` donne 1 000 images gratuites par mois (100 par jour), avec un filigrane.
+- **Décors** : neuf pièces sont décrites dans `src/lib/miseEnSituation.ts`, avec un décor proposé selon la sous-catégorie ou l'univers. Elles ne doivent jamais nommer l'objet, et la réécriture automatique du texte reste désactivée : sinon le service invente des objets dans la pièce.
+- **Taille de l'objet** : elle est calculée d'après ses dimensions réelles, dans les limites de chaque type de présentation.
+- **Limite** : l'image finale fait 1600 × 2000 pixels, mais la netteté de l'objet dépend de la photo reçue. Les photos de moins d'un million de pixels sont agrandies automatiquement.
+- **Contrôle** : l'objet reste vu sous l'angle de la photo d'origine, et une image peut contenir un élément indésirable. Chaque image se vérifie donc avant publication.
 
 ## Ce qui est encore factice
 
 - **Tout le contenu** (objets, prix, marchands, téléphone, WhatsApp, e-mail) vient de la maquette et est fictif.
 - **Seule la commode Louis XV a des photos et un texte complet** ; les autres fiches affichent « Photo à venir ».
 - **Les demandes et les dépôts arrivent dans les tables `demandes` et `depots`**, sans e-mail d'alerte pour l'instant.
-- **La mise en situation n'a pas encore été essayée sur de vraies photos** : qualité des décors et fidélité de l'objet restent à juger.
 - **La plupart des liens du pied de page** n'ont pas encore de page.
 - **Les promesses de livraison faites aux acheteurs** (transporteur spécialisé, livraison incluse, retour à notre charge) datent de la maquette et ne correspondent plus à l'expédition par le professionnel.
 - **Le site demande aux moteurs de recherche de ne pas le référencer** (réglage dans `src/app/layout.tsx`), à retirer au lancement.

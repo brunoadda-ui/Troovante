@@ -79,6 +79,8 @@ export default function Visuel({ visuel, surtitre, titre, bouton, sousLaBarre }:
                 fill
                 sizes="100vw"
                 priority={rang === 0}
+                // Chargée d'avance : le premier fondu ne doit pas passer par un écran vide.
+                loading={rang === 0 ? undefined : "eager"}
                 className={s.image}
                 style={{ objectPosition: `${photo.cadrageX}% ${photo.cadrageY}%` }}
               />

@@ -7,7 +7,7 @@ import s from "./espace.module.css";
 export const metadata: Metadata = {
   title: "Espace professionnel",
   description:
-    "Marchands et créateurs : déposez vos objets sur TROOVANTE. Nous retouchons les photos, mettons l’objet en situation et publions la fiche.",
+    "Marchands et créateurs : déposez vos objets sur TROOVANTE. Nous retouchons les photos et publions la fiche, avec une mise en situation si vous le souhaitez.",
 };
 
 const LIEN_DEPOT = "/espace-professionnel/deposer";
@@ -36,7 +36,7 @@ const ETAPES = [
     num: "2",
     titre: "Nous retravaillons les photos",
     texte:
-      "Nous retouchons vos photos et mettons l’objet en situation dans un décor. L’objet lui-même n’est jamais modifié, et votre photo d’origine reste visible sur la fiche.",
+      "Nous retouchons vos photos et, si vous le demandez, mettons l’objet en situation dans un décor. L’objet lui-même n’est jamais modifié, et votre photo d’origine reste visible sur la fiche.",
   },
   {
     num: "3",
@@ -96,7 +96,7 @@ export default function PageEspaceProfessionnel() {
           <h1 className={s.title}>Espace professionnel</h1>
           <p className={s.lead}>
             Confiez-nous vos pièces. Vous envoyez les photos et les informations ; nous nous chargeons de la retouche,
-            de la mise en situation, de la fiche et de la mise en ligne.
+            de la fiche et de la mise en ligne, avec une mise en situation si vous le souhaitez.
           </p>
           <div className={s.heroActions}>
             <Button href={LIEN_DEPOT} size="lg">

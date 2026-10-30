@@ -15,7 +15,7 @@ type Props = {
   dejaFaite: boolean;
 };
 
-/** Choix du décor et lancement de la mise en situation. La génération prend jusqu'à une minute. */
+/** Choix du décor et lancement de la mise en situation. La génération prend une vingtaine de secondes. */
 export default function RelanceSituation({ depotId, decors, decorParDefaut, dejaFaite }: Props) {
   const [enCours, demarrer] = useTransition();
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function RelanceSituation({ depotId, decors, decorParDefaut, deja
       <Button type="submit" variant="secondary" disabled={enCours}>
         {enCours ? "Génération en cours…" : dejaFaite ? "Générer une autre image" : "Générer la mise en situation"}
       </Button>
-      {enCours && <p className={s.muted}>Cela peut prendre jusqu’à une minute. Gardez cette page ouverte.</p>}
+      {enCours && <p className={s.muted}>Cela prend une vingtaine de secondes. Gardez cette page ouverte.</p>}
     </form>
   );
 }

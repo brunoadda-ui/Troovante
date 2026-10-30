@@ -8,6 +8,7 @@ import { STOCKAGE_DEPOTS, STOCKAGE_PHOTOS } from "@/lib/depot";
 import { lireDepot } from "@/lib/depots";
 import { lireEntier } from "@/lib/filtres";
 import { mettreEnSituation } from "@/lib/miseEnSituation";
+import { confirmerAjout, mettreEnPrincipale, preparerAjout, supprimerPhoto } from "@/lib/photosDepot";
 import { slugifier } from "@/lib/slug";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import type { PhotoObjet } from "@/lib/types";
@@ -200,6 +201,27 @@ export async function relancerMiseEnSituation(formulaire: FormData) {
 
   // Ne lève jamais d'erreur : le résultat (image ou motif d'échec) est noté dans le dépôt.
   await mettreEnSituation(depot.id, champ(formulaire, "decor", 40) || undefined);
+}
+
+/** Ajout de photos à un dépôt, en deux temps comme au dépôt : autorisations, puis rattachement. */
+export async function preparerAjoutPhotos(depotId: string, photos: { type: string; taille: number }[]) {
+  await exigerAdmin();
+  return preparerAjout(depotId, photos);
+}
+
+export async function confirmerAjoutPhotos(depotId: string, chemins: string[]) {
+  await exigerAdmin();
+  return confirmerAjout(depotId, chemins);
+}
+
+export async function supprimerPhotoDepot(depotId: string, chemin: string) {
+  await exigerAdmin();
+  return supprimerPhoto(depotId, chemin);
+}
+
+export async function choisirPhotoPrincipale(depotId: string, chemin: string) {
+  await exigerAdmin();
+  return mettreEnPrincipale(depotId, chemin);
 }
 
 /** Refuse un dépôt (avec une note interne facultative), ou le remet en attente. */

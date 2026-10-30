@@ -8,10 +8,18 @@
         "hauteur": 940,
         "cadrageX": 42,
         "cadrageY": 50
+      },
+      {
+        "src": "/images/accueil-interieur2.jpg",
+        "alt": "Salon parisien clair aux moulures et cheminée en marbre, ouvert sur les toits",
+        "largeur": 1672,
+        "hauteur": 940,
+        "cadrageX": 50,
+        "cadrageY": 50
       }
     ],
     "diaporama": {
-      "actif": false,
+      "actif": true,
       "duree": 6,
       "transition": "fondu",
       "points": true,

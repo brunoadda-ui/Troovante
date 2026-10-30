@@ -35,7 +35,7 @@ type Props = {
 const INITIAL: EtatAction = { statut: "initial" };
 
 /** Les redirections de Next.js voyagent comme des erreurs marquées « NEXT_REDIRECT ». */
-const estRedirection = (probleme: unknown) =>
+export const estRedirection = (probleme: unknown) =>
   typeof probleme === "object" &&
   probleme !== null &&
   "digest" in probleme &&

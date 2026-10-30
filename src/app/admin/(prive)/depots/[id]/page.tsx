@@ -5,14 +5,16 @@ import Button from "@/components/ui/Button";
 import f from "@/components/ui/form.module.css";
 import { exigerAdmin } from "@/lib/auth";
 import { getUnivers } from "@/lib/catalogue";
-import { PROFILS } from "@/lib/depot";
+import { PHOTOS_MAX, PROFILS } from "@/lib/depot";
 import { liensPhotosPrivees, lireDepot, type Depot } from "@/lib/depots";
 import { formatPrix } from "@/lib/format";
 import { lienTelephone } from "@/data/site";
-import { DECORS, briaConfigure, decorParDefaut } from "@/lib/miseEnSituation";
+import { DECORS, decorParDefaut, photoroomConfigure } from "@/lib/miseEnSituation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { changerStatutDepot } from "../../../actions";
 import s from "../../../admin.module.css";
+import ActionsPhoto from "./ActionsPhoto";
+import AjoutPhotos from "./AjoutPhotos";
 import FichePublication from "./FichePublication";
 import RelanceSituation from "./RelanceSituation";
 
@@ -56,6 +58,8 @@ export default async function PageDepot({ params }: Props) {
 
   const profil = PROFILS.find((p) => p.valeur === depot.profil)?.label ?? depot.profil;
   const [principale, ...autres] = depot.photosOrigine;
+  // Une fois publié, l'objet a ses propres copies : les photos du dépôt ne se modifient plus.
+  const modifiable = depot.statut === "nouveau";
 
   return (
     <div className={`container ${s.page}`}>
@@ -72,76 +76,93 @@ export default async function PageDepot({ params }: Props) {
           <div className={s.block}>
             <h2 className={s.subtitle}>Photos reçues</h2>
             {principale && liens[principale] && (
-              <a href={liens[principale]} target="_blank" rel="noreferrer" className={s.photoLarge}>
-                <Image
-                  src={liens[principale]}
-                  alt="Photo principale envoyée par le professionnel"
-                  fill
-                  unoptimized
-                  sizes="(min-width: 900px) 45vw, 100vw"
-                  className={s.photoImg}
-                />
-              </a>
+              <div className={s.photoBloc}>
+                <a href={liens[principale]} target="_blank" rel="noreferrer" className={s.photoLarge}>
+                  <Image
+                    src={liens[principale]}
+                    alt="Photo principale envoyée par le professionnel"
+                    fill
+                    unoptimized
+                    sizes="(min-width: 900px) 45vw, 100vw"
+                    className={s.photoImg}
+                  />
+                </a>
+                {modifiable && (
+                  <ActionsPhoto depotId={depot.id} chemin={principale} supprimable={autres.length > 0} />
+                )}
+              </div>
             )}
             {autres.length > 0 && (
               <div className={s.photos}>
                 {autres.map(
                   (chemin, rang) =>
                     liens[chemin] && (
-                      <a key={chemin} href={liens[chemin]} target="_blank" rel="noreferrer" className={s.photo}>
-                        <Image
-                          src={liens[chemin]}
-                          alt={`Photo ${rang + 2} envoyée par le professionnel`}
-                          fill
-                          unoptimized
-                          sizes="160px"
-                          className={s.photoImg}
-                        />
-                      </a>
+                      <div key={chemin} className={s.photoBloc}>
+                        <a href={liens[chemin]} target="_blank" rel="noreferrer" className={s.photo}>
+                          <Image
+                            src={liens[chemin]}
+                            alt={`Photo ${rang + 2} envoyée par le professionnel`}
+                            fill
+                            unoptimized
+                            sizes="160px"
+                            className={s.photoImg}
+                          />
+                        </a>
+                        {modifiable && <ActionsPhoto depotId={depot.id} chemin={chemin} promouvable />}
+                      </div>
                     ),
                 )}
               </div>
             )}
-            <p className={s.muted}>Cliquer sur une photo l’ouvre en grand.</p>
+            {modifiable && depot.photosOrigine.length < PHOTOS_MAX && (
+              <AjoutPhotos depotId={depot.id} places={PHOTOS_MAX - depot.photosOrigine.length} />
+            )}
+            <p className={s.muted}>
+              Cliquer sur une photo l’ouvre en grand.
+              {modifiable && " La photo principale sert à la mise en situation."}
+            </p>
           </div>
 
           <div className={s.block}>
             <h2 className={s.subtitle}>Mise en situation</h2>
             <p className={s.muted}>
-              {!briaConfigure
-                ? "La génération n’est pas activée : la clé Bria (BRIA_API_TOKEN) n’est pas renseignée dans .env.local."
+              {!photoroomConfigure
+                ? "La génération n’est pas activée : la clé Photoroom (PHOTOROOM_API_KEY) n’est pas renseignée dans .env.local."
                 : depot.iaStatut === "en_cours"
                   ? "Génération en cours. Rechargez la page dans un instant."
                   : depot.iaStatut === "echec"
                     ? `La dernière génération a échoué : ${depot.iaErreur ?? "motif inconnu"}`
                     : depot.photosSituation.length > 0
-                      ? "Le décor est généré autour de l’objet de la photo principale. Comparez avec l’original avant de publier."
-                      : "Aucune image générée pour l’instant."}
+                      ? "Le décor est généré autour de l’objet de la photo principale. Vérifiez l’objet et la pièce avant de publier : comparez avec l’original et écartez tout meuble ou objet inventé."
+                      : "Aucune image générée pour l’instant : elle n’est créée d’office que si le professionnel l’a demandée."}
             </p>
             {depot.photosSituation.length > 0 && (
               <div className={s.photos}>
                 {depot.photosSituation.map(
                   (chemin, rang) =>
                     liens[chemin] && (
-                      <a key={chemin} href={liens[chemin]} target="_blank" rel="noreferrer" className={s.photoTall}>
-                        <Image
-                          src={liens[chemin]}
-                          alt={`Mise en situation ${rang + 1}`}
-                          fill
-                          unoptimized
-                          sizes="200px"
-                          className={s.photoImg}
-                        />
-                      </a>
+                      <div key={chemin} className={s.photoBloc}>
+                        <a href={liens[chemin]} target="_blank" rel="noreferrer" className={s.photoTall}>
+                          <Image
+                            src={liens[chemin]}
+                            alt={`Mise en situation ${rang + 1}`}
+                            fill
+                            unoptimized
+                            sizes="200px"
+                            className={s.photoImg}
+                          />
+                        </a>
+                        {modifiable && <ActionsPhoto depotId={depot.id} chemin={chemin} />}
+                      </div>
                     ),
                 )}
               </div>
             )}
-            {briaConfigure && depot.statut === "nouveau" && depot.iaStatut !== "en_cours" && (
+            {photoroomConfigure && depot.statut === "nouveau" && depot.iaStatut !== "en_cours" && (
               <RelanceSituation
                 depotId={depot.id}
                 decors={DECORS.map((decor) => ({ cle: decor.cle, label: decor.label }))}
-                decorParDefaut={decorParDefaut(depot.universSlug).cle}
+                decorParDefaut={decorParDefaut(depot).cle}
                 dejaFaite={depot.photosSituation.length > 0}
               />
             )}

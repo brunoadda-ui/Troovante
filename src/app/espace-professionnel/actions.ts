@@ -176,8 +176,8 @@ export async function enregistrerDepot(formulaire: FormData): Promise<ReponseDep
     return refus(ECHEC);
   }
 
-  // La mise en situation part une fois la réponse envoyée : le professionnel n'attend pas.
-  after(() => mettreEnSituationAuto(depotId));
+  // La mise en situation, si elle est demandée, part une fois la réponse envoyée : le professionnel n'attend pas.
+  if (formulaire.get("mise_en_situation") === "on") after(() => mettreEnSituationAuto(depotId));
 
   return { ok: true };
 }

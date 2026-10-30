@@ -112,8 +112,8 @@ export default function FormulaireDepot({ univers }: Props) {
       <div ref={hautDePage} className={s.done} role="status">
         <h2 className={s.doneTitle}>Merci, votre objet est bien reçu.</h2>
         <p>
-          Nous retouchons vos photos et mettons l’objet en situation, puis nos experts relisent la fiche. Nous revenons
-          vers vous par e-mail ou par téléphone avant la mise en ligne.
+          Nous retouchons vos photos, puis nos experts relisent la fiche. Nous revenons vers vous par e-mail ou par
+          téléphone avant la mise en ligne.
         </p>
         <div className={s.doneActions}>
           <Button onClick={() => setPhase("saisie")}>Déposer un autre objet</Button>
@@ -286,7 +286,7 @@ export default function FormulaireDepot({ univers }: Props) {
           <h2 className={s.sectionTitle}>Les photos</h2>
           <p className={s.sectionIntro}>
             De 1 à {PHOTOS_MAX} photos. La première est la photo principale : l’objet en entier, net, en lumière
-            naturelle si possible. C’est elle que nous retouchons et mettons en situation.
+            naturelle si possible.
           </p>
           <div className={s.photos}>
             {photos.map((photo, rang) => (
@@ -326,6 +326,13 @@ export default function FormulaireDepot({ univers }: Props) {
               </label>
             )}
           </div>
+          <label className={f.check}>
+            <input type="checkbox" name="mise_en_situation" />
+            <span>
+              Je souhaite une mise en situation de mon objet <span className={f.optional}>(facultatif)</span> : un décor
+              créé par ordinateur autour de la photo principale.
+            </span>
+          </label>
         </section>
 
         <section className={s.section}>
