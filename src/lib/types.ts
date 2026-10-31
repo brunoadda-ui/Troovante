@@ -1,7 +1,7 @@
 /** Les types du catalogue, communs à la base de données et aux données de démonstration. */
 
 export type GroupeFiltres = {
-  /** Identifiant utilisé dans l'adresse de la page, par exemple « epoque ». */
+  /** Identifiant utilisé dans l'adresse de la page, par exemple « style ». */
   cle: string;
   label: string;
   options: string[];
@@ -57,7 +57,7 @@ export type Objet = {
   signature?: string;
   /** Prix en euros, sans centimes. */
   prix: number;
-  /** Valeurs de filtres, rangées par clé de groupe : { epoque: ["XVIIIe siècle"] }. */
+  /** Valeurs de filtres, rangées par clé de groupe : { style: ["Louis XV"] }. */
   attributs: Record<string, string[]>;
   photos: PhotoObjet[];
   histoire?: string;

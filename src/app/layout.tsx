@@ -27,6 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+/** Nombre de liens affichés au maximum dans une colonne du grand menu. */
+const LIENS_PAR_COLONNE = 20;
+
 /** Chaque lien du menu ouvre l'univers avec le filtre correspondant déjà coché. */
 async function construireMenu(): Promise<EntreeMenu[]> {
   const [univers, chiffres] = await Promise.all([getUnivers(), getChiffres()]);
@@ -48,7 +51,7 @@ async function construireMenu(): Promise<EntreeMenu[]> {
       })),
       colonnes: u.filtres.map((g) => ({
         label: g.label,
-        liens: g.options.slice(0, 7).map((option) => ({ label: option, href: urlOption(u.slug, g.cle, option) })),
+        liens: g.options.slice(0, LIENS_PAR_COLONNE).map((option) => ({ label: option, href: urlOption(u.slug, g.cle, option) })),
       })),
     };
   });

@@ -5,7 +5,7 @@ import type { GroupeFiltres, ObjetComplet } from "./types";
  * Filtres, tri et recherche d'une liste d'objets.
  * L'état de la liste (cases cochées, prix, tri…) vit dans l'adresse de la
  * page : on peut donc partager un lien vers une liste filtrée.
- *   /univers/mobilier?categories=commode,miroirs&epoque=xviiie-siecle&prix_max=3000&tri=prix-croissant
+ *   /univers/mobilier?categories=commode,miroirs&style=classique&prix_max=3000&tri=prix-croissant
  */
 
 export const TRIS = [
@@ -21,7 +21,7 @@ export type Tri = (typeof TRIS)[number]["valeur"];
 export const OBJETS_PAR_PAGE = 8;
 
 export type EtatListe = {
-  /** Options cochées, par groupe : { epoque: ["xviiie-siecle"] }. */
+  /** Options cochées, par groupe : { style: ["louis-xv"] }. */
   selection: Record<string, string[]>;
   prixMin?: number;
   prixMax?: number;

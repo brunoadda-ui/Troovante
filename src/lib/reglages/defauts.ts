@@ -97,7 +97,7 @@ export const REGLAGES_ORIGINE: ReglagesAccueil = {
       { cle: "mobilier", afficher: true, libelle: "MOBILIER" },
       { cle: "luminaires", afficher: true, libelle: "LUMINAIRES" },
       { cle: "arts-de-la-table", afficher: true, libelle: "ARTS DE LA TABLE" },
-      { cle: "galerie", afficher: true, libelle: "GALERIE" },
+      { cle: "galerie", afficher: true, libelle: "GALERIE D’ART" },
       { cle: "createurs", afficher: true, libelle: "CREATEURS" },
       { cle: "curiosites", afficher: true, libelle: "CURIOSITES" },
       { cle: "espace-professionnel", afficher: true, libelle: "ESPACE PRO" },

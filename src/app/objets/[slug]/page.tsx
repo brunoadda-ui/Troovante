@@ -6,13 +6,12 @@ import DemandeObjet from "@/components/Demande/DemandeObjet";
 import FavoriButton from "@/components/Favoris/FavoriButton";
 import ObjetCard from "@/components/ObjetCard/ObjetCard";
 import DisclosureRow from "@/components/ui/DisclosureRow";
-import Photo from "@/components/ui/Photo";
-import PromoBadge from "@/components/ui/PromoBadge";
 import { site } from "@/data/site";
 import { getDuMemeMarchand, getObjetParSlug, versCarte } from "@/lib/catalogue";
 import { urlOption } from "@/lib/filtres";
 import { compter, formatPrix } from "@/lib/format";
 import type { ObjetComplet } from "@/lib/types";
+import GaleriePhotos from "./GaleriePhotos";
 import s from "./objet.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -54,7 +53,6 @@ export default async function PageObjet({ params }: Props) {
 
   const prix = formatPrix(objet.prix);
   const duMemeMarchand = await getDuMemeMarchand(objet, 500);
-  const [photoPrincipale, ...autresPhotos] = objet.photos;
 
   // Fil d'Ariane : univers, puis la première caractéristique de l'objet (sa catégorie).
   const groupe = objet.univers.filtres[0];
@@ -98,37 +96,11 @@ export default async function PageObjet({ params }: Props) {
 
       <div className={`container ${s.layout}`}>
         <div className={s.gallery}>
-          <div className={s.mainPhoto}>
-            <Photo
-              src={photoPrincipale?.src}
-              alt={photoPrincipale?.alt ?? objet.nom}
-              legende="Photo à venir"
-              ratio="4 / 5"
-              sizes="(min-width: 800px) 50vw, 100vw"
-              priority
-            />
-            {photoPrincipale?.miseEnSituation && (
-              <span className={s.staged}>
-                <PromoBadge>Mise en situation</PromoBadge>
-              </span>
-            )}
-          </div>
-          {autresPhotos.length > 0 && (
-            <div className={s.thumbs}>
-              {autresPhotos.slice(0, 3).map((photo) => (
-                <Photo
-                  key={photo.src}
-                  src={photo.src}
-                  alt={photo.alt ?? objet.nom}
-                  ratio="1 / 1"
-                  sizes="(min-width: 800px) 17vw, 33vw"
-                />
-              ))}
-            </div>
-          )}
+          {/* La clé repart de zéro quand on passe d'un objet à un autre. */}
+          <GaleriePhotos key={objet.slug} photos={objet.photos} nom={objet.nom} />
           {objet.photos.some((photo) => photo.miseEnSituation) && (
             <p className={s.stagedNote}>
-              La première image est une mise en situation : le décor est créé par ordinateur, l’objet est celui de la
+              Sur l’image signalée « Mise en situation », le décor est créé par ordinateur ; l’objet est celui de la
               photo d’origine, visible ci-dessus.
             </p>
           )}

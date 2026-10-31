@@ -64,6 +64,17 @@ function liensAffiches(menu: EntreeMenu[], reglage: ReglageBarre["liens"]): Lien
 
 const PLACEHOLDER_RECHERCHE = "Rechercher un objet, un style, une époque";
 
+/** Au-delà, les liens d'une colonne du grand menu se répartissent sur deux colonnes. */
+const LIENS_SUR_UNE_COLONNE = 10;
+const estLongue = (colonne: EntreeMenu["colonnes"][number]) => colonne.liens.length > LIENS_SUR_UNE_COLONNE;
+
+/**
+ * Colonnes du grand menu : les listes, puis deux emplacements de photo. Sans photos
+ * cliquables, une liste longue s'étend sur l'emplacement libre à côté de la photo d'ambiance.
+ */
+const nombreDeColonnes = ({ colonnes, photos }: EntreeMenu) =>
+  colonnes.length + 2 + (photos.length > 0 ? colonnes.filter(estLongue).length : 0);
+
 /** Vrai dès que la page a défilé de quelques pixels. Faux côté serveur. */
 function useADefile(): boolean {
   return useSyncExternalStore(
@@ -196,20 +207,27 @@ export default function Header({ menu, telephone, lienTelephone, barre }: Props)
             {/* Les colonnes de liens, puis deux emplacements de photo à droite. */}
             <div
               className={s.panelInner}
-              style={{ gridTemplateColumns: `repeat(${entree.colonnes.length + 2}, minmax(0, 1fr))` }}
+              style={{
+                gridTemplateColumns: `repeat(${nombreDeColonnes(entree)}, minmax(0, 1fr))`,
+              }}
             >
               {entree.colonnes.map((col, i) => (
                 <div
                   key={`${entree.slug}-${col.label}`}
                   className={s.col}
-                  style={{ animationDelay: `${60 + i * 50}ms` }}
+                  style={{ animationDelay: `${60 + i * 50}ms`, gridColumn: estLongue(col) ? "span 2" : undefined }}
                 >
                   <div className={s.colLabel}>{col.label}</div>
-                  {col.liens.map((lien) => (
-                    <Link key={lien.label} href={lien.href} className={s.colLink} onClick={fermer}>
-                      {lien.label}
-                    </Link>
-                  ))}
+                  <div
+                    className={estLongue(col) ? s.colLiensDouble : s.colLiens}
+                    style={estLongue(col) ? { gridTemplateRows: `repeat(${Math.ceil(col.liens.length / 2)}, auto)` } : undefined}
+                  >
+                    {col.liens.map((lien) => (
+                      <Link key={lien.label} href={lien.href} className={s.colLink} onClick={fermer}>
+                        {lien.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               ))}
               {entree.photos.length > 0 ? (

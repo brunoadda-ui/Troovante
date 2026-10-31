@@ -140,7 +140,7 @@ const DECOR_PAR_ATTRIBUT: Record<string, string> = {
   "Abat-jour": "console-travertin",
   Sculpture: "console-travertin",
   "Mobilier design": "moderniste",
-  "1950–1970": "moderniste",
+  Design: "moderniste",
 };
 
 /** À défaut, décor proposé selon l'univers de l'objet. */

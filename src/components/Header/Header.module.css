@@ -231,6 +231,18 @@
   animation: colIn 300ms var(--ease-menu) both;
 }
 
+.colLiens,
+.colLiensDouble {
+  display: grid;
+  gap: var(--space-md) var(--space-xxl);
+}
+
+/* Colonne longue : les liens descendent sur une colonne, puis sur la suivante. */
+.colLiensDouble {
+  grid-auto-flow: column;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .colLabel {
   font: var(--type-caption-md);
   letter-spacing: 0.14em;
@@ -423,6 +435,18 @@
   /* Sur un petit écran, la place manque : le décalage est réduit de moitié. */
   .logo {
     margin-left: calc(var(--nom-decalage, 0px) / 2);
+  }
+}
+
+/* Juste au-dessus du seuil, les sept liens tiennent de peu : on les resserre
+   et on réduit le décalage du nom. */
+@media (min-width: 1280px) and (max-width: 1349px) {
+  .logo {
+    margin-left: calc(var(--nom-decalage, 0px) / 2);
+  }
+
+  .links {
+    gap: var(--space-lg);
   }
 }
 

@@ -41,6 +41,18 @@
 
 .mainPhoto {
   position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+/* Les grandes photos sont empilées : seule celle qui est affichée est visible. */
+.calque {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.calque[data-visible="true"] {
+  opacity: 1;
 }
 
 /* Étiquette posée sur une image dont le décor a été généré. */
@@ -63,6 +75,20 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-sm);
+}
+
+.thumb {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.thumb[data-apercu="true"] {
+  outline: 1px solid var(--ink);
+  outline-offset: 2px;
 }
 
 .details {
